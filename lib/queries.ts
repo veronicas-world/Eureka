@@ -59,6 +59,8 @@ export type PersonRow = {
   email: string | null
   is_founder: boolean
   notes: string | null
+  profile_picture_url: string | null
+  harmonic_urn: string | null
   created_at: string
 }
 

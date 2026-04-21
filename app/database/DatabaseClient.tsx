@@ -6,6 +6,7 @@ import { Search, Plus, ExternalLink, Pencil } from 'lucide-react'
 import type { CompanyRow } from '@/lib/queries'
 import { formatCurrency } from '@/lib/utils'
 import { SignalBadge, StatusBadge, StageBadge } from '@/components/ui/Badge'
+import EnrichButton from '@/components/EnrichButton'
 
 const ALL = 'All'
 
@@ -170,12 +171,15 @@ export default function DatabaseClient({ companies, sectors }: Props) {
                   <td className="px-4 py-3 text-gray-600">{company.last_funding_round ?? '—'}</td>
                   <td className="px-4 py-3 text-gray-500">{company.founded_year ?? '—'}</td>
                   <td className="px-4 py-3">
-                    <Link
-                      href={`/companies/${company.id}/edit`}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 inline-flex"
-                    >
-                      <Pencil size={14} />
-                    </Link>
+                    <div className="flex items-center gap-0.5">
+                      <EnrichButton companyId={company.id} website={company.website} variant="icon" />
+                      <Link
+                        href={`/companies/${company.id}/edit`}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 inline-flex"
+                      >
+                        <Pencil size={14} />
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))

@@ -4,7 +4,7 @@ import { useTransition, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Zap, StickyNote, Users, MessageSquare, Link2,
-  ExternalLink, ChevronRight, Plus, Trash2, Loader2,
+  ExternalLink, ChevronRight, ChevronDown, Plus, Trash2, Loader2, X, Mail,
 } from 'lucide-react'
 import type { SignalRow, NoteRow, PersonRow, InteractionRow, CompanyUrlRow } from '@/lib/queries'
 import {
@@ -283,13 +283,277 @@ function NotesTab({ companyId, notes }: { companyId: string; notes: NoteRow[] })
 
 // ── People tab ────────────────────────────────────────────────────────────────
 
+const INVESTOR_KEYWORDS = ['investor', 'board', 'partner', 'venture', 'capital', 'vc']
+const ADVISOR_KEYWORDS  = ['advisor', 'adviser', 'mentor', 'consultant']
+
+function titleMatches(title: string | null | undefined, keywords: string[]): boolean {
+  if (!title) return false
+  const t = title.toLowerCase()
+  return keywords.some((kw) => t.includes(kw))
+}
+
+function groupPeople(people: PersonRow[]) {
+  const founders:       PersonRow[] = []
+  const investorsBoard: PersonRow[] = []
+  const advisors:       PersonRow[] = []
+  const team:           PersonRow[] = []
+
+  for (const p of people) {
+    if (p.is_founder) {
+      founders.push(p)
+    } else if (titleMatches(p.title, INVESTOR_KEYWORDS)) {
+      investorsBoard.push(p)
+    } else if (titleMatches(p.title, ADVISOR_KEYWORDS)) {
+      advisors.push(p)
+    } else {
+      team.push(p)
+    }
+  }
+
+  return { founders, team, investorsBoard, advisors }
+}
+
+// ── Person detail modal ───────────────────────────────────────────────────────
+
+function PersonModal({ person, onClose }: { person: PersonRow; onClose: () => void }) {
+  const linkedinHref = person.linkedin_url
+    ? (person.linkedin_url.startsWith('http') ? person.linkedin_url : `https://${person.linkedin_url}`)
+    : null
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+
+      {/* Panel */}
+      <div
+        className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="px-6 pt-6 pb-5 border-b border-gray-100">
+          <div className="flex items-start gap-4">
+            {/* Avatar */}
+            <div className="shrink-0">
+              {person.profile_picture_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={person.profile_picture_url}
+                  alt={person.name}
+                  className="w-14 h-14 rounded-full object-cover bg-gray-100"
+                />
+              ) : (
+                <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
+                  <span className="text-xl font-bold text-gray-500">{person.name[0]}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Name + title + badges */}
+            <div className="flex-1 min-w-0 pt-0.5">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-base font-semibold text-gray-900 leading-tight">{person.name}</h2>
+                {person.is_founder && <Badge variant="purple">Founder</Badge>}
+              </div>
+              {person.title && (
+                <p className="text-sm text-gray-500 mt-0.5 leading-snug">{person.title}</p>
+              )}
+            </div>
+
+            {/* Close */}
+            <button
+              onClick={onClose}
+              className="shrink-0 p-1 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors mt-0.5"
+            >
+              <X size={16} />
+            </button>
+          </div>
+
+          {/* Action buttons */}
+          {(linkedinHref || person.email) && (
+            <div className="flex items-center gap-2 mt-4">
+              {linkedinHref && (
+                <a
+                  href={linkedinHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-medium rounded-md border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+                >
+                  <ExternalLink size={12} />
+                  LinkedIn
+                </a>
+              )}
+              {person.email && (
+                <a
+                  href={`mailto:${person.email}`}
+                  className="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-medium rounded-md border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+                >
+                  <Mail size={12} />
+                  {person.email}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Body */}
+        <div className="px-6 py-5 space-y-5 max-h-[60vh] overflow-y-auto">
+          {/* Notes / headline */}
+          {person.notes && (
+            <div>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Headline</p>
+              <p className="text-sm text-gray-700 leading-relaxed">{person.notes}</p>
+            </div>
+          )}
+
+          {/* Previous experience — placeholder */}
+          <div>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Previous Experience</p>
+            <p className="text-sm text-gray-400 italic">Connect LinkedIn to see work history</p>
+          </div>
+
+          {/* Education — placeholder */}
+          <div>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Education</p>
+            <p className="text-sm text-gray-400 italic">Connect LinkedIn to see education</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Person card ───────────────────────────────────────────────────────────────
+
+function PersonCard({
+  p,
+  onDelete,
+  isDeleting,
+  onOpen,
+}: {
+  p: PersonRow
+  onDelete: () => void
+  isDeleting: boolean
+  onOpen: () => void
+}) {
+  return (
+    <div className="flex items-center justify-between gap-2 group py-2 px-1 rounded-lg hover:bg-gray-50 transition-colors">
+      {/* Clickable area → opens modal */}
+      <button
+        type="button"
+        onClick={onOpen}
+        className="flex items-center gap-2.5 min-w-0 flex-1 text-left"
+      >
+        <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
+          {p.profile_picture_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={p.profile_picture_url} alt={p.name} className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-[11px] font-semibold text-gray-600">{p.name[0]}</span>
+          )}
+        </div>
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-sm font-medium text-gray-900 leading-tight">{p.name}</span>
+            {p.is_founder && <Badge variant="purple">Founder</Badge>}
+          </div>
+          {p.title && (
+            <p className="text-xs text-gray-500 leading-tight mt-px truncate max-w-xs">{p.title}</p>
+          )}
+          {p.email && (
+            <p className="text-xs text-gray-400 leading-tight mt-px">{p.email}</p>
+          )}
+        </div>
+      </button>
+
+      <div className="flex items-center gap-0.5 shrink-0">
+        {p.linkedin_url && (
+          <a
+            href={p.linkedin_url.startsWith('http') ? p.linkedin_url : `https://${p.linkedin_url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="p-1 rounded text-gray-300 hover:text-gray-600 hover:bg-gray-100 transition-colors opacity-0 group-hover:opacity-100"
+          >
+            <ExternalLink size={12} />
+          </a>
+        )}
+        <DeleteButton onDelete={onDelete} isDeleting={isDeleting} />
+      </div>
+    </div>
+  )
+}
+
+// ── Collapsible people section ────────────────────────────────────────────────
+
+function PeopleSection({
+  title,
+  people,
+  deletingId,
+  onDelete,
+  onOpenPerson,
+}: {
+  title: string
+  people: PersonRow[]
+  deletingId: string | null
+  onDelete: (id: string) => void
+  onOpenPerson: (p: PersonRow) => void
+}) {
+  const [open, setOpen] = useState(true)
+  if (people.length === 0) return null
+
+  return (
+    <div className="border-b border-gray-100 last:border-0">
+      {/* Section header — clickable to collapse */}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center gap-2 px-5 py-3 hover:bg-gray-50/70 transition-colors text-left"
+      >
+        {open
+          ? <ChevronDown size={13} className="text-gray-400 shrink-0" />
+          : <ChevronRight size={13} className="text-gray-400 shrink-0" />
+        }
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex-1">{title}</h3>
+        <span className="text-[10px] font-semibold tabular-nums bg-gray-100 text-gray-500 rounded px-1.5 py-px">
+          {people.length}
+        </span>
+      </button>
+
+      {/* Collapsible body */}
+      <div
+        className={`overflow-hidden transition-all duration-200 ${open ? 'opacity-100' : 'max-h-0 opacity-0'}`}
+        style={open ? { maxHeight: people.length * 56 + 24 } : { maxHeight: 0 }}
+      >
+        <div className="px-5 pb-3 grid grid-cols-1 gap-0.5">
+          {people.map((p) => (
+            <PersonCard
+              key={p.id}
+              p={p}
+              onDelete={() => onDelete(p.id)}
+              isDeleting={deletingId === p.id}
+              onOpen={() => onOpenPerson(p)}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── People tab root ───────────────────────────────────────────────────────────
+
 function PeopleTab({ companyId, people }: { companyId: string; people: PersonRow[] }) {
   const router = useRouter()
-  const [showForm, setShowForm] = useState(false)
-  const [isPending, startTransition] = useTransition()
-  const [deletingId, setDeletingId] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const formRef = useRef<HTMLFormElement>(null)
+  const [showForm, setShowForm]       = useState(false)
+  const [isPending, startTransition]  = useTransition()
+  const [deletingId, setDeletingId]   = useState<string | null>(null)
+  const [error, setError]             = useState<string | null>(null)
+  const [modalPerson, setModalPerson] = useState<PersonRow | null>(null)
+  const formRef    = useRef<HTMLFormElement>(null)
   const founderRef = useRef<HTMLInputElement>(null)
 
   const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
@@ -332,10 +596,13 @@ function PeopleTab({ companyId, people }: { companyId: string; people: PersonRow
     })
   }
 
+  const { founders, team, investorsBoard, advisors } = groupPeople(people)
+  const isEmpty = people.length === 0
+
   return (
     <div>
       {/* Toolbar */}
-      <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
+      <div className="px-5 py-3 border-b border-gray-100">
         <AddButton onClick={() => { setShowForm(true); setError(null) }} label="Add Person" />
       </div>
 
@@ -389,46 +656,20 @@ function PeopleTab({ companyId, people }: { companyId: string; people: PersonRow
         </form>
       )}
 
-      {/* People list */}
-      {people.length === 0 && !showForm ? (
+      {isEmpty && !showForm ? (
         <EmptyList message="No people added yet." />
       ) : (
-        <div className="divide-y divide-gray-100">
-          {people.map((p) => (
-            <div key={p.id} className="px-5 py-3.5 flex items-center justify-between gap-3 group">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                  <span className="text-xs font-semibold text-gray-600">{p.name[0]}</span>
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-medium text-gray-900">{p.name}</span>
-                    {p.is_founder && <Badge variant="purple">Founder</Badge>}
-                  </div>
-                  {p.title && <p className="text-xs text-gray-500 mt-0.5">{p.title}</p>}
-                  {p.email && <p className="text-xs text-gray-400 mt-0.5">{p.email}</p>}
-                  {p.notes && <p className="text-xs text-gray-400 mt-0.5 italic">{p.notes}</p>}
-                </div>
-              </div>
-              <div className="flex items-center gap-1 shrink-0">
-                {p.linkedin_url && (
-                  <a
-                    href={p.linkedin_url.startsWith('http') ? p.linkedin_url : `https://${p.linkedin_url}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-                  >
-                    <ExternalLink size={13} />
-                  </a>
-                )}
-                <DeleteButton
-                  onDelete={() => handleDelete(p.id)}
-                  isDeleting={deletingId === p.id}
-                />
-              </div>
-            </div>
-          ))}
+        <div>
+          <PeopleSection title="Founders"          people={founders}       deletingId={deletingId} onDelete={handleDelete} onOpenPerson={setModalPerson} />
+          <PeopleSection title="Team"              people={team}           deletingId={deletingId} onDelete={handleDelete} onOpenPerson={setModalPerson} />
+          <PeopleSection title="Investors & Board" people={investorsBoard} deletingId={deletingId} onDelete={handleDelete} onOpenPerson={setModalPerson} />
+          <PeopleSection title="Advisors"          people={advisors}       deletingId={deletingId} onDelete={handleDelete} onOpenPerson={setModalPerson} />
         </div>
+      )}
+
+      {/* Person detail modal */}
+      {modalPerson && (
+        <PersonModal person={modalPerson} onClose={() => setModalPerson(null)} />
       )}
     </div>
   )

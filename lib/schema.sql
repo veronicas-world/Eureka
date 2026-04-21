@@ -184,3 +184,21 @@ create policy "company_urls: authenticated full access"
   to authenticated
   using (true)
   with check (true);
+
+
+-- ------------------------------------------------------------
+-- Harmonic enrichment columns + signal_source update (migration)
+-- ------------------------------------------------------------
+alter table companies add column if not exists logo_url          text;
+alter table companies add column if not exists customer_type     text;
+alter table companies add column if not exists enrichment_status text;
+alter table companies add column if not exists harmonic_id       integer;
+alter table companies add column if not exists harmonic_urn      text;
+alter table companies add column if not exists last_enriched_at  timestamptz;
+
+alter table people add column if not exists harmonic_urn         text;
+alter table people add column if not exists profile_picture_url  text;
+
+alter table signals drop constraint if exists signals_signal_source_check;
+alter table signals add constraint signals_signal_source_check
+  check (signal_source in ('crunchbase','linkedin','techcrunch','manual','harmonic'));

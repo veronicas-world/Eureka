@@ -15,6 +15,7 @@ import { formatCurrency } from '@/lib/utils'
 import { SignalBadge, StatusBadge, StageBadge, Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import CompanyTabs from './CompanyTabs'
+import EnrichButton from '@/components/EnrichButton'
 
 interface Props {
   params: { id: string }
@@ -35,13 +36,16 @@ export default async function CompanyDetailPage({ params }: Props) {
           <ArrowLeft size={14} />
           Back to Database
         </Link>
-        <Link
-          href={`/companies/${company.id}/edit`}
-          className="inline-flex items-center gap-1.5 h-8 px-3 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
-        >
-          <Pencil size={13} />
-          Edit
-        </Link>
+        <div className="flex items-center gap-2">
+          <EnrichButton companyId={company.id} website={company.website} />
+          <Link
+            href={`/companies/${company.id}/edit`}
+            className="inline-flex items-center gap-1.5 h-8 px-3 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+          >
+            <Pencil size={13} />
+            Edit
+          </Link>
+        </div>
       </div>
 
       <div className="flex gap-6 items-start">
