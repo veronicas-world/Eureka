@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { Search, Plus, ExternalLink, Pencil } from 'lucide-react'
 import type { CompanyRow } from '@/lib/queries'
 import { formatCurrency } from '@/lib/utils'
-import { Button } from '@/components/ui/Button'
 import { SignalBadge, StatusBadge, StageBadge } from '@/components/ui/Badge'
 
 const ALL = 'All'

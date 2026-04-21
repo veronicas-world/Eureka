@@ -3,7 +3,7 @@
 import { useFormState, useFormStatus } from 'react-dom'
 import { useRef, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Plus, X, Link2 } from 'lucide-react'
+import { ArrowLeft, Plus, X } from 'lucide-react'
 import { addCompany } from '@/app/actions/companies'
 
 // ── Submit button (must be inside <form> to access useFormStatus) ────────────

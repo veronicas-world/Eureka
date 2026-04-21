@@ -4,7 +4,7 @@ import { useTransition, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Zap, StickyNote, Users, MessageSquare, Link2,
-  ExternalLink, ChevronRight, Plus, Trash2, Loader2, X,
+  ExternalLink, ChevronRight, Plus, Trash2, Loader2,
 } from 'lucide-react'
 import type { SignalRow, NoteRow, PersonRow, InteractionRow, CompanyUrlRow } from '@/lib/queries'
 import {
