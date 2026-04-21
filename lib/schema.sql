@@ -83,6 +83,13 @@ create policy "people: authenticated full access"
   using (true)
   with check (true);
 
+-- Migration: add prior experience & education columns
+alter table people add column if not exists profile_picture_url text;
+alter table people add column if not exists harmonic_urn text;
+alter table people add column if not exists prior_company text;
+alter table people add column if not exists prior_title text;
+alter table people add column if not exists education text;
+
 
 -- ------------------------------------------------------------
 -- signals
@@ -198,6 +205,14 @@ alter table companies add column if not exists last_enriched_at  timestamptz;
 
 alter table people add column if not exists harmonic_urn         text;
 alter table people add column if not exists profile_picture_url  text;
+
+alter table companies add column if not exists short_description     text;
+alter table companies add column if not exists headcount_30d_growth  float;
+alter table companies add column if not exists headcount_90d_growth  float;
+alter table companies add column if not exists headcount_6m_growth   float;
+alter table companies add column if not exists latest_valuation_usd  bigint;
+alter table companies add column if not exists funding_rounds_count  integer;
+alter table companies add column if not exists traction_metrics      jsonb;
 
 alter table signals drop constraint if exists signals_signal_source_check;
 alter table signals add constraint signals_signal_source_check

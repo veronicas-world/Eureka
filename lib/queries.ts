@@ -8,6 +8,7 @@ export type CompanyRow = {
   website: string | null
   linkedin_url: string | null
   description: string | null
+  short_description: string | null
   sector: string | null
   subsector: string | null
   stage: string | null
@@ -16,14 +17,26 @@ export type CompanyRow = {
   founded_year: number | null
   employee_count: number | null
   employee_count_source: string | null
+  headcount_30d_growth: number | null
+  headcount_90d_growth: number | null
+  headcount_6m_growth: number | null
   total_funding_usd: number | null
   last_funding_date: string | null
   last_funding_round: string | null
   last_funding_amount_usd: number | null
+  latest_valuation_usd: number | null
+  funding_rounds_count: number | null
   investors: string[] | null
   status: string | null
   signal_score: number | null
   tags: string[] | null
+  logo_url: string | null
+  customer_type: string | null
+  enrichment_status: string | null
+  harmonic_id: number | null
+  harmonic_urn: string | null
+  last_enriched_at: string | null
+  traction_metrics: unknown
   created_at: string
   updated_at: string
 }
@@ -61,6 +74,9 @@ export type PersonRow = {
   notes: string | null
   profile_picture_url: string | null
   harmonic_urn: string | null
+  prior_company: string | null
+  prior_title: string | null
+  education: string | null
   created_at: string
 }
 
@@ -119,6 +135,7 @@ export async function getCompanyById(id: string): Promise<CompanyWithRelations |
       company_urls ( * )
     `)
     .eq('id', id)
+    .order('signal_date', { referencedTable: 'signals', ascending: false, nullsFirst: false })
     .single()
 
   if (error) {
@@ -154,7 +171,6 @@ export async function getAllSignals(): Promise<SignalRow[]> {
       companies ( name )
     `)
     .order('signal_date', { ascending: false, nullsFirst: false })
-    .order('created_at', { ascending: false })
 
   if (error) {
     console.error('[getAllSignals]', error.message)

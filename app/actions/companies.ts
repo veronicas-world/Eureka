@@ -252,6 +252,14 @@ export async function addInteraction(
   if (error) throw new Error(error.message)
 }
 
+// ── Delete Company ────────────────────────────────────────────────────────────
+
+export async function deleteCompany(id: string): Promise<void> {
+  const supabase = await createServerSupabaseClient()
+  const { error } = await supabase.from('companies').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 // ── Signals ───────────────────────────────────────────────────────────────────
 
 export async function addSignal(

@@ -61,6 +61,51 @@ function buildPersonRecord(
     email = typeof first === 'string' ? first : ((first as Record<string, unknown>).email as string | undefined) ?? null
   }
 
+  // Extract prior (non-current) company from experience array
+  const experiences = (person.experience ?? person.experiences ?? []) as Record<string, unknown>[]
+  const priorExp = experiences.find(
+    (e) => e.is_current_position === false || e.is_current === false
+  ) ?? (experiences.length > 1 ? experiences[1] : null)
+
+  function extractOrgName(val: unknown): string {
+    if (typeof val === 'string') return val.trim()
+    if (val && typeof val === 'object') {
+      const name = (val as Record<string, unknown>).name
+      if (typeof name === 'string') return name.trim()
+    }
+    return ''
+  }
+
+  const prior_company = priorExp
+    ? (extractOrgName(priorExp.company_name ?? priorExp.company ?? priorExp.organization_name) || null)
+    : null
+  const prior_title = priorExp
+    ? (typeof priorExp.title === 'string' ? priorExp.title.trim() || null : null)
+    : null
+
+  // Extract most recent school from education array
+  const educations = (person.education ?? person.educations ?? []) as Record<string, unknown>[]
+  let education: string | null = null
+  try {
+    const firstEdu = educations[0] ?? null
+    if (firstEdu) {
+      const sn = firstEdu.school_name
+      const s  = firstEdu.school
+      const ins = firstEdu.institution_name
+      const raw =
+        typeof sn  === 'string' ? sn  :
+        typeof sn  === 'object' && sn  ? (sn  as Record<string, unknown>).name as string :
+        typeof s   === 'string' ? s   :
+        typeof s   === 'object' && s   ? (s   as Record<string, unknown>).name as string :
+        typeof ins === 'string' ? ins  :
+        typeof ins === 'object' && ins ? (ins as Record<string, unknown>).name as string :
+        ''
+      education = (typeof raw === 'string' ? raw.trim() : '') || null
+    }
+  } catch {
+    education = null
+  }
+
   return {
     company_id:          companyId,
     name:                ((person.full_name as string | undefined)?.trim()) || null,
@@ -71,6 +116,9 @@ function buildPersonRecord(
     harmonic_urn:        (person.entity_urn as string | undefined) ?? null,
     notes:               (person.linkedin_headline as string | undefined) ?? null,
     is_founder:          role.is_founder,
+    prior_company,
+    prior_title,
+    education,
   }
 }
 
@@ -170,9 +218,20 @@ export async function POST(req: NextRequest) {
     const linkedin_url = (c.linkedin_url ?? linkedinSocial.url ?? null) as string | null
     const websiteDomain = (websiteObj.domain as string | undefined) ?? null
 
+    // Traction metrics
+    const traction = (c.traction_metrics ?? {}) as Record<string, unknown>
+    const headcount_30d_growth = (traction.headcount_growth_30d ?? traction.headcount_growth_1m ?? null) as number | null
+    const headcount_90d_growth = (traction.headcount_growth_90d ?? traction.headcount_growth_3m ?? null) as number | null
+    const headcount_6m_growth  = (traction.headcount_growth_180d ?? traction.headcount_growth_6m ?? null) as number | null
+
+    // Funding rounds
+    const fundingRoundsArr = (funding.funding_rounds ?? []) as unknown[]
+    const funding_rounds_count = fundingRoundsArr.length > 0 ? fundingRoundsArr.length : null
+
     const enriched: Record<string, unknown> = {
       name:                    (c.name as string | undefined) ?? null,
-      description:             ((c.description ?? c.short_description) as string | undefined) ?? null,
+      description:             (c.description as string | undefined) ?? null,
+      short_description:       (c.short_description as string | undefined) ?? null,
       employee_count:          (c.headcount as number | undefined) ?? null,
       founded_year,
       linkedin_url,
@@ -184,6 +243,8 @@ export async function POST(req: NextRequest) {
       last_funding_round:      (funding.last_funding_type as string | undefined) ?? null,
       last_funding_amount_usd: (funding.last_funding_total as number | undefined) ?? null,
       last_funding_date:       (funding.last_funding_at as string | undefined) ?? null,
+      latest_valuation_usd:    (funding.last_funding_post_money_valuation as number | undefined) ?? null,
+      funding_rounds_count,
       stage:                   mapStage(c.stage as string | undefined),
       investors:               investorList.length > 0 ? investorList : null,
       tags:                    tags.length > 0 ? tags : null,
@@ -191,6 +252,10 @@ export async function POST(req: NextRequest) {
       harmonic_id:             (c.id as number | undefined) ?? null,
       harmonic_urn:            (c.entity_urn as string | undefined) ?? null,
       last_enriched_at:        new Date().toISOString(),
+      traction_metrics:        c.traction_metrics ?? null,
+      headcount_30d_growth,
+      headcount_90d_growth,
+      headcount_6m_growth,
       ...(websiteDomain ? { website: websiteDomain } : {}),
     }
 
@@ -224,7 +289,8 @@ export async function POST(req: NextRequest) {
       if (roleMap.size >= 20) break
     }
 
-    let peopleAdded = 0
+    let peopleAdded   = 0
+    let peopleUpdated = 0
 
     if (roleMap.size > 0) {
       // Batch fetch full person objects
@@ -255,21 +321,51 @@ export async function POST(req: NextRequest) {
         const record = buildPersonRecord(person, role, companyId)
         if (!record.name) continue
 
-        // Upsert by harmonic_urn
-        const { data: existing } = await supabase
-          .from('people')
-          .select('id')
-          .eq('company_id', companyId)
-          .eq('harmonic_urn', urn)
-          .maybeSingle()
+        // 1. Try match by harmonic_urn (only if urn is present)
+        let existingId: string | null = null
 
-        if (existing) {
-          await supabase.from('people').update(record).eq('id', existing.id)
+        if (urn) {
+          const { data } = await supabase
+            .from('people')
+            .select('id')
+            .eq('company_id', companyId)
+            .eq('harmonic_urn', urn)
+            .maybeSingle()
+          if (data) existingId = data.id
+        }
+
+        // 2. Fall back to match by name + company_id
+        if (!existingId) {
+          const { data } = await supabase
+            .from('people')
+            .select('id')
+            .eq('company_id', companyId)
+            .ilike('name', record.name)
+            .maybeSingle()
+          if (data) existingId = data.id
+        }
+
+        if (existingId) {
+          const { error: updateErr } = await supabase
+            .from('people')
+            .update(record)
+            .eq('id', existingId)
+          if (updateErr) {
+            console.error('[enrich] person update error:', updateErr.message)
+          } else {
+            peopleUpdated++
+          }
         } else {
           const { error: insertErr } = await supabase.from('people').insert(record)
-          if (!insertErr) peopleAdded++
+          if (insertErr) {
+            console.error('[enrich] person insert error:', insertErr.message)
+          } else {
+            peopleAdded++
+          }
         }
       }
+
+      console.log(`[enrich] people — processed: ${personObjects.length}, inserted: ${peopleAdded}, updated: ${peopleUpdated}`)
     }
 
     console.log(`[enrich] people processed: ${roleMap.size}, added: ${peopleAdded}`)
@@ -304,15 +400,14 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    const traction = (c.traction_metrics ?? {}) as Record<string, unknown>
-    const headcountGrowth = traction.headcount_growth_6m ?? traction.headcount_growth_3m
-    if (typeof headcountGrowth === 'number' && headcountGrowth > 0.1) {
+    const bestGrowth = headcount_6m_growth ?? headcount_90d_growth ?? headcount_30d_growth
+    if (typeof bestGrowth === 'number' && bestGrowth > 0.1) {
       signalInserts.push({
         company_id:    companyId,
         signal_type:   'hiring_spike',
         signal_source: 'harmonic',
-        headline:      `${companyName} headcount grew ${Math.round(headcountGrowth * 100)}% recently`,
-        strength:      headcountGrowth > 0.3 ? 'strong' : 'moderate',
+        headline:      `${companyName} headcount grew ${Math.round(bestGrowth * 100)}% recently`,
+        strength:      bestGrowth > 0.3 ? 'strong' : 'moderate',
         signal_date:   today,
       })
     }
@@ -337,7 +432,7 @@ export async function POST(req: NextRequest) {
     const fieldsUpdated = Object.keys(updatePayload)
     const signalsCreated = signalInserts.length
 
-    console.log(`[enrich] done — fields: ${fieldsUpdated.length}, people: ${peopleAdded}, signals: ${signalsCreated}`)
+    console.log(`[enrich] done — fields: ${fieldsUpdated.length}, people added: ${peopleAdded}, signals: ${signalsCreated}`)
 
     return NextResponse.json({
       success: true,

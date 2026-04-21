@@ -129,10 +129,15 @@ export default function DatabaseClient({ companies, sectors }: Props) {
                 >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-gray-100 flex items-center justify-center shrink-0">
-                        <span className="text-[10px] font-semibold text-gray-600">
-                          {company.name[0]}
-                        </span>
+                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
+                        {company.logo_url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={company.logo_url} alt={company.name} className="w-full h-full object-contain" />
+                        ) : (
+                          <span className="text-[10px] font-semibold text-gray-600">
+                            {company.name[0]}
+                          </span>
+                        )}
                       </div>
                       <Link
                         href={`/companies/${company.id}`}
