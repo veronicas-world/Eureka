@@ -8,6 +8,7 @@ type State = 'idle' | 'loading' | 'success' | 'error'
 
 interface EnrichResult {
   peopleAdded: number
+  peopleUpdated: number
   signalsCreated: number
 }
 
@@ -51,7 +52,7 @@ export default function EnrichButton({ companyId, website, variant = 'button' }:
         return
       }
 
-      setResult({ peopleAdded: json.peopleAdded ?? 0, signalsCreated: json.signalsCreated ?? 0 })
+      setResult({ peopleAdded: json.peopleAdded ?? 0, peopleUpdated: json.peopleUpdated ?? 0, signalsCreated: json.signalsCreated ?? 0 })
       setState('success')
       setTimeout(() => {
         setState('idle')
@@ -65,9 +66,17 @@ export default function EnrichButton({ companyId, website, variant = 'button' }:
     }
   }
 
+  function peopleSummary(r: EnrichResult): string {
+    if (r.peopleAdded > 0 && r.peopleUpdated > 0)
+      return `${r.peopleAdded} added, ${r.peopleUpdated} updated`
+    if (r.peopleAdded > 0) return `${r.peopleAdded} people added`
+    if (r.peopleUpdated > 0) return `${r.peopleUpdated} people updated`
+    return '0 people'
+  }
+
   if (variant === 'icon') {
     const successTitle = result
-      ? `Enriched — ${result.peopleAdded} people added, ${result.signalsCreated} signals created`
+      ? `Enriched — ${peopleSummary(result)}, ${result.signalsCreated} signals created`
       : 'Enriched!'
     return (
       <button
@@ -93,7 +102,7 @@ export default function EnrichButton({ companyId, website, variant = 'button' }:
   }
 
   const successLabel = result
-    ? `Enriched — ${result.peopleAdded} people added, ${result.signalsCreated} signals created`
+    ? `Enriched — ${peopleSummary(result)}, ${result.signalsCreated} signals`
     : 'Enriched!'
 
   return (

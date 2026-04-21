@@ -438,6 +438,7 @@ export async function POST(req: NextRequest) {
       success: true,
       fieldsUpdated,
       peopleAdded,
+      peopleUpdated,
       signalsCreated,
     })
   } catch (err) {

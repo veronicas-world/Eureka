@@ -18,6 +18,8 @@ import { formatCurrency, formatGrowth } from '@/lib/utils'
 import HeadcountChart from './HeadcountChart'
 import EnrichButton from '@/components/EnrichButton'
 import DeleteCompanyButton from './DeleteCompanyButton'
+import CompanyLogo from '@/components/CompanyLogo'
+import SchoolLogo from '@/components/SchoolLogo'
 
 // ── Shared style constants ────────────────────────────────────────────────────
 
@@ -199,10 +201,6 @@ function PersonDetailCard({ p, onDelete, isDeleting }: {
   p: PersonRow; onDelete: () => void; isDeleting: boolean
 }) {
   const lhref = linkedinHref(p.linkedin_url)
-  const priorLine = p.prior_title && p.prior_company
-    ? `${p.prior_title} at `
-    : p.prior_company ? null : null
-
   return (
     <div className="border border-gray-200 rounded-xl p-4 bg-white group">
       <div className="flex items-start justify-between gap-3">
@@ -233,11 +231,13 @@ function PersonDetailCard({ p, onDelete, isDeleting }: {
       </div>
 
       <div className="mt-3 space-y-1.5 pl-[52px]">
-        <div className="flex items-start gap-1.5 text-xs text-gray-500 leading-snug">
-          <Briefcase size={11} className="shrink-0 text-gray-400 mt-px" />
+        <div className="flex items-center gap-1.5 text-xs text-gray-500 leading-snug">
+          {p.prior_company
+            ? <CompanyLogo name={p.prior_company} size={14} shape="square" />
+            : <Briefcase size={11} className="shrink-0 text-gray-400" />}
           {p.prior_company ? (
             <span>
-              {priorLine && <span>{p.prior_title} at </span>}
+              {p.prior_title && <span>{p.prior_title} at </span>}
               <span className="font-semibold text-gray-800">{p.prior_company}</span>
             </span>
           ) : (
@@ -245,7 +245,9 @@ function PersonDetailCard({ p, onDelete, isDeleting }: {
           )}
         </div>
         <div className="flex items-center gap-1.5 text-xs text-gray-500">
-          <GraduationCap size={11} className="shrink-0 text-gray-400" />
+          {p.education
+            ? <SchoolLogo school={p.education} size={14} />
+            : <GraduationCap size={11} className="shrink-0 text-gray-400" />}
           {p.education ? p.education : <span className="text-gray-400">N/A</span>}
         </div>
       </div>
@@ -292,10 +294,10 @@ function FounderCard({ p }: { p: PersonRow }) {
         {expanded && hasDetails && (
           <div className="mt-4 pl-[52px] space-y-2">
             {p.prior_company && (
-              <div className="flex items-start gap-1.5 text-xs text-gray-500">
-                <Briefcase size={11} className="shrink-0 text-gray-400 mt-px" />
+              <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                <CompanyLogo name={p.prior_company} size={14} shape="square" />
                 <span>
-                  Prior company:{' '}
+                  Prior:{' '}
                   {p.prior_title && <span>{p.prior_title} at </span>}
                   <span className="font-semibold text-gray-800">{p.prior_company}</span>
                 </span>
@@ -303,7 +305,7 @@ function FounderCard({ p }: { p: PersonRow }) {
             )}
             {p.education && (
               <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                <GraduationCap size={11} className="shrink-0 text-gray-400" />
+                <SchoolLogo school={p.education} size={14} />
                 <span>{p.education}</span>
               </div>
             )}
@@ -351,10 +353,13 @@ function HireCard({ p }: { p: PersonRow }) {
         {p.title && <p className="text-xs text-gray-600 mt-px">{p.title}</p>}
         <p className="text-xs text-gray-400 mt-0.5">Started: {hireDate}</p>
         {p.prior_company && (
-          <p className="text-xs text-gray-500 mt-1">
-            Was: {p.prior_title && <span>{p.prior_title} </span>}
-            <span className="font-semibold text-gray-700">{p.prior_company}</span>
-          </p>
+          <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1">
+            <CompanyLogo name={p.prior_company} size={14} shape="square" />
+            <span>
+              Was: {p.prior_title && <span>{p.prior_title} </span>}
+              <span className="font-semibold text-gray-700">{p.prior_company}</span>
+            </span>
+          </div>
         )}
       </div>
     </div>
@@ -544,9 +549,9 @@ function TalentNetworkSection({ people }: { people: PersonRow[] }) {
                   <div key={name}
                     className="flex items-center justify-between py-2.5 border-b border-gray-100 last:border-0 gap-3">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-6 h-6 rounded bg-gray-100 flex items-center justify-center shrink-0">
-                        <span className="text-[9px] font-bold text-gray-500 uppercase">{name[0]}</span>
-                      </div>
+                      {netTab === 'work'
+                        ? <CompanyLogo name={name} size={24} shape="square" />
+                        : <SchoolLogo school={name} size={24} />}
                       <span className="text-sm text-gray-800 truncate">{name}</span>
                     </div>
                     <span className="text-sm font-semibold text-gray-500 tabular-nums shrink-0">{count}</span>
@@ -1310,18 +1315,14 @@ export default function CompanyPage({ company, activeTab }: Props) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-4 min-w-0 flex-1">
             {/* Logo */}
-            <div className="shrink-0">
-              {company.logo_url
-                ? (// eslint-disable-next-line @next/next/no-img-element
-                  <img src={company.logo_url} alt={company.name}
-                    className="w-12 h-12 rounded-xl object-contain bg-gray-50 border border-gray-100" />)
-                : (
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center">
-                    <span className="text-lg font-bold text-gray-500">{company.name[0]}</span>
-                  </div>
-                )
-              }
-            </div>
+            <CompanyLogo
+              name={company.name}
+              logoUrl={company.logo_url}
+              domain={company.website}
+              size={48}
+              shape="square"
+              className="border border-gray-100"
+            />
 
             {/* Name + meta */}
             <div className="min-w-0 flex-1">
