@@ -9,7 +9,7 @@ interface Props {
   className?: string
 }
 
-const LOGO_DEV_TOKEN = 'pk_X5OGByKSRwKnHgUHHFRlaw'
+const LOGO_DEV_TOKEN = process.env.NEXT_PUBLIC_LOGO_DEV_TOKEN
 
 // Ordered list: first match wins. More specific entries come first.
 const KNOWN: Array<[string, string]> = [
