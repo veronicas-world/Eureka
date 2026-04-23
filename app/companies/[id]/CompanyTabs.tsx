@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useTransition, useRef } from 'react'
+import { useState, useTransition, useRef, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
   ExternalLink, ChevronRight, ChevronDown, ChevronUp, Plus, Trash2,
-  Loader2, Mail, Pencil, ArrowRight, Briefcase, GraduationCap, Users,
+  Loader2, Mail, Pencil, ArrowRight, Briefcase, GraduationCap, Users, X,
 } from 'lucide-react'
 import type { CompanyWithRelations, PersonRow, SignalRow, NoteRow, InteractionRow } from '@/lib/queries'
 import {
@@ -14,9 +14,10 @@ import {
   addInteraction, addSignal,
 } from '@/app/actions/companies'
 import { Badge, SignalBadge, StatusBadge, StageBadge } from '@/components/ui/Badge'
-import { formatCurrency, formatGrowth } from '@/lib/utils'
+import { formatCurrency, formatGrowth, formatDegree } from '@/lib/utils'
 import HeadcountChart from './HeadcountChart'
 import TractionTab from './TractionTab'
+import FundingTab from './FundingTab'
 import EnrichButton from '@/components/EnrichButton'
 import DeleteCompanyButton from './DeleteCompanyButton'
 import CompanyLogo from '@/components/CompanyLogo'
@@ -196,14 +197,97 @@ function Avatar({ person, size = 'md' }: { person: PersonRow; size?: 'sm' | 'md'
   )
 }
 
+// ── Person modal ─────────────────────────────────────────────────────────────
+
+function PersonModal({ person, onClose }: { person: PersonRow; onClose: () => void }) {
+  const lhref = linkedinHref(person.linkedin_url)
+  const overlayRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [onClose])
+
+  return (
+    <div
+      ref={overlayRef}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      onClick={(e) => { if (e.target === overlayRef.current) onClose() }}
+    >
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm mx-4 overflow-hidden">
+        <div className="flex items-start gap-4 p-6 pb-4">
+          <Avatar person={person} size="lg" />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-base font-bold text-gray-900">{person.name}</span>
+              {lhref && (
+                <a href={lhref} target="_blank" rel="noopener noreferrer"
+                  className="text-[#0077b5] hover:opacity-70 shrink-0"
+                  onClick={(e) => e.stopPropagation()}>
+                  <ExternalLink size={13} />
+                </a>
+              )}
+            </div>
+            {person.title && <p className="text-sm text-gray-500 mt-0.5">{person.title}</p>}
+            {person.email && (
+              <a href={`mailto:${person.email}`}
+                className="inline-flex items-center gap-1 mt-2 h-7 px-2.5 text-xs font-medium rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
+                onClick={(e) => e.stopPropagation()}>
+                <Mail size={11} />{person.email}
+              </a>
+            )}
+          </div>
+          <button onClick={onClose}
+            className="p-1 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors shrink-0">
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className="px-6 pb-6 space-y-3">
+          {person.prior_company && (
+            <div className="flex items-center gap-2 text-sm">
+              <CompanyLogo name={person.prior_company} size={16} shape="square" />
+              <span className="text-gray-700">
+                {person.prior_title
+                  ? <><span className="text-gray-500">{person.prior_title}</span>{' at '}</>
+                  : null}
+                <span className="font-semibold text-gray-800">{person.prior_company}</span>
+              </span>
+            </div>
+          )}
+          {person.education && (
+            <div className="flex items-center gap-2 text-sm">
+              <SchoolLogo school={person.education} size={16} />
+              <span className="text-gray-700">
+                {formatDegree(person.degree)
+                  ? <><span className="font-semibold">{formatDegree(person.degree)}</span>{' · '}{person.education}</>
+                  : person.education}
+              </span>
+            </div>
+          )}
+          {person.notes && (
+            <p className="text-sm text-gray-500 leading-relaxed border-t border-gray-100 pt-3">
+              {person.notes}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Person detail card (Executives / Employees) ───────────────────────────────
 
-function PersonDetailCard({ p, onDelete, isDeleting }: {
-  p: PersonRow; onDelete: () => void; isDeleting: boolean
+function PersonDetailCard({ p, onDelete, isDeleting, onSelect }: {
+  p: PersonRow; onDelete: () => void; isDeleting: boolean; onSelect: (p: PersonRow) => void
 }) {
   const lhref = linkedinHref(p.linkedin_url)
   return (
-    <div className="border border-gray-200 rounded-xl p-4 bg-white group">
+    <div
+      className="border border-gray-200 rounded-xl p-4 bg-white group cursor-pointer hover:border-gray-300 hover:shadow-sm transition-all"
+      onClick={() => onSelect(p)}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <Avatar person={p} />
@@ -212,7 +296,8 @@ function PersonDetailCard({ p, onDelete, isDeleting }: {
               <span className="text-sm font-semibold text-gray-900 leading-tight">{p.name}</span>
               {lhref && (
                 <a href={lhref} target="_blank" rel="noopener noreferrer"
-                  className="text-[#0077b5] hover:opacity-70 transition-opacity shrink-0">
+                  className="text-[#0077b5] hover:opacity-70 transition-opacity shrink-0"
+                  onClick={(e) => e.stopPropagation()}>
                   <ExternalLink size={11} />
                 </a>
               )}
@@ -220,7 +305,7 @@ function PersonDetailCard({ p, onDelete, isDeleting }: {
             <p className="text-xs text-gray-500 leading-tight mt-px truncate max-w-[180px]">{p.title ?? '—'}</p>
           </div>
         </div>
-        <div className="flex items-center gap-0.5 shrink-0">
+        <div className="flex items-center gap-0.5 shrink-0" onClick={(e) => e.stopPropagation()}>
           {p.email && (
             <a href={`mailto:${p.email}`}
               className="p-1 rounded text-gray-300 hover:text-gray-600 hover:bg-gray-100 transition-colors">
@@ -232,25 +317,21 @@ function PersonDetailCard({ p, onDelete, isDeleting }: {
       </div>
 
       <div className="mt-3 space-y-1.5 pl-[52px]">
-        <div className="flex items-center gap-1.5 text-xs text-gray-500 leading-snug">
-          {p.prior_company
-            ? <CompanyLogo name={p.prior_company} size={14} shape="square" />
-            : <Briefcase size={11} className="shrink-0 text-gray-400" />}
-          {p.prior_company ? (
+        {p.prior_company ? (
+          <div className="flex items-center gap-1.5 text-xs text-gray-500 leading-snug">
+            <CompanyLogo name={p.prior_company} size={14} shape="square" />
             <span>
               {p.prior_title && <span>{p.prior_title} at </span>}
               <span className="font-semibold text-gray-800">{p.prior_company}</span>
             </span>
-          ) : (
-            <span className="text-gray-400">N/A</span>
-          )}
-        </div>
-        <div className="flex items-center gap-1.5 text-xs text-gray-500">
-          {p.education
-            ? <SchoolLogo school={p.education} size={14} />
-            : <GraduationCap size={11} className="shrink-0 text-gray-400" />}
-          {p.education ? p.education : <span className="text-gray-400">N/A</span>}
-        </div>
+          </div>
+        ) : null}
+        {p.education ? (
+          <div className="flex items-center gap-1.5 text-xs text-gray-500">
+            <SchoolLogo school={p.education} size={14} />
+            <span>{p.education}</span>
+          </div>
+        ) : null}
       </div>
     </div>
   )
@@ -258,14 +339,14 @@ function PersonDetailCard({ p, onDelete, isDeleting }: {
 
 // ── Founder card (expandable) ─────────────────────────────────────────────────
 
-function FounderCard({ p }: { p: PersonRow }) {
+function FounderCard({ p, onSelect }: { p: PersonRow; onSelect: (p: PersonRow) => void }) {
   const [expanded, setExpanded] = useState(false)
   const lhref = linkedinHref(p.linkedin_url)
   const hasDetails = !!(p.prior_company || p.education || p.notes)
 
   return (
-    <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
-      <div className="p-4">
+    <div className="border border-gray-200 rounded-xl bg-white overflow-hidden hover:border-gray-300 hover:shadow-sm transition-all">
+      <div className="p-4 cursor-pointer" onClick={() => onSelect(p)}>
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0 flex-1">
             <Avatar person={p} />
@@ -274,7 +355,8 @@ function FounderCard({ p }: { p: PersonRow }) {
                 <span className="text-sm font-semibold text-gray-900">{p.name}</span>
                 {lhref && (
                   <a href={lhref} target="_blank" rel="noopener noreferrer"
-                    className="text-[#0077b5] hover:opacity-70 shrink-0">
+                    className="text-[#0077b5] hover:opacity-70 shrink-0"
+                    onClick={(e) => e.stopPropagation()}>
                     <ExternalLink size={11} />
                   </a>
                 )}
@@ -282,7 +364,7 @@ function FounderCard({ p }: { p: PersonRow }) {
               <p className="text-xs text-gray-500 mt-px">{p.title ?? '—'}</p>
             </div>
           </div>
-          <div className="flex items-center gap-1 shrink-0">
+          <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
             {p.email && (
               <a href={`mailto:${p.email}`}
                 className="p-1.5 rounded text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors">
@@ -298,7 +380,6 @@ function FounderCard({ p }: { p: PersonRow }) {
               <div className="flex items-center gap-1.5 text-xs text-gray-500">
                 <CompanyLogo name={p.prior_company} size={14} shape="square" />
                 <span>
-                  Prior:{' '}
                   {p.prior_title && <span>{p.prior_title} at </span>}
                   <span className="font-semibold text-gray-800">{p.prior_company}</span>
                 </span>
@@ -577,14 +658,14 @@ function TalentNetworkSection({ people }: { people: PersonRow[] }) {
 
 // ── Founders & CEO ────────────────────────────────────────────────────────────
 
-function FoundersCEOSection({ founders }: { founders: PersonRow[] }) {
+function FoundersCEOSection({ founders, onSelect }: { founders: PersonRow[]; onSelect: (p: PersonRow) => void }) {
   if (founders.length === 0) return null
 
   return (
     <div>
       <SectionHeader title="Founders & CEO" count={founders.length} />
       <div className="space-y-3">
-        {founders.map((p) => <FounderCard key={p.id} p={p} />)}
+        {founders.map((p) => <FounderCard key={p.id} p={p} onSelect={onSelect} />)}
       </div>
     </div>
   )
@@ -592,44 +673,102 @@ function FoundersCEOSection({ founders }: { founders: PersonRow[] }) {
 
 // ── Team Growth ───────────────────────────────────────────────────────────────
 
+interface TractionMetricPoint {
+  metric_type?: string
+  value?: number
+  timestamp?: string
+  [key: string]: unknown
+}
+
 function TeamGrowthSection({ company }: { company: CompanyWithRelations }) {
-  const headcount   = company.employee_count
-  const growth30d   = company.headcount_30d_growth
-  const growth90d   = company.headcount_90d_growth
-  const growth6m    = company.headcount_6m_growth
-  const bestGrowth  = growth30d ?? growth90d ?? growth6m
-  const growthPct   = bestGrowth != null ? Math.round(Math.abs(bestGrowth) * 100) : null
-  const growthNet   = headcount && bestGrowth ? Math.round(headcount * Math.abs(bestGrowth)) : null
-  const isPositive  = bestGrowth != null && bestGrowth > 0
+  const headcount = company.employee_count
+  const growth30d = company.headcount_30d_growth
+  const growth90d = company.headcount_90d_growth
+  const growth6m  = company.headcount_6m_growth
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && company.traction_metrics) {
+      console.log('[TeamGrowth] traction_metrics raw:', company.traction_metrics)
+      if (Array.isArray(company.traction_metrics)) {
+        console.log('[TeamGrowth] first 3 items:', (company.traction_metrics as unknown[]).slice(0, 3))
+      }
+    }
+  }, [company.traction_metrics])
+
+  const tractionSeries = useMemo((): Array<{ label: string; headcount: number; ts: string }> => {
+    if (!Array.isArray(company.traction_metrics)) return []
+    return (company.traction_metrics as TractionMetricPoint[])
+      .filter((m) => m.metric_type === 'HEADCOUNT' && typeof m.value === 'number' && m.timestamp)
+      .map((m) => ({
+        label: new Date(m.timestamp!).toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
+        headcount: m.value!,
+        ts: m.timestamp!,
+      }))
+      .sort((a, b) => a.ts.localeCompare(b.ts))
+  }, [company.traction_metrics])
+
+  const hasGrowthData = growth30d != null || growth90d != null || growth6m != null
+  const hasAnyData    = headcount != null && (hasGrowthData || tractionSeries.length >= 2)
+
+  if (!hasAnyData) {
+    return (
+      <div>
+        <SectionHeader title="Team growth" />
+        <div className="border border-gray-200 rounded-xl bg-white p-8 text-center">
+          <Users size={28} className="text-gray-300 mx-auto mb-3" />
+          <p className="text-sm text-gray-400">Enrich this company to see team growth data.</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>
       <SectionHeader title="Team growth" />
       <div className="border border-gray-200 rounded-xl bg-white p-5">
-        {/* Stat row */}
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-            <Users size={18} className="text-gray-400" />
+        {/* Stat cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
+          <div className="bg-gray-50 rounded-lg p-3">
+            <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Headcount</p>
+            <p className="text-xl font-bold text-gray-900 mt-0.5">{headcount!.toLocaleString()}</p>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-gray-900">
-                {headcount?.toLocaleString() ?? '—'}
-              </span>
-              {growthPct != null && headcount != null && (
-                <span className={`text-xs font-semibold flex items-center gap-0.5 ${isPositive ? 'text-emerald-600' : 'text-red-500'}`}>
-                  {isPositive ? '▲' : '▼'} {growthPct}%{growthNet ? ` (${growthNet})` : ''}
-                </span>
-              )}
+          {growth30d != null && (
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">30-Day</p>
+              <p className={`text-xl font-bold mt-0.5 ${growth30d > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+                {growth30d > 0 ? '+' : ''}{(growth30d * 100).toFixed(1)}%
+              </p>
             </div>
-            <p className="text-xs text-gray-400">Headcount</p>
-          </div>
+          )}
+          {growth90d != null && (
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">90-Day</p>
+              <p className={`text-xl font-bold mt-0.5 ${growth90d > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+                {growth90d > 0 ? '+' : ''}{(growth90d * 100).toFixed(1)}%
+              </p>
+            </div>
+          )}
+          {growth6m != null && (
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">6-Month</p>
+              <p className={`text-xl font-bold mt-0.5 ${growth6m > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+                {growth6m > 0 ? '+' : ''}{(growth6m * 100).toFixed(1)}%
+              </p>
+            </div>
+          )}
         </div>
 
-        {/* Chart */}
-        {headcount != null && (growth30d != null || growth90d != null || growth6m != null) ? (
+        {/* Chart — prefer real time series, fall back to growth-pct back-calculation */}
+        {tractionSeries.length >= 2 ? (
           <HeadcountChart
-            currentHeadcount={headcount}
+            series={tractionSeries}
+            lastFundingDate={company.last_funding_date}
+            lastFundingRound={company.last_funding_round}
+            lastFundingAmount={company.last_funding_amount_usd}
+          />
+        ) : hasGrowthData ? (
+          <HeadcountChart
+            currentHeadcount={headcount!}
             growth30d={growth30d}
             growth90d={growth90d}
             growth6m={growth6m}
@@ -637,9 +776,7 @@ function TeamGrowthSection({ company }: { company: CompanyWithRelations }) {
             lastFundingRound={company.last_funding_round}
             lastFundingAmount={company.last_funding_amount_usd}
           />
-        ) : (
-          <p className="text-sm text-gray-400 text-center py-6">Enrich this company to see headcount trends.</p>
-        )}
+        ) : null}
       </div>
     </div>
   )
@@ -647,8 +784,8 @@ function TeamGrowthSection({ company }: { company: CompanyWithRelations }) {
 
 // ── Executives section ────────────────────────────────────────────────────────
 
-function ExecutivesSection({ executives, onRefresh }: {
-  executives: PersonRow[]; companyId: string; onRefresh: () => void
+function ExecutivesSection({ executives, onRefresh, onSelect }: {
+  executives: PersonRow[]; companyId: string; onRefresh: () => void; onSelect: (p: PersonRow) => void
 }) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [, startTransition] = useTransition()
@@ -673,7 +810,8 @@ function ExecutivesSection({ executives, onRefresh }: {
         {executives.map((p) => (
           <PersonDetailCard key={p.id} p={p}
             onDelete={() => handleDelete(p.id)}
-            isDeleting={deletingId === p.id} />
+            isDeleting={deletingId === p.id}
+            onSelect={onSelect} />
         ))}
       </div>
     </div>
@@ -682,8 +820,8 @@ function ExecutivesSection({ executives, onRefresh }: {
 
 // ── Employees section ─────────────────────────────────────────────────────────
 
-function EmployeesSection({ employees, onRefresh }: {
-  employees: PersonRow[]; companyId: string; onRefresh: () => void
+function EmployeesSection({ employees, onRefresh, onSelect }: {
+  employees: PersonRow[]; companyId: string; onRefresh: () => void; onSelect: (p: PersonRow) => void
 }) {
   const [visible, setVisible]   = useState(10)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -711,7 +849,8 @@ function EmployeesSection({ employees, onRefresh }: {
         {shown.map((p) => (
           <PersonDetailCard key={p.id} p={p}
             onDelete={() => handleDelete(p.id)}
-            isDeleting={deletingId === p.id} />
+            isDeleting={deletingId === p.id}
+            onSelect={onSelect} />
         ))}
       </div>
       {visible < employees.length && (
@@ -732,10 +871,11 @@ function EmployeesSection({ employees, onRefresh }: {
 
 function TeamTab({ company }: { company: CompanyWithRelations }) {
   const router = useRouter()
-  const [showAddForm, setShowAddForm] = useState(false)
+  const [showAddForm, setShowAddForm]       = useState(false)
+  const [selectedPerson, setSelectedPerson] = useState<PersonRow | null>(null)
 
-  const people    = company.people ?? []
-  const founders  = people.filter((p) => p.is_founder)
+  const people     = company.people ?? []
+  const founders   = people.filter((p) => p.is_founder)
   const executives = people.filter((p) => !p.is_founder && isExecutive(p.title))
   const employees  = people.filter((p) => !p.is_founder && !isExecutive(p.title))
 
@@ -746,6 +886,10 @@ function TeamTab({ company }: { company: CompanyWithRelations }) {
 
   return (
     <div className="px-6 py-6">
+      {selectedPerson && (
+        <PersonModal person={selectedPerson} onClose={() => setSelectedPerson(null)} />
+      )}
+
       {/* Add person button */}
       <div className="flex items-center justify-end mb-6">
         <button
@@ -767,10 +911,10 @@ function TeamTab({ company }: { company: CompanyWithRelations }) {
       <div className="space-y-10">
         <TalentFlowSection people={people} />
         <TalentNetworkSection people={people} />
-        <FoundersCEOSection founders={founders} />
+        <FoundersCEOSection founders={founders} onSelect={setSelectedPerson} />
         <TeamGrowthSection company={company} />
-        <ExecutivesSection executives={executives} companyId={company.id} onRefresh={() => router.refresh()} />
-        <EmployeesSection employees={employees} companyId={company.id} onRefresh={() => router.refresh()} />
+        <ExecutivesSection executives={executives} companyId={company.id} onRefresh={() => router.refresh()} onSelect={setSelectedPerson} />
+        <EmployeesSection employees={employees} companyId={company.id} onRefresh={() => router.refresh()} onSelect={setSelectedPerson} />
       </div>
     </div>
   )
@@ -884,65 +1028,7 @@ function OverviewTab({ company }: { company: CompanyWithRelations }) {
   )
 }
 
-// ── Funding tab ───────────────────────────────────────────────────────────────
-
-function FundingTab({ company }: { company: CompanyWithRelations }) {
-  const hasAny = company.total_funding_usd || company.last_funding_round ||
-    company.last_funding_amount_usd || company.latest_valuation_usd
-
-  return (
-    <div className="divide-y divide-gray-100">
-      {/* Summary grid */}
-      <div className="px-6 py-5 grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5">
-        <StatCell label="Total Raised"    value={formatCurrency(company.total_funding_usd ?? undefined)} />
-        <StatCell label="Latest Valuation" value={formatCurrency(company.latest_valuation_usd ?? undefined)} />
-        <StatCell label="Rounds"          value={company.funding_rounds_count?.toString() ?? '—'} />
-        <StatCell label="Last Round"      value={company.last_funding_round ?? '—'} />
-        <StatCell label="Round Amount"    value={formatCurrency(company.last_funding_amount_usd ?? undefined)} />
-        <StatCell label="Round Date"      value={formatDate(company.last_funding_date)} />
-      </div>
-
-      {/* Investors */}
-      {company.investors && company.investors.length > 0 && (
-        <div className="px-6 py-5">
-          <SectionLabel>Investors</SectionLabel>
-          <div className="flex flex-wrap gap-2">
-            {company.investors.map(inv => (
-              <span key={inv}
-                className="inline-flex items-center h-7 px-3 text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-full">
-                {inv}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Funding timeline from signals */}
-      {(() => {
-        const fundingSignals = (company.signals ?? []).filter(s => s.signal_type === 'funding')
-        if (fundingSignals.length === 0) return null
-        return (
-          <div className="px-6 py-5">
-            <SectionLabel>Funding Events</SectionLabel>
-            <div className="relative pl-4">
-              <div className="absolute left-0 top-1.5 bottom-1.5 w-px bg-gray-200" />
-              {fundingSignals.map(s => (
-                <div key={s.id} className="relative mb-4 last:mb-0 pl-4">
-                  <div className="absolute -left-[9px] top-1.5 w-[7px] h-[7px] rounded-full bg-gray-300 border-2 border-white" />
-                  <p className="text-xs text-gray-400 mb-0.5">{s.signal_date ?? '—'}</p>
-                  <p className="text-sm font-medium text-gray-900">{s.headline}</p>
-                  {s.detail && <p className="text-xs text-gray-500 mt-0.5">{s.detail}</p>}
-                </div>
-              ))}
-            </div>
-          </div>
-        )
-      })()}
-
-      {!hasAny && <EmptyState message="No funding data yet. Enrich this company to pull in funding details." />}
-    </div>
-  )
-}
+// ── Funding tab lives in ./FundingTab.tsx ───────────────────────────────────
 
 // ── Traction tab lives in ./TractionTab.tsx ─────────────────────────────────
 

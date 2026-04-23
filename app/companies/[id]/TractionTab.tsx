@@ -66,7 +66,11 @@ function extractGrowthPct(m: RawMetric | null, agoKey: '30d_ago' | '90d_ago' | '
   const entry = m[agoKey]
   if (!entry) return null
   const pct = entry.percent_change ?? entry.percentChange
-  return typeof pct === 'number' ? pct : null
+  if (typeof pct !== 'number') return null
+  // Harmonic returns percent_change as a full percentage (e.g. 15.38 = +15.38%).
+  // Return a decimal fraction (0.1538) to match the headcount_*_growth columns
+  // and the rest of the app's "multiply by 100 for display" convention.
+  return pct / 100
 }
 
 function extractSeries(m: RawMetric | null): MetricPoint[] {
