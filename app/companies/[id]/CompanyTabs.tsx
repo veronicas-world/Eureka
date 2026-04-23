@@ -16,6 +16,7 @@ import {
 import { Badge, SignalBadge, StatusBadge, StageBadge } from '@/components/ui/Badge'
 import { formatCurrency, formatGrowth } from '@/lib/utils'
 import HeadcountChart from './HeadcountChart'
+import TractionTab from './TractionTab'
 import EnrichButton from '@/components/EnrichButton'
 import DeleteCompanyButton from './DeleteCompanyButton'
 import CompanyLogo from '@/components/CompanyLogo'
@@ -943,61 +944,7 @@ function FundingTab({ company }: { company: CompanyWithRelations }) {
   )
 }
 
-// ── Traction tab ──────────────────────────────────────────────────────────────
-
-function TractionTab({ company }: { company: CompanyWithRelations }) {
-  const hasChart = company.employee_count != null && (
-    company.headcount_30d_growth != null ||
-    company.headcount_90d_growth != null ||
-    company.headcount_6m_growth  != null
-  )
-
-  if (!hasChart) {
-    return (
-      <EmptyState message="Enrich this company to see traction metrics." />
-    )
-  }
-
-  return (
-    <div className="divide-y divide-gray-100">
-      {/* Growth stat cards */}
-      <div className="px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
-        <StatCell label="Headcount" value={company.employee_count!.toLocaleString()} />
-        {company.headcount_30d_growth != null && (
-          <StatCell label="30-Day Growth"
-            value={(company.headcount_30d_growth * 100).toFixed(1) + '%'}
-            sub={company.headcount_30d_growth > 0 ? 'growing' : 'declining'}
-            subColor={company.headcount_30d_growth > 0 ? 'green' : 'red'} />
-        )}
-        {company.headcount_90d_growth != null && (
-          <StatCell label="90-Day Growth"
-            value={(company.headcount_90d_growth * 100).toFixed(1) + '%'}
-            sub={company.headcount_90d_growth > 0 ? 'growing' : 'declining'}
-            subColor={company.headcount_90d_growth > 0 ? 'green' : 'red'} />
-        )}
-        {company.headcount_6m_growth != null && (
-          <StatCell label="6-Month Growth"
-            value={(company.headcount_6m_growth * 100).toFixed(1) + '%'}
-            sub={company.headcount_6m_growth > 0 ? 'growing' : 'declining'}
-            subColor={company.headcount_6m_growth > 0 ? 'green' : 'red'} />
-        )}
-      </div>
-
-      {/* Chart */}
-      <div className="px-6 py-5">
-        <HeadcountChart
-          currentHeadcount={company.employee_count!}
-          growth30d={company.headcount_30d_growth}
-          growth90d={company.headcount_90d_growth}
-          growth6m={company.headcount_6m_growth}
-          lastFundingDate={company.last_funding_date}
-          lastFundingRound={company.last_funding_round}
-          lastFundingAmount={company.last_funding_amount_usd}
-        />
-      </div>
-    </div>
-  )
-}
+// ── Traction tab lives in ./TractionTab.tsx ─────────────────────────────────
 
 // ── Signals tab ───────────────────────────────────────────────────────────────
 
