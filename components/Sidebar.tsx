@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Database, Kanban, Zap, Search } from 'lucide-react'
+import { LayoutDashboard, Database, Kanban, Zap, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const nav = [
-  { label: 'Database', href: '/database',  icon: Database },
+  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Database',  href: '/database',  icon: Database },
   { label: 'Pipeline',  href: '/pipeline',  icon: Kanban   },
   { label: 'Signals',   href: '/signals',   icon: Zap      },
   { label: 'Search',    href: '/search',    icon: Search   },
