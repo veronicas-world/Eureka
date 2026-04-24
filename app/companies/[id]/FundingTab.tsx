@@ -10,9 +10,22 @@ import { formatCurrency } from '@/lib/utils'
 // versions / SDKs, so we accept several aliases.
 
 interface RawInvestor {
+  // Harmonic shape
+  is_lead?: boolean
+  investor_name?: string
+  investor_urn?: string
+  // Legacy / alternate shapes
   name?: string
   entity_urn?: string
   urn?: string
+}
+
+interface RawValuationInfo {
+  post_money_valuation?: number | null
+  post_money_valuation_usd?: number | null
+  pre_money_valuation?: number | null
+  pre_money_valuation_usd?: number | null
+  valuation?: number | null
 }
 
 interface RawRound {
@@ -21,16 +34,22 @@ interface RawRound {
   announced_round_type?: string
   round_type?: string
   type?: string
+  investment_type?: string
 
   // Date
+  announcement_date?: string
   announced_date?: string
   funding_round_date?: string
   date?: string
 
-  // Amount raised
+  // Amount raised (Harmonic uses funding_amount + funding_currency)
+  funding_amount?: number | null
+  funding_currency?: string
   money_raised?: number | null
   funding_round_total_raised_usd?: number | null
-  amount_raised?: number | null
+  amount?: number | null
+  amount_usd?: number | null
+  total_raised?: number | null
   total_raised_usd?: number | null
 
   // Valuation
@@ -38,25 +57,31 @@ interface RawRound {
   post_money_valuation_usd?: number | null
   pre_money_valuation?: number | null
   pre_money_valuation_usd?: number | null
+  valuation_info?: RawValuationInfo | null
 
-  // Investors
+  // Investors — Harmonic returns objects with {is_lead, investor_name, investor_urn}
   investors?: Array<string | RawInvestor> | null
-  lead_investors?: Array<string | RawInvestor> | null
-  num_investors?: number | null
 
   // Source
   source_url?: string
   url?: string
+  announcement_url?: string
+  additional_sources?: string[]
+}
+
+interface ParsedInvestor {
+  name: string
+  isLead: boolean
 }
 
 interface ParsedRound {
   label: string
   date: string | null
   amount: number | null
+  currency: string | null
   postMoneyValuation: number | null
   preMoneyValuation: number | null
-  investors: string[]
-  leadInvestors: string[]
+  investors: ParsedInvestor[]
   sourceUrl: string | null
 }
 
@@ -76,41 +101,107 @@ function firstNumber(...values: unknown[]): number | null {
   return null
 }
 
-function investorName(inv: unknown): string | null {
-  if (typeof inv === 'string') return inv.trim() || null
+function parseInvestor(inv: unknown): ParsedInvestor | null {
+  if (typeof inv === 'string') {
+    const n = inv.trim()
+    return n ? { name: n, isLead: false } : null
+  }
   if (inv && typeof inv === 'object') {
     const o = inv as RawInvestor
-    if (typeof o.name === 'string' && o.name.trim()) return o.name
+    const name = (typeof o.investor_name === 'string' && o.investor_name.trim())
+      ? o.investor_name.trim()
+      : (typeof o.name === 'string' && o.name.trim())
+        ? o.name.trim()
+        : null
+    if (!name) return null
+    return { name, isLead: o.is_lead === true }
   }
   return null
 }
 
-function parseInvestors(list: unknown): string[] {
+function parseInvestors(list: unknown): ParsedInvestor[] {
   if (!Array.isArray(list)) return []
-  const out: string[] = []
+  const out: ParsedInvestor[] = []
   const seen = new Set<string>()
   for (const item of list) {
-    const n = investorName(item)
-    if (!n) continue
-    if (seen.has(n.toLowerCase())) continue
-    seen.add(n.toLowerCase())
-    out.push(n)
+    const parsed = parseInvestor(item)
+    if (!parsed) continue
+    const key = parsed.name.toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    out.push(parsed)
   }
+  // Lead investors first
+  out.sort((a, b) => Number(b.isLead) - Number(a.isLead))
   return out
+}
+
+/** Prettify Harmonic's funding_round_type enum into a human label. */
+function prettifyRoundLabel(raw: string): string {
+  const map: Record<string, string> = {
+    PRE_SEED: 'Pre-Seed',
+    SEED: 'Seed',
+    SERIES_A: 'Series A',
+    SERIES_A_EXTENSION: 'Series A Extension',
+    SERIES_B: 'Series B',
+    SERIES_B_EXTENSION: 'Series B Extension',
+    SERIES_C: 'Series C',
+    SERIES_C_EXTENSION: 'Series C Extension',
+    SERIES_D: 'Series D',
+    SERIES_E: 'Series E',
+    SERIES_F: 'Series F',
+    SERIES_G: 'Series G',
+    SERIES_H: 'Series H',
+    SERIES_I: 'Series I',
+    SERIES_J: 'Series J',
+    GROWTH: 'Growth',
+    STRATEGIC: 'Strategic',
+    DEBT: 'Debt',
+    CONVERTIBLE_NOTE: 'Convertible Note',
+    POST_IPO_EQUITY: 'Post-IPO Equity',
+    POST_IPO_DEBT: 'Post-IPO Debt',
+    POST_IPO_SECONDARY: 'Post-IPO Secondary',
+    SECONDARY: 'Secondary',
+    PRIVATE_EQUITY: 'Private Equity',
+    CROWDFUNDING: 'Crowdfunding',
+    GRANT: 'Grant',
+    ACCELERATOR_INCUBATOR: 'Accelerator / Incubator',
+    ANGEL: 'Angel',
+    CORPORATE: 'Corporate',
+    EQUITY_CROWDFUNDING: 'Equity Crowdfunding',
+    PRODUCT_CROWDFUNDING: 'Product Crowdfunding',
+    UNDISCLOSED: 'Undisclosed',
+    OTHER: 'Other',
+  }
+  if (map[raw]) return map[raw]
+  // Generic fallback: SERIES_X_Y → Series X Y
+  return raw
+    .toLowerCase()
+    .split('_')
+    .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
+    .join(' ')
+}
+
+/** Treat zero as "unknown" for valuation / amount fields (Harmonic uses 0 as a sentinel). */
+function positiveOrNull(n: number | null): number | null {
+  return n != null && n > 0 ? n : null
 }
 
 function parseRound(r: unknown): ParsedRound | null {
   if (!r || typeof r !== 'object') return null
   const raw = r as RawRound
 
-  const label = firstString(
+  const rawLabel = firstString(
     raw.funding_round_type,
     raw.announced_round_type,
     raw.round_type,
     raw.type,
-  ) ?? 'Funding Round'
+    raw.investment_type,
+  )
+  const label = rawLabel ? prettifyRoundLabel(rawLabel) : 'Funding Round'
 
   const date = firstString(
+    raw.announcement_date,
     raw.announced_date,
     raw.funding_round_date,
     raw.date,
@@ -118,35 +209,48 @@ function parseRound(r: unknown): ParsedRound | null {
   // Normalize to YYYY-MM-DD if it's a full ISO timestamp
   const cleanDate = date ? date.split('T')[0] : null
 
-  const amount = firstNumber(
+  const amount = positiveOrNull(firstNumber(
+    raw.funding_amount,
     raw.money_raised,
     raw.funding_round_total_raised_usd,
-    raw.amount_raised,
+    raw.amount,
+    raw.amount_usd,
+    raw.total_raised,
     raw.total_raised_usd,
-  )
+  ))
 
-  const postMoneyValuation = firstNumber(
+  const currency = firstString(raw.funding_currency)
+
+  // Valuation may live directly on the round or inside valuation_info
+  const vi = (raw.valuation_info && typeof raw.valuation_info === 'object')
+    ? raw.valuation_info
+    : null
+
+  const postMoneyValuation = positiveOrNull(firstNumber(
     raw.post_money_valuation,
     raw.post_money_valuation_usd,
-  )
+    vi?.post_money_valuation,
+    vi?.post_money_valuation_usd,
+    vi?.valuation,
+  ))
 
-  const preMoneyValuation = firstNumber(
+  const preMoneyValuation = positiveOrNull(firstNumber(
     raw.pre_money_valuation,
     raw.pre_money_valuation_usd,
-  )
+    vi?.pre_money_valuation,
+    vi?.pre_money_valuation_usd,
+  ))
 
   const investors = parseInvestors(raw.investors)
-  const leadInvestors = parseInvestors(raw.lead_investors)
 
-  const sourceUrl = firstString(raw.source_url, raw.url)
+  const sourceUrl = firstString(raw.source_url, raw.url, raw.announcement_url)
 
   // Drop rows with nothing useful to show
   if (
     amount == null &&
     cleanDate == null &&
     investors.length === 0 &&
-    leadInvestors.length === 0 &&
-    label === 'Funding Round'
+    rawLabel == null
   ) {
     return null
   }
@@ -155,10 +259,10 @@ function parseRound(r: unknown): ParsedRound | null {
     label,
     date: cleanDate,
     amount,
+    currency,
     postMoneyValuation,
     preMoneyValuation,
     investors,
-    leadInvestors,
     sourceUrl,
   }
 }
@@ -345,7 +449,9 @@ export default function FundingTab({ company }: { company: CompanyWithRelations 
                   <RoundBadge label={r.label} />
                   {r.amount != null && (
                     <p className="text-sm font-bold text-gray-900">
-                      {formatCurrency(r.amount)}
+                      {r.currency && r.currency !== 'USD'
+                        ? `${r.currency} ${r.amount.toLocaleString()}`
+                        : formatCurrency(r.amount)}
                     </p>
                   )}
                   {r.sourceUrl && (
@@ -361,7 +467,7 @@ export default function FundingTab({ company }: { company: CompanyWithRelations 
                   )}
                 </div>
 
-                {/* Valuation line */}
+                {/* Valuation line — only render when at least one positive value */}
                 {(r.postMoneyValuation != null || r.preMoneyValuation != null) && (
                   <p className="text-xs text-gray-500 mb-2">
                     {r.postMoneyValuation != null && (
@@ -374,17 +480,12 @@ export default function FundingTab({ company }: { company: CompanyWithRelations 
                   </p>
                 )}
 
-                {/* Investors */}
-                {(r.leadInvestors.length > 0 || r.investors.length > 0) && (
+                {/* Investors (leads first, de-duped) */}
+                {r.investors.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mt-1">
-                    {r.leadInvestors.map((name) => (
-                      <InvestorChip key={`lead-${name}`} name={name} lead />
+                    {r.investors.map((inv) => (
+                      <InvestorChip key={inv.name} name={inv.name} lead={inv.isLead} />
                     ))}
-                    {r.investors
-                      .filter((n) => !r.leadInvestors.some((l) => l.toLowerCase() === n.toLowerCase()))
-                      .map((name) => (
-                        <InvestorChip key={`co-${name}`} name={name} />
-                      ))}
                   </div>
                 )}
               </div>

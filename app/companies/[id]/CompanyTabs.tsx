@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
   ExternalLink, ChevronRight, ChevronDown, ChevronUp, Plus, Trash2,
-  Loader2, Mail, Pencil, ArrowRight, Briefcase, GraduationCap, Users, X,
+  Loader2, Mail, Pencil, ArrowRight, Users, X,
 } from 'lucide-react'
 import type { CompanyWithRelations, PersonRow, SignalRow, NoteRow, InteractionRow } from '@/lib/queries'
 import {
@@ -92,12 +92,6 @@ function computeCounts(items: string[]): Array<{ name: string; count: number }> 
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-
-function formatDate(d: string | null | undefined) {
-  if (!d) return '—'
-  try { return new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) }
-  catch { return d }
-}
 
 function formatFullDate(d: string | null | undefined) {
   if (!d) return '—'
