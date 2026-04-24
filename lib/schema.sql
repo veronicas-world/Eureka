@@ -217,3 +217,10 @@ alter table companies add column if not exists traction_metrics      jsonb;
 alter table signals drop constraint if exists signals_signal_source_check;
 alter table signals add constraint signals_signal_source_check
   check (signal_source in ('crunchbase','linkedin','techcrunch','manual','harmonic'));
+
+-- Funding rounds detail + last_funding_date as text (ISO date string)
+alter table companies add column if not exists funding_rounds_data jsonb;
+alter table companies add column if not exists last_funding_date   text;
+
+-- Degree from education history
+alter table people add column if not exists degree text;

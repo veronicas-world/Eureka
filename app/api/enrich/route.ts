@@ -27,6 +27,17 @@ function extractDomain(website: string): string {
 
 type HarmonicPerson = Record<string, unknown>
 
+function extractPctChange(bucket: unknown): number | null {
+  if (!bucket || typeof bucket !== 'object') return null
+  const b = bucket as Record<string, unknown>
+  const v = b.percent_change ?? b.pct_change ?? b.value
+  if (typeof v !== 'number') return null
+  // Harmonic returns percent_change as a full percentage (e.g. 15.38 = +15.38%).
+  // Divide by 100 so the stored value is a decimal fraction (0.1538) matching
+  // the rest of the app (formatGrowth multiplies by 100 for display).
+  return v / 100
+}
+
 interface PersonRelationship {
   urn: string
   title: string | null
@@ -61,11 +72,11 @@ function buildPersonRecord(
     email = typeof first === 'string' ? first : ((first as Record<string, unknown>).email as string | undefined) ?? null
   }
 
-  // Extract prior (non-current) company from experience array
+  // ── Prior company ─────────────────────────────────────────────────────────
+  // Only consider past roles (is_current_position === false). Among those, pick
+  // the one with the most recent end_date. Fallback: nothing (don't show current
+  // employer as "prior company").
   const experiences = (person.experience ?? person.experiences ?? []) as Record<string, unknown>[]
-  const priorExp = experiences.find(
-    (e) => e.is_current_position === false || e.is_current === false
-  ) ?? (experiences.length > 1 ? experiences[1] : null)
 
   function extractOrgName(val: unknown): string {
     if (typeof val === 'string') return val.trim()
@@ -76,6 +87,24 @@ function buildPersonRecord(
     return ''
   }
 
+  function parseEndDate(e: Record<string, unknown>): number {
+    const raw = e.end_date ?? e.end_date_v2 ?? e.ended_at
+    if (!raw) return Infinity            // no end date → treat as current, sort last
+    if (typeof raw === 'object') {
+      const d = (raw as Record<string, unknown>).date ?? (raw as Record<string, unknown>).value
+      if (typeof d === 'string') return new Date(d).getTime()
+    }
+    if (typeof raw === 'string') return new Date(raw).getTime()
+    return 0
+  }
+
+  const pastRoles = experiences.filter(
+    (e) => e.is_current_position === false || e.is_current === false
+  )
+  const priorExp = pastRoles.length > 0
+    ? pastRoles.reduce((best, e) => parseEndDate(e) > parseEndDate(best) ? e : best)
+    : null
+
   const prior_company = priorExp
     ? (extractOrgName(priorExp.company_name ?? priorExp.company ?? priorExp.organization_name) || null)
     : null
@@ -83,27 +112,58 @@ function buildPersonRecord(
     ? (typeof priorExp.title === 'string' ? priorExp.title.trim() || null : null)
     : null
 
-  // Extract most recent school from education array
+  // ── Education ─────────────────────────────────────────────────────────────
+  // Prefer entries that have a real degree (standardized_degree != null).
+  // Among candidates, pick the most recent by end_date (null end_date = current).
+  // Fallback: last entry in array.
   const educations = (person.education ?? person.educations ?? []) as Record<string, unknown>[]
+
+  function extractSchoolName(edu: Record<string, unknown>): string {
+    const s = edu.school ?? edu.school_name ?? edu.institution_name
+    if (typeof s === 'string') return s.trim()
+    if (s && typeof s === 'object') {
+      const n = (s as Record<string, unknown>).name
+      if (typeof n === 'string') return n.trim()
+    }
+    return ''
+  }
+
+  function extractDegreeLabel(edu: Record<string, unknown>): string {
+    const d = edu.standardized_degree ?? edu.degree ?? edu.degree_name
+    if (typeof d === 'string') return d.trim()
+    if (d && typeof d === 'object') {
+      const n = (d as Record<string, unknown>).name ?? (d as Record<string, unknown>).value
+      if (typeof n === 'string') return n.trim()
+    }
+    return ''
+  }
+
+  function parseEduEndDate(edu: Record<string, unknown>): number {
+    const raw = edu.end_date ?? edu.end_date_v2 ?? edu.ended_at
+    if (!raw) return Infinity            // ongoing — treat as most recent
+    if (typeof raw === 'object') {
+      const d = (raw as Record<string, unknown>).date ?? (raw as Record<string, unknown>).year
+      if (typeof d === 'string' || typeof d === 'number') return new Date(String(d)).getTime()
+    }
+    if (typeof raw === 'string' || typeof raw === 'number') return new Date(String(raw)).getTime()
+    return 0
+  }
+
   let education: string | null = null
+  let degree:    string | null = null
   try {
-    const firstEdu = educations[0] ?? null
-    if (firstEdu) {
-      const sn = firstEdu.school_name
-      const s  = firstEdu.school
-      const ins = firstEdu.institution_name
-      const raw =
-        typeof sn  === 'string' ? sn  :
-        typeof sn  === 'object' && sn  ? (sn  as Record<string, unknown>).name as string :
-        typeof s   === 'string' ? s   :
-        typeof s   === 'object' && s   ? (s   as Record<string, unknown>).name as string :
-        typeof ins === 'string' ? ins  :
-        typeof ins === 'object' && ins ? (ins as Record<string, unknown>).name as string :
-        ''
-      education = (typeof raw === 'string' ? raw.trim() : '') || null
+    const withDegree    = educations.filter((e) => !!e.standardized_degree)
+    const candidates    = withDegree.length > 0 ? withDegree : educations
+    const chosenEdu     = candidates.length > 0
+      ? candidates.reduce((best, e) => parseEduEndDate(e) > parseEduEndDate(best) ? e : best)
+      : null
+    if (chosenEdu) {
+      education = extractSchoolName(chosenEdu) || null
+      degree    = extractDegreeLabel(chosenEdu) || null
     }
   } catch {
     education = null
+    degree    = null
   }
 
   return {
@@ -119,6 +179,7 @@ function buildPersonRecord(
     prior_company,
     prior_title,
     education,
+    degree,
   }
 }
 
@@ -148,10 +209,8 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({}),
     })
 
-    console.log('[enrich] status:', harmonicRes.status)
-
     const raw = await harmonicRes.json().catch(() => null)
-    console.log('[enrich] raw response:', JSON.stringify(raw, null, 2))
+    console.log('[enrich] status:', harmonicRes.status)
 
     // 404 = not yet in Harmonic — enrichment queued; store the URN if present
     if (harmonicRes.status === 404) {
@@ -218,15 +277,60 @@ export async function POST(req: NextRequest) {
     const linkedin_url = (c.linkedin_url ?? linkedinSocial.url ?? null) as string | null
     const websiteDomain = (websiteObj.domain as string | undefined) ?? null
 
-    // Traction metrics
-    const traction = (c.traction_metrics ?? {}) as Record<string, unknown>
-    const headcount_30d_growth = (traction.headcount_growth_30d ?? traction.headcount_growth_1m ?? null) as number | null
-    const headcount_90d_growth = (traction.headcount_growth_90d ?? traction.headcount_growth_3m ?? null) as number | null
-    const headcount_6m_growth  = (traction.headcount_growth_180d ?? traction.headcount_growth_6m ?? null) as number | null
+    // ── Funding ───────────────────────────────────────────────────────────────
+    const total_funding_usd: number | null =
+      (funding.funding_total        as number | undefined) ??
+      (funding.total_funding_raised as number | undefined) ??
+      null
 
-    // Funding rounds
-    const fundingRoundsArr = (funding.funding_rounds ?? []) as unknown[]
-    const funding_rounds_count = fundingRoundsArr.length > 0 ? fundingRoundsArr.length : null
+    const rawFundingDate =
+      (funding.last_funding_date as string | undefined) ??
+      (funding.last_funding_at   as string | undefined) ??
+      null
+    const last_funding_date = rawFundingDate ? rawFundingDate.split('T')[0] : null
+
+    const last_funding_amount_usd: number | null =
+      (funding.last_funding_total  as number | undefined) ??
+      (funding.last_funding_amount as number | undefined) ??
+      null
+
+    // funding_rounds_count: prefer num_funding_rounds field, fall back to array length
+    const fundingRoundsArr: unknown[] =
+      (Array.isArray(c.funding_rounds)       ? c.funding_rounds       : null) ??
+      (Array.isArray(funding.funding_rounds) ? funding.funding_rounds : null) ??
+      []
+
+    const funding_rounds_count: number | null =
+      typeof funding.num_funding_rounds === 'number' ? funding.num_funding_rounds :
+      fundingRoundsArr.length > 0                    ? fundingRoundsArr.length    :
+      null
+
+    // ── Traction metrics ──────────────────────────────────────────────────────
+    // traction_metrics is an object keyed by metric name, e.g.:
+    //   { headcount: { metrics: [{timestamp, metric_value}], "30d_ago": {percent_change} }, ... }
+    const tractionObj = (!Array.isArray(c.traction_metrics) && c.traction_metrics)
+      ? (c.traction_metrics as Record<string, unknown>)
+      : {}
+
+    const headcountTraction = (tractionObj.headcount ?? {}) as Record<string, unknown>
+
+    const headcount_30d_growth: number | null =
+      extractPctChange(headcountTraction['30d_ago'])  ??
+      extractPctChange(headcountTraction['1m_ago'])   ??
+      extractPctChange((tractionObj as Record<string, unknown>)['headcount_growth_30d']) ??
+      null
+
+    const headcount_90d_growth: number | null =
+      extractPctChange(headcountTraction['90d_ago'])  ??
+      extractPctChange(headcountTraction['3m_ago'])   ??
+      extractPctChange((tractionObj as Record<string, unknown>)['headcount_growth_90d']) ??
+      null
+
+    const headcount_6m_growth: number | null =
+      extractPctChange(headcountTraction['180d_ago']) ??
+      extractPctChange(headcountTraction['6m_ago'])   ??
+      extractPctChange((tractionObj as Record<string, unknown>)['headcount_growth_180d']) ??
+      null
 
     const enriched: Record<string, unknown> = {
       name:                    (c.name as string | undefined) ?? null,
@@ -239,12 +343,13 @@ export async function POST(req: NextRequest) {
       customer_type:           (c.customer_type as string | undefined) ?? null,
       country:                 (location.country as string | undefined) ?? null,
       city:                    (location.city as string | undefined) ?? null,
-      total_funding_usd:       (funding.total_funding_raised as number | undefined) ?? null,
+      total_funding_usd,
       last_funding_round:      (funding.last_funding_type as string | undefined) ?? null,
-      last_funding_amount_usd: (funding.last_funding_total as number | undefined) ?? null,
-      last_funding_date:       (funding.last_funding_at as string | undefined) ?? null,
+      last_funding_amount_usd,
+      last_funding_date,
       latest_valuation_usd:    (funding.last_funding_post_money_valuation as number | undefined) ?? null,
       funding_rounds_count,
+      funding_rounds_data:     fundingRoundsArr.length > 0 ? fundingRoundsArr : null,
       stage:                   mapStage(c.stage as string | undefined),
       investors:               investorList.length > 0 ? investorList : null,
       tags:                    tags.length > 0 ? tags : null,
@@ -263,6 +368,14 @@ export async function POST(req: NextRequest) {
       Object.entries(enriched).filter(([, v]) => v !== null && v !== undefined)
     )
 
+    console.log('[enrich] funding fields being written:', {
+      total_funding_usd:       enriched.total_funding_usd,
+      funding_rounds_count:    enriched.funding_rounds_count,
+      latest_valuation_usd:    enriched.latest_valuation_usd,
+      last_funding_round:      enriched.last_funding_round,
+      last_funding_amount_usd: enriched.last_funding_amount_usd,
+      last_funding_date:       enriched.last_funding_date,
+    })
     console.log('[enrich] update payload:', JSON.stringify(updatePayload, null, 2))
 
     const supabase = await createServerSupabaseClient()
@@ -432,6 +545,12 @@ export async function POST(req: NextRequest) {
     const fieldsUpdated = Object.keys(updatePayload)
     const signalsCreated = signalInserts.length
 
+    console.log('=== RESPONSE KEYS ===', Object.keys(c))
+    console.log('=== FUNDING DATA ===', JSON.stringify(c.funding, null, 2))
+    console.log('=== TRACTION SAMPLE ===', JSON.stringify(
+      Array.isArray(c.traction_metrics) ? (c.traction_metrics as unknown[]).slice(0, 2) : c.traction_metrics,
+      null, 2
+    ))
     console.log(`[enrich] done — fields: ${fieldsUpdated.length}, people added: ${peopleAdded}, signals: ${signalsCreated}`)
 
     return NextResponse.json({

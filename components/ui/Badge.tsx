@@ -33,7 +33,8 @@ export function Badge({ children, variant = 'default', className }: BadgeProps) 
   )
 }
 
-export function SignalBadge({ score }: { score: number }) {
+export function SignalBadge({ score }: { score: number | null | undefined }) {
+  if (score == null) return <span className="text-gray-400">—</span>
   const variant = score >= 70 ? 'green' : score >= 40 ? 'yellow' : 'red'
   return (
     <Badge variant={variant} className="tabular-nums font-semibold">

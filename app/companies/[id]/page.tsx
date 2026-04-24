@@ -5,17 +5,19 @@ import { getCompanyById } from '@/lib/queries'
 import CompanyPage from './CompanyTabs'
 
 interface Props {
-  params: { id: string }
-  searchParams: { tab?: string }
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ tab?: string }>
 }
 
 const VALID_TABS = ['overview', 'team', 'funding', 'traction', 'signals', 'notes']
 
 export default async function CompanyDetailPage({ params, searchParams }: Props) {
-  const company = await getCompanyById(params.id)
+  const { id } = await params
+  const { tab } = await searchParams
+  const company = await getCompanyById(id)
   if (!company) notFound()
 
-  const activeTab = VALID_TABS.includes(searchParams.tab ?? '') ? searchParams.tab! : 'overview'
+  const activeTab = VALID_TABS.includes(tab ?? '') ? tab! : 'overview'
 
   return (
     <div className="px-8 py-6 max-w-6xl">

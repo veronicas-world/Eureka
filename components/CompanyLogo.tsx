@@ -28,10 +28,6 @@ function guessDomain(name: string): string {
   return `${slug}.com`
 }
 
-function firstWordDomain(name: string): string {
-  const first = name.toLowerCase().split(/[\s&,.()/]/)[0].replace(/[^a-z0-9]/g, '')
-  return `${first}.com`
-}
 
 function buildSources(name: string, logoUrl?: string | null, domain?: string | null): string[] {
   const sources: string[] = []
@@ -39,25 +35,18 @@ function buildSources(name: string, logoUrl?: string | null, domain?: string | n
   // 1. Direct logo URL from Harmonic
   if (logoUrl) sources.push(logoUrl)
 
-  // Determine the best domain to use
   const resolvedDomain = domain ? resolveDomain(domain) : null
   const guessedDomain  = guessDomain(name)
-  const firstDomain    = firstWordDomain(name)
 
-  const domains = [
-    ...(resolvedDomain ? [resolvedDomain] : []),
-    ...(guessedDomain !== resolvedDomain ? [guessedDomain] : []),
-    ...(firstDomain !== guessedDomain && firstDomain !== resolvedDomain ? [firstDomain] : []),
-  ]
-
-  // 2. Logo.dev for each candidate domain
-  for (const d of domains) {
-    sources.push(`https://img.logo.dev/${d}?token=${LOGO_DEV_TOKEN}`)
+  // 2. Logo.dev only when we have a confirmed real domain (from the website field).
+  //    Guessed domains based on company name are too unreliable and return wrong logos.
+  if (resolvedDomain) {
+    sources.push(`https://img.logo.dev/${resolvedDomain}?token=${LOGO_DEV_TOKEN}`)
   }
 
-  // 3. Google favicons as last resort (use best domain only)
-  const bestDomain = resolvedDomain ?? guessedDomain
-  sources.push(`https://www.google.com/s2/favicons?domain=${bestDomain}&sz=64`)
+  // 3. Google favicon — use confirmed domain if available, else fall back to name guess
+  const faviconDomain = resolvedDomain ?? guessedDomain
+  sources.push(`https://www.google.com/s2/favicons?domain=${faviconDomain}&sz=64`)
 
   return sources
 }

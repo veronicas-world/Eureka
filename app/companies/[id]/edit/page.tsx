@@ -3,11 +3,12 @@ import { getCompanyById } from '@/lib/queries'
 import EditCompanyClient from './EditCompanyClient'
 
 interface Props {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export default async function EditCompanyPage({ params }: Props) {
-  const company = await getCompanyById(params.id)
+  const { id } = await params
+  const company = await getCompanyById(id)
   if (!company) notFound()
   return <EditCompanyClient company={company} />
 }

@@ -37,6 +37,7 @@ export type CompanyRow = {
   harmonic_urn: string | null
   last_enriched_at: string | null
   traction_metrics: unknown
+  funding_rounds_data: unknown
   created_at: string
   updated_at: string
 }
@@ -77,6 +78,7 @@ export type PersonRow = {
   prior_company: string | null
   prior_title: string | null
   education: string | null
+  degree: string | null
   created_at: string
 }
 

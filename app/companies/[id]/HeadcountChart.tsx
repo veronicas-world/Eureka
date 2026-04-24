@@ -12,10 +12,13 @@ import {
 } from 'recharts'
 
 interface Props {
-  currentHeadcount: number
-  growth30d: number | null
-  growth90d: number | null
-  growth6m:  number | null
+  // Real time-series data (preferred when available)
+  series?: Array<{ label: string; headcount: number; ts: string }>
+  // Back-calculated from growth percentages (fallback)
+  currentHeadcount?: number
+  growth30d?: number | null
+  growth90d?: number | null
+  growth6m?:  number | null
   lastFundingDate:   string | null
   lastFundingRound:  string | null
   lastFundingAmount: number | null
@@ -76,6 +79,7 @@ function CustomTooltip({ active, payload, label }: any) {
 }
 
 export default function HeadcountChart({
+  series,
   currentHeadcount,
   growth30d,
   growth90d,
@@ -84,10 +88,14 @@ export default function HeadcountChart({
   lastFundingRound,
   lastFundingAmount,
 }: Props) {
-  const data = buildChartData(currentHeadcount, growth30d, growth90d, growth6m)
+  const data: DataPoint[] = series && series.length >= 2
+    ? series.map(({ label, headcount }) => ({ label, headcount }))
+    : buildChartData(currentHeadcount ?? 0, growth30d ?? null, growth90d ?? null, growth6m ?? null)
 
-  // Only render if we have at least 2 data points (i.e., some growth data)
+  // Only render if we have at least 2 data points
   if (data.length < 2) return null
+
+  const currentVal = series ? series[series.length - 1]?.headcount : currentHeadcount
 
   // Show funding marker if date is within our chart window
   const showFundingMarker = !!lastFundingDate && (growth30d != null || growth90d != null)
@@ -112,7 +120,7 @@ export default function HeadcountChart({
         <div>
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Headcount</p>
           <p className="text-2xl font-bold text-gray-900 mt-0.5">
-            {currentHeadcount.toLocaleString()}
+            {currentVal?.toLocaleString() ?? '—'}
           </p>
         </div>
         <div className="flex items-center gap-3 text-right">

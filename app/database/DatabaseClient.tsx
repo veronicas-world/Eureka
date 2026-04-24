@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Search, Plus, ExternalLink, Pencil } from 'lucide-react'
 import type { CompanyRow } from '@/lib/queries'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, formatFundingRound } from '@/lib/utils'
 import { SignalBadge, StatusBadge, StageBadge } from '@/components/ui/Badge'
 import EnrichButton from '@/components/EnrichButton'
 import CompanyLogo from '@/components/CompanyLogo'
@@ -161,17 +161,15 @@ export default function DatabaseClient({ companies, sectors }: Props) {
                   </td>
                   <td className="px-4 py-3 text-gray-600">{company.country ?? '—'}</td>
                   <td className="px-4 py-3">
-                    {company.signal_score != null
-                      ? <SignalBadge score={company.signal_score} />
-                      : <span className="text-gray-400">—</span>}
+                    <SignalBadge score={company.signal_score} />
                   </td>
                   <td className="px-4 py-3">
                     {company.status ? <StatusBadge status={company.status} /> : <span className="text-gray-400">—</span>}
                   </td>
                   <td className="px-4 py-3 text-gray-600 tabular-nums">
-                    {formatCurrency(company.total_funding_usd ?? undefined)}
+                    {formatCurrency(company.total_funding_usd)}
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{company.last_funding_round ?? '—'}</td>
+                  <td className="px-4 py-3 text-gray-600">{formatFundingRound(company.last_funding_round)}</td>
                   <td className="px-4 py-3 text-gray-500">{company.founded_year ?? '—'}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-0.5">
