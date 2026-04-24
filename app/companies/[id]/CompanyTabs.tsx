@@ -7,7 +7,7 @@ import {
   ExternalLink, ChevronRight, ChevronDown, ChevronUp, Plus, Trash2,
   Loader2, Mail, Pencil, ArrowRight, Users, X,
 } from 'lucide-react'
-import type { CompanyWithRelations, PersonRow, SignalRow, NoteRow, InteractionRow } from '@/lib/queries'
+import type { CompanyWithRelations, CompanyRow, PersonRow, SignalRow, NoteRow, InteractionRow } from '@/lib/queries'
 import {
   addNote, deleteNote,
   addPerson, deletePerson,
@@ -18,6 +18,7 @@ import { formatCurrency, formatGrowth, formatDegree } from '@/lib/utils'
 import HeadcountChart from './HeadcountChart'
 import TractionTab from './TractionTab'
 import FundingTab from './FundingTab'
+import OverviewChart, { type HeadcountPoint, type FundingEvent } from './OverviewChart'
 import EnrichButton from '@/components/EnrichButton'
 import DeleteCompanyButton from './DeleteCompanyButton'
 import CompanyLogo from '@/components/CompanyLogo'
@@ -916,7 +917,115 @@ function TeamTab({ company }: { company: CompanyWithRelations }) {
 
 // ── Overview tab ──────────────────────────────────────────────────────────────
 
-function OverviewTab({ company }: { company: CompanyWithRelations }) {
+// ── Overview helpers: parse headcount series + funding events ───────────────
+
+interface RawMetricPoint { timestamp?: string; date?: string; metric_value?: number; value?: number }
+interface RawHeadcount { metrics?: RawMetricPoint[] }
+interface RawTraction { headcount?: RawHeadcount }
+interface RawRoundForChart {
+  announcement_date?: string
+  announced_date?: string
+  funding_round_date?: string
+  date?: string
+  funding_round_type?: string
+  funding_type?: string
+  round_type?: string
+  funding_amount?: number
+  money_raised?: number
+  funding_amount_usd?: number
+  amount?: number
+}
+
+function parseHeadcountSeries(traction: unknown): HeadcountPoint[] {
+  if (!traction || typeof traction !== 'object') return []
+  const t = traction as RawTraction
+  const metrics = t.headcount?.metrics
+  if (!Array.isArray(metrics)) return []
+  const points: HeadcountPoint[] = []
+  for (const m of metrics) {
+    const ts = m.timestamp ?? m.date
+    const v  = m.metric_value ?? m.value
+    if (typeof ts !== 'string' || typeof v !== 'number') continue
+    const d = new Date(ts)
+    if (isNaN(d.getTime())) continue
+    points.push({
+      ts,
+      value: v,
+      label: d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
+    })
+  }
+  points.sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime())
+  return points
+}
+
+function parseFundingEvents(rounds: unknown): FundingEvent[] {
+  if (!Array.isArray(rounds)) return []
+  const out: FundingEvent[] = []
+  for (const raw of rounds as RawRoundForChart[]) {
+    const date = raw.announcement_date ?? raw.announced_date
+              ?? raw.funding_round_date ?? raw.date
+    if (typeof date !== 'string') continue
+    const amount = raw.funding_amount ?? raw.money_raised
+                ?? raw.funding_amount_usd ?? raw.amount ?? null
+    const roundType = raw.funding_round_type ?? raw.funding_type ?? raw.round_type ?? null
+    out.push({
+      date,
+      roundType,
+      amountUsd: typeof amount === 'number' && amount > 0 ? amount : null,
+    })
+  }
+  return out
+}
+
+function RelatedCompanyCard({ c }: { c: CompanyRow }) {
+  return (
+    <Link
+      href={`/companies/${c.id}`}
+      className="group block rounded-lg border border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm transition-all p-3"
+    >
+      <div className="flex items-start gap-3">
+        <CompanyLogo
+          name={c.name}
+          logoUrl={c.logo_url}
+          domain={c.website}
+          size={36}
+          shape="square"
+          className="border border-gray-100 shrink-0"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <p className="text-sm font-semibold text-gray-900 truncate group-hover:text-gray-700">
+              {c.name}
+            </p>
+            {c.stage && <StageBadge stage={c.stage} />}
+          </div>
+          <p className="text-xs text-gray-500 truncate mt-0.5">
+            {c.subsector ?? c.sector ?? '—'}
+          </p>
+          <div className="flex items-center gap-3 mt-1 text-[11px] text-gray-400">
+            {c.employee_count != null && (
+              <span>{c.employee_count.toLocaleString()} ppl</span>
+            )}
+            {c.total_funding_usd != null && c.total_funding_usd > 0 && (
+              <span>{formatCurrency(c.total_funding_usd)}</span>
+            )}
+            {c.signal_score != null && (
+              <span>Score {c.signal_score}</span>
+            )}
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+function OverviewTab({
+  company,
+  relatedCompanies,
+}: {
+  company: CompanyWithRelations
+  relatedCompanies: CompanyRow[]
+}) {
   const [expanded, setExpanded] = useState(false)
   const description = company.description ?? company.short_description
   const TRUNCATE = 300
@@ -926,6 +1035,15 @@ function OverviewTab({ company }: { company: CompanyWithRelations }) {
     company.total_funding_usd && company.employee_count
       ? Math.round(company.total_funding_usd / company.employee_count)
       : null
+
+  const headcountSeries = useMemo(
+    () => parseHeadcountSeries(company.traction_metrics),
+    [company.traction_metrics],
+  )
+  const fundingEvents = useMemo(
+    () => parseFundingEvents(company.funding_rounds_data),
+    [company.funding_rounds_data],
+  )
 
   const recentSignals = (company.signals ?? []).slice(0, 3)
   const recentNotes   = (company.notes   ?? []).slice(0, 2)
@@ -945,6 +1063,13 @@ function OverviewTab({ company }: { company: CompanyWithRelations }) {
         <StatCell label="Latest Valuation"  value={formatCurrency(company.latest_valuation_usd ?? undefined)} />
         <StatCell label="Funding / Employee" value={fundingPerEmployee ? formatCurrency(fundingPerEmployee) : '—'} />
       </div>
+
+      {/* Headcount + Funding combo chart */}
+      {headcountSeries.length >= 2 && (
+        <div className="px-6 py-5">
+          <OverviewChart series={headcountSeries} events={fundingEvents} />
+        </div>
+      )}
 
       {/* Description */}
       {description && (
@@ -978,6 +1103,21 @@ function OverviewTab({ company }: { company: CompanyWithRelations }) {
           <SectionLabel>Investors</SectionLabel>
           <div className="flex flex-wrap gap-1.5">
             {company.investors.map(inv => <Badge key={inv} variant="gray">{inv}</Badge>)}
+          </div>
+        </div>
+      )}
+
+      {/* Related Companies */}
+      {relatedCompanies.length > 0 && (
+        <div className="px-6 py-5">
+          <div className="flex items-center justify-between mb-3">
+            <SectionLabel>Related Companies</SectionLabel>
+            <span className="text-[11px] text-gray-400">
+              Same {company.subsector ? 'subsector' : 'sector'}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {relatedCompanies.map(c => <RelatedCompanyCard key={c.id} c={c} />)}
           </div>
         </div>
       )}
@@ -1327,9 +1467,10 @@ function StatCell({ label, value, sub, subColor }: {
 interface Props {
   company: CompanyWithRelations
   activeTab: string
+  relatedCompanies?: CompanyRow[]
 }
 
-export default function CompanyPage({ company, activeTab }: Props) {
+export default function CompanyPage({ company, activeTab, relatedCompanies = [] }: Props) {
   const websiteHref = company.website
     ? (company.website.startsWith('http') ? company.website : `https://${company.website}`)
     : null
@@ -1428,7 +1569,7 @@ export default function CompanyPage({ company, activeTab }: Props) {
 
       {/* ── Tab content ─────────────────────────────────────────────────── */}
       <div className="bg-white rounded-b-xl border border-t-0 border-gray-200 shadow-sm min-h-[480px]">
-        {activeTab === 'overview'  && <OverviewTab  company={company} />}
+        {activeTab === 'overview'  && <OverviewTab  company={company} relatedCompanies={relatedCompanies} />}
         {activeTab === 'team'      && <TeamTab      company={company} />}
         {activeTab === 'funding'   && <FundingTab   company={company} />}
         {activeTab === 'traction'  && <TractionTab  company={company} />}

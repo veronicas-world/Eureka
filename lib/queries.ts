@@ -147,6 +147,72 @@ export async function getCompanyById(id: string): Promise<CompanyWithRelations |
   return data as CompanyWithRelations
 }
 
+/**
+ * Find companies related to `companyId` by sector (and ideally subsector).
+ * Strategy:
+ *   1. If subsector is set, prefer same-subsector matches.
+ *   2. Fill remaining slots with same-sector matches.
+ *   3. Return at most `limit` companies, excluding the source company itself.
+ */
+export async function getRelatedCompanies(
+  companyId: string,
+  sector: string | null,
+  subsector: string | null,
+  limit = 6,
+): Promise<CompanyRow[]> {
+  if (!sector && !subsector) return []
+  const supabase = await createServerSupabaseClient()
+
+  const seen = new Set<string>()
+  const out: CompanyRow[] = []
+
+  // Pass 1: subsector match
+  if (subsector) {
+    const { data, error } = await supabase
+      .from('companies')
+      .select('*')
+      .eq('subsector', subsector)
+      .neq('id', companyId)
+      .order('signal_score', { ascending: false, nullsFirst: false })
+      .limit(limit)
+    if (error) {
+      console.error('[getRelatedCompanies subsector]', error.message)
+    } else if (data) {
+      for (const row of data) {
+        if (!seen.has(row.id)) {
+          seen.add(row.id)
+          out.push(row)
+          if (out.length >= limit) return out
+        }
+      }
+    }
+  }
+
+  // Pass 2: sector match (minus anything already included)
+  if (sector && out.length < limit) {
+    const { data, error } = await supabase
+      .from('companies')
+      .select('*')
+      .eq('sector', sector)
+      .neq('id', companyId)
+      .order('signal_score', { ascending: false, nullsFirst: false })
+      .limit(limit * 2) // pull extra so we have room after de-duping
+    if (error) {
+      console.error('[getRelatedCompanies sector]', error.message)
+    } else if (data) {
+      for (const row of data) {
+        if (!seen.has(row.id)) {
+          seen.add(row.id)
+          out.push(row)
+          if (out.length >= limit) break
+        }
+      }
+    }
+  }
+
+  return out
+}
+
 export async function getSignals(): Promise<SignalRow[]> {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
