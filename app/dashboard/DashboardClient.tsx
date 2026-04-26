@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import {
   BarChart,
   Bar,
@@ -16,6 +17,7 @@ import type { CompanyRow, SignalRow } from '@/lib/queries'
 import { Badge, SignalBadge, StageBadge, StatusBadge } from '@/components/ui/Badge'
 import CompanyLogo from '@/components/CompanyLogo'
 import { formatCurrency } from '@/lib/utils'
+import { STAGE_OPTIONS } from '@/lib/stages'
 
 interface Props {
   companies: CompanyRow[]
@@ -32,13 +34,8 @@ const STATUSES: { id: string; label: string; color: string }[] = [
   { id: 'portfolio',      label: 'Portfolio',      color: '#34d399' }, // emerald-400
 ]
 
-const STAGES: { id: string; label: string; color: string }[] = [
-  { id: 'pre-seed', label: 'Pre-Seed', color: '#a78bfa' },
-  { id: 'seed',     label: 'Seed',     color: '#60a5fa' },
-  { id: 'series-a', label: 'Series A', color: '#34d399' },
-  { id: 'series-b', label: 'Series B', color: '#fbbf24' },
-  { id: 'growth',   label: 'Growth',   color: '#f97316' },
-]
+const STAGES: { id: string; label: string; color: string }[] =
+  STAGE_OPTIONS.map((s) => ({ id: s.value, label: s.label, color: s.color }))
 
 // ── Small building blocks ────────────────────────────────────────────────────
 
@@ -110,21 +107,36 @@ function BarTooltip({ active, payload }: any) {
   )
 }
 
+type BarDatum = { id: string; label: string; value: number; color: string }
+
 function BarPanel({
   title,
   data,
   href,
+  filterKey,
+  height,
 }: {
   title: string
-  data: { label: string; value: number; color: string }[]
+  data: BarDatum[]
   href?: string
+  filterKey?: 'stage' | 'status'
+  height?: number
 }) {
+  const router = useRouter()
   const hasData = data.some((d) => d.value > 0)
+
+  const handleBarClick = filterKey
+    ? (entry: BarDatum) => {
+        if (entry.value === 0) return
+        router.push(`/database?${filterKey}=${encodeURIComponent(entry.id)}`)
+      }
+    : undefined
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
       <SectionHeader title={title} href={href} />
       {hasData ? (
-        <ResponsiveContainer width="100%" height={180}>
+        <ResponsiveContainer width="100%" height={height ?? 180}>
           <BarChart
             data={data}
             layout="vertical"
@@ -138,10 +150,17 @@ function BarPanel({
               tick={{ fontSize: 12, fill: '#6b7280' }}
               axisLine={false}
               tickLine={false}
-              width={110}
+              width={130}
+              interval={0}
             />
             <Tooltip content={<BarTooltip />} cursor={{ fill: '#f9fafb' }} />
-            <Bar dataKey="value" radius={[0, 4, 4, 0]} maxBarSize={22}>
+            <Bar
+              dataKey="value"
+              radius={[0, 4, 4, 0]}
+              maxBarSize={22}
+              onClick={handleBarClick as ((data: unknown) => void) | undefined}
+              style={handleBarClick ? { cursor: 'pointer' } : undefined}
+            >
               {data.map((d, i) => (
                 <Cell key={i} fill={d.color} />
               ))}
@@ -291,17 +310,23 @@ export default function DashboardClient({ companies, signals }: Props) {
     }).length
   }, [companies])
 
-  const statusData = STATUSES.map((s) => ({
+  // Statuses are a small fixed set, show them all so empty buckets are visible.
+  const statusData: BarDatum[] = STATUSES.map((s) => ({
+    id:    s.id,
     label: s.label,
     value: counts.byStatus[s.id] ?? 0,
     color: s.color,
   }))
 
-  const stageData = STAGES.map((s) => ({
+  // Stages: only show stages that have at least one company so the chart
+  // doesn't look sparse with 15 mostly-empty rows. Companies whose stage isn't
+  // in the canonical STAGES list (e.g. legacy/null) are silently ignored.
+  const stageData: BarDatum[] = STAGES.map((s) => ({
+    id:    s.id,
     label: s.label,
     value: counts.byStage[s.id] ?? 0,
     color: s.color,
-  }))
+  })).filter((d) => d.value > 0)
 
   const topBySignal = useMemo(() => {
     return [...companies]
@@ -340,8 +365,17 @@ export default function DashboardClient({ companies, signals }: Props) {
 
       {/* Pipeline + Stage */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        <BarPanel title="Pipeline by Status" data={statusData} href="/pipeline" />
-        <BarPanel title="Companies by Stage" data={stageData} />
+        <BarPanel
+          title="Pipeline by Status"
+          data={statusData}
+          filterKey="status"
+        />
+        <BarPanel
+          title="Companies by Stage"
+          data={stageData}
+          filterKey="stage"
+          height={Math.max(180, stageData.length * 32)}
+        />
       </div>
 
       {/* Signal leaderboard + Recent signals */}

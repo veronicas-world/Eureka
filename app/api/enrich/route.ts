@@ -5,14 +5,35 @@ const HARMONIC_API_KEY = process.env.HARMONIC_API_KEY!
 
 function mapStage(stage: string | null | undefined): string | null {
   if (!stage) return null
-  const s = stage.toUpperCase()
-  if (s === 'PRE_SEED')                                            return 'pre-seed'
+  // Normalize: uppercase, replace dashes with underscores, strip suffixes like
+  // "_EXTENDED", "_EXTENSION", "_PLUS" so SERIES_B_EXTENSION → SERIES_B.
+  const s = stage
+    .toUpperCase()
+    .replace(/-/g, '_')
+    .replace(/_(EXTENDED|EXTENSION|PLUS|II|III)$/i, '')
+
+  if (s === 'BOOTSTRAPPED')                                        return 'bootstrapped'
+  if (s === 'PRE_SEED' || s === 'PRESEED')                         return 'pre-seed'
   if (s === 'SEED')                                                return 'seed'
   if (s === 'SERIES_A')                                            return 'series-a'
   if (s === 'SERIES_B')                                            return 'series-b'
-  if (s.startsWith('SERIES_C') || s.startsWith('SERIES_D') ||
-      s.startsWith('SERIES_E') || s === 'GROWTH' ||
-      s === 'LATE_STAGE' || s === 'PRIVATE_EQUITY')               return 'growth'
+  if (s === 'SERIES_C')                                            return 'series-c'
+  if (s === 'SERIES_D')                                            return 'series-d'
+  if (s === 'SERIES_E')                                            return 'series-e'
+  if (s === 'SERIES_F')                                            return 'series-f'
+  if (s === 'SERIES_G')                                            return 'series-g'
+  if (s === 'SERIES_H')                                            return 'series-h'
+  if (s === 'GROWTH' || s === 'LATE_STAGE')                        return 'growth'
+  if (s === 'PRIVATE_EQUITY' || s === 'PRIVATE')                   return 'private'
+  if (s === 'IPO' || s === 'PUBLIC' || s === 'POST_IPO')           return 'ipo'
+  if (
+    s === 'ACQUIRED' ||
+    s === 'ACQUISITION' ||
+    s === 'MERGED' ||
+    s === 'MERGER' ||
+    s === 'M_AND_A' ||
+    s === 'MERGER_OR_ACQUISITION'
+  )                                                                return 'acquired'
   return null
 }
 
@@ -484,18 +505,12 @@ export async function POST(req: NextRequest) {
     console.log(`[enrich] people processed: ${roleMap.size}, added: ${peopleAdded}`)
 
     // ── Signals ───────────────────────────────────────────────────────────────
+    // Note: we deliberately do NOT emit a generic "enriched via Harmonic" signal
+    // — it's noise. Only emit signals that represent actual events (funding,
+    // hiring spike, highlights).
     const companyName = (updatePayload.name as string | undefined) ?? 'Company'
     const today = new Date().toISOString().split('T')[0]
     const signalInserts: object[] = []
-
-    signalInserts.push({
-      company_id:    companyId,
-      signal_type:   'news',
-      signal_source: 'harmonic',
-      headline:      `${companyName} enriched via Harmonic`,
-      strength:      'strong',
-      signal_date:   today,
-    })
 
     if (updatePayload.total_funding_usd || updatePayload.last_funding_round) {
       signalInserts.push({
