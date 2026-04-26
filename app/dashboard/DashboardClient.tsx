@@ -363,8 +363,11 @@ export default function DashboardClient({ companies, signals }: Props) {
         />
       </div>
 
-      {/* Pipeline + Stage */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      {/* Pipeline + Stage. items-start so each panel sizes to its own content
+          (otherwise grid stretches the shorter card to match the taller one,
+          which leaves the Stage panel with empty space when only 1-2 stages
+          have data). */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6 items-start">
         <BarPanel
           title="Pipeline by Status"
           data={statusData}
@@ -374,7 +377,10 @@ export default function DashboardClient({ companies, signals }: Props) {
           title="Companies by Stage"
           data={stageData}
           filterKey="stage"
-          height={Math.max(180, stageData.length * 32)}
+          // Stage list is dynamic (only non-empty stages render). Height
+          // should scale with row count, not be locked to 180px — otherwise a
+          // single stage produces a tall box with one tiny floating bar.
+          height={Math.max(stageData.length * 44, 64)}
         />
       </div>
 
