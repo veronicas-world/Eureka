@@ -39,6 +39,13 @@ export type CompanyRow = {
   traction_metrics: unknown
   funding_rounds_data: unknown
   display_order: number | null
+  // Pigi Tier 0 — cached Harmonic payloads
+  harmonic_raw: unknown
+  similar_urns: unknown
+  highlights: unknown
+  // Pigi v1 — new typed columns
+  web_traffic: number | null
+  tags_v2: unknown
   created_at: string
   updated_at: string
 }
@@ -53,6 +60,8 @@ export type SignalRow = {
   signal_date: string | null
   strength: string | null
   url: string | null
+  // Pigi Tier 0 — raw Harmonic event object for ranking recon
+  harmonic_raw: unknown
   created_at: string
   companies?: { name: string } | null
 }
@@ -80,6 +89,9 @@ export type PersonRow = {
   prior_title: string | null
   education: string | null
   degree: string | null
+  // Pigi Tier 0 — cached Harmonic payloads
+  harmonic_raw: unknown
+  experience: unknown
   created_at: string
 }
 
@@ -257,4 +269,50 @@ export async function getAllSignals(): Promise<SignalRow[]> {
     return []
   }
   return data ?? []
+}
+
+// ── Pigi v1 row types ────────────────────────────────────────────────────────
+
+export type CompanySnapshotRow = {
+  id:           string
+  company_id:   string
+  harmonic_urn: string | null
+  captured_at:  string
+  harmonic_raw: unknown
+}
+
+export type SavedSearchRow = {
+  id:                   string
+  harmonic_id:          string | null
+  name:                 string | null
+  query:                unknown
+  filters:              unknown
+  column_view_settings: unknown
+  source:               'eureka' | 'harmonic' | null
+  created_at:           string
+  last_viewed_at:       string | null
+}
+
+export type ListFolderRow = {
+  id:         string
+  name:       string
+  parent_id:  string | null
+  created_at: string
+}
+
+export type ListRow = {
+  id:             string
+  folder_id:      string | null
+  name:           string
+  description:    string | null
+  color:          string | null
+  created_at:     string
+  last_viewed_at: string | null
+}
+
+export type ListCompanyRow = {
+  list_id:    string
+  company_id: string
+  added_at:   string
+  position:   number | null
 }

@@ -185,54 +185,52 @@ export default function DatabaseClient({ companies, sectors }: Props) {
       </div>
 
       {/* Table */}
-      <div className="rounded-md overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--hairline)' }}>
-        <table className="w-full" style={{ fontSize: 12.5, borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid var(--hairline-2)' }}>
-              <Th className="w-8" />
-              <Th>company</Th>
-              <Th>sector</Th>
-              <Th>stage</Th>
-              <Th>country</Th>
-              <Th>signal</Th>
-              <Th>status</Th>
-              <Th>total funding</Th>
-              <Th>last round</Th>
-              <Th>founded</Th>
-              <Th className="w-10" />
-            </tr>
-          </thead>
-          {filtered.length === 0 ? (
-            <tbody>
-              <tr>
-                <td colSpan={11} className="py-16 text-center" style={{ color: 'var(--ink-faint)', fontSize: 12.5 }}>
-                  <span className="twinkle">⋆</span>{' '}
-                  {localCompanies.length === 0
-                    ? 'no companies in your database yet.'
-                    : 'no companies match these filters.'}
-                </td>
-              </tr>
-            </tbody>
-          ) : (
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={filtered.map((c) => c.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                <tbody>
-                  {filtered.map((company) => (
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={filtered.map((c) => c.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="rounded-md overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--hairline)' }}>
+            <table className="w-full" style={{ fontSize: 12.5, borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--hairline-2)' }}>
+                  <Th className="w-8" />
+                  <Th>company</Th>
+                  <Th>sector</Th>
+                  <Th>stage</Th>
+                  <Th>country</Th>
+                  <Th>signal</Th>
+                  <Th>status</Th>
+                  <Th>total funding</Th>
+                  <Th>last round</Th>
+                  <Th>founded</Th>
+                  <Th className="w-10" />
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={11} className="py-16 text-center" style={{ color: 'var(--ink-faint)', fontSize: 12.5 }}>
+                      <span className="twinkle">⋆</span>{' '}
+                      {localCompanies.length === 0
+                        ? 'no companies in your database yet.'
+                        : 'no companies match these filters.'}
+                    </td>
+                  </tr>
+                ) : (
+                  filtered.map((company) => (
                     <SortableCompanyRow key={company.id} company={company} />
-                  ))}
-                </tbody>
-              </SortableContext>
-            </DndContext>
-          )}
-        </table>
-      </div>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </SortableContext>
+      </DndContext>
     </div>
   )
 }

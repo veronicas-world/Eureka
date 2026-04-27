@@ -266,3 +266,131 @@ alter table companies add constraint companies_stage_check
 -- ------------------------------------------------------------
 alter table companies add column if not exists display_order double precision;
 create index if not exists idx_companies_display_order on companies (display_order nulls last);
+
+
+-- ------------------------------------------------------------
+-- Pigi Tier 0 — raw JSON columns for bulk Harmonic caching
+-- (migration 002)
+-- ------------------------------------------------------------
+
+-- Full Harmonic company response (source of truth for re-derivation)
+alter table companies add column if not exists harmonic_raw  jsonb;
+-- Cache of /companies/<urn>/similar — Harmonic's curated similarity graph
+alter table companies add column if not exists similar_urns  jsonb;
+-- Affinity / highlight badges: YC W24, Forbes 30u30, Sequoia Scout, etc.
+alter table companies add column if not exists highlights    jsonb;
+
+-- Full Harmonic person response
+alter table people add column if not exists harmonic_raw  jsonb;
+-- Complete experience[] history (Pigi lifts the current_position-only cap)
+alter table people add column if not exists experience    jsonb;
+
+-- Raw Harmonic signal / event object — needed to reverse-engineer ranking
+alter table signals add column if not exists harmonic_raw  jsonb;
+
+-- GIN indexes so jsonb path queries stay fast once Pigi fills these
+create index if not exists idx_companies_harmonic_raw on companies using gin (harmonic_raw);
+create index if not exists idx_companies_highlights   on companies using gin (highlights);
+create index if not exists idx_people_harmonic_raw    on people    using gin (harmonic_raw);
+create index if not exists idx_people_experience      on people    using gin (experience);
+
+
+-- ============================================================
+-- Migration 003 — Pigi v1 (2026-04-27)
+-- ============================================================
+
+create table if not exists company_snapshots (
+  id           uuid        primary key default gen_random_uuid(),
+  company_id   uuid        not null references companies (id) on delete cascade,
+  harmonic_urn text,
+  captured_at  timestamptz not null default now(),
+  harmonic_raw jsonb       not null,
+  unique (company_id, captured_at)
+);
+create index if not exists idx_company_snapshots_company_id  on company_snapshots (company_id);
+create index if not exists idx_company_snapshots_captured_at on company_snapshots (captured_at desc);
+create index if not exists idx_company_snapshots_raw         on company_snapshots using gin (harmonic_raw);
+alter table company_snapshots enable row level security;
+do $$ begin
+  create policy "company_snapshots: authenticated full access"
+    on company_snapshots for all to authenticated using (true) with check (true);
+exception when duplicate_object then null;
+end $$;
+
+create table if not exists list_folders (
+  id         uuid        primary key default gen_random_uuid(),
+  name       text        not null,
+  parent_id  uuid        references list_folders (id) on delete cascade,
+  created_at timestamptz not null default now()
+);
+create index if not exists idx_list_folders_parent_id on list_folders (parent_id);
+alter table list_folders enable row level security;
+do $$ begin
+  create policy "list_folders: authenticated full access"
+    on list_folders for all to authenticated using (true) with check (true);
+exception when duplicate_object then null;
+end $$;
+
+create table if not exists lists (
+  id             uuid        primary key default gen_random_uuid(),
+  folder_id      uuid        references list_folders (id) on delete set null,
+  name           text        not null,
+  description    text,
+  color          text,
+  created_at     timestamptz not null default now(),
+  last_viewed_at timestamptz
+);
+create index if not exists idx_lists_folder_id on lists (folder_id);
+alter table lists enable row level security;
+do $$ begin
+  create policy "lists: authenticated full access"
+    on lists for all to authenticated using (true) with check (true);
+exception when duplicate_object then null;
+end $$;
+
+create table if not exists list_companies (
+  list_id    uuid             not null references lists     (id) on delete cascade,
+  company_id uuid             not null references companies (id) on delete cascade,
+  added_at   timestamptz      not null default now(),
+  position   double precision,
+  primary key (list_id, company_id)
+);
+create index if not exists idx_list_companies_company_id on list_companies (company_id);
+alter table list_companies enable row level security;
+do $$ begin
+  create policy "list_companies: authenticated full access"
+    on list_companies for all to authenticated using (true) with check (true);
+exception when duplicate_object then null;
+end $$;
+
+create table if not exists saved_searches (
+  id                   uuid        primary key default gen_random_uuid(),
+  harmonic_id          text        unique,
+  name                 text,
+  query                jsonb,
+  filters              jsonb,
+  column_view_settings jsonb,
+  source               text        check (source in ('eureka', 'harmonic')),
+  created_at           timestamptz not null default now(),
+  last_viewed_at       timestamptz
+);
+alter table saved_searches enable row level security;
+do $$ begin
+  create policy "saved_searches: authenticated full access"
+    on saved_searches for all to authenticated using (true) with check (true);
+exception when duplicate_object then null;
+end $$;
+
+alter table companies drop constraint if exists companies_stage_check;
+alter table companies add constraint companies_stage_check
+  check (stage in (
+    'bootstrapped', 'pre-seed', 'seed',
+    'series-a', 'series-b', 'series-c', 'series-d',
+    'series-e', 'series-f', 'series-g', 'series-h',
+    'growth', 'private', 'ipo', 'acquired',
+    'venture-unknown'
+  ));
+
+alter table companies add column if not exists web_traffic bigint;
+alter table companies add column if not exists tags_v2     jsonb;
+create index if not exists idx_companies_tags_v2 on companies using gin (tags_v2);
