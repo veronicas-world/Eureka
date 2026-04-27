@@ -350,7 +350,7 @@ function extractCurrentPeople(raw: Raw): Map<string, PersonEntry> {
   const out = new Map<string, PersonEntry>()
   for (const rel of arr(raw.people)) {
     const relObj = r(rel)
-    if (!relObj.is_current_position) continue
+    if (relObj.is_current_position === false) continue
     const personRaw = r(relObj.person)
     const urn = str(relObj.entity_urn) ?? str(personRaw.entity_urn)
     if (!urn) continue
