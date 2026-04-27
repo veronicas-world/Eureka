@@ -7,10 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "pigi:recon": "tsx scripts/pigi/recon.ts",
-    "pigi": "node --experimental-strip-types --no-warnings scripts/pigi/run.ts",
+    "pigi:extract": "node --experimental-strip-types --no-warnings scripts/pigi/run.ts",
+    "pigi:derive": "node --experimental-strip-types --no-warnings scripts/pigi/derive-signals.ts",
+    "pigi": "npm run pigi:extract && npm run pigi:derive",
     "pigi:watch": "node --experimental-strip-types --no-warnings scripts/pigi/run.ts --watch",
-    "pigi:import-saved-searches": "node --experimental-strip-types --no-warnings scripts/pigi/import-saved-searches.ts"
+    "pigi:import-saved-searches": "node --experimental-strip-types --no-warnings scripts/pigi/import-saved-searches.ts",
+    "pigi:install-schedule": "bash scripts/pigi/install-schedule.sh"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

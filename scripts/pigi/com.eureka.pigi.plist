@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.eureka.pigi</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-l</string>
+    <string>-c</string>
+    <string>cd __PROJECT_DIR__ &amp;&amp; npm run pigi</string>
+  </array>
+
+  <!-- Run daily at 06:00 local time -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>6</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>__PROJECT_DIR__/scripts/pigi/log/launchd-out.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>__PROJECT_DIR__/scripts/pigi/log/launchd-err.log</string>
+
+  <!-- Do not run immediately on load — wait for the next scheduled time -->
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>

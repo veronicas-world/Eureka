@@ -394,3 +394,23 @@ alter table companies add constraint companies_stage_check
 alter table companies add column if not exists web_traffic bigint;
 alter table companies add column if not exists tags_v2     jsonb;
 create index if not exists idx_companies_tags_v2 on companies using gin (tags_v2);
+
+
+-- ============================================================
+-- Migration 004 — Pigi v2 (2026-04-27)
+-- ============================================================
+
+-- Expand signal_type to include Pigi-derived signal categories.
+alter table signals drop constraint if exists signals_signal_type_check;
+alter table signals add constraint signals_signal_type_check
+  check (signal_type in (
+    'funding', 'hiring_spike', 'news', 'founder_move', 'product_launch',
+    'team_growth', 'web_traffic', 'tag', 'highlight', 'team_change', 'valuation'
+  ));
+
+-- Expand signal_source to include 'pigi_diff'.
+alter table signals drop constraint if exists signals_signal_source_check;
+alter table signals add constraint signals_signal_source_check
+  check (signal_source in (
+    'crunchbase', 'linkedin', 'techcrunch', 'manual', 'harmonic', 'pigi_diff'
+  ));

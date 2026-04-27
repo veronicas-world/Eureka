@@ -282,6 +282,21 @@ export async function addSignal(
   if (error) throw new Error(error.message)
 }
 
+// ── Update company status (drag-and-drop on /pipeline) ───────────────────────
+
+export async function updateCompanyStatus(
+  companyId: string,
+  status: string,
+): Promise<void> {
+  const supabase = await createServerSupabaseClient()
+  const { error } = await supabase
+    .from('companies')
+    .update({ status })
+    .eq('id', companyId)
+  if (error) throw new Error(error.message)
+  revalidatePath('/pipeline')
+}
+
 // ── Reorder companies (drag-and-drop on /database) ───────────────────────────
 //
 // Takes a list of company IDs in their NEW global order. Assigns each row a
