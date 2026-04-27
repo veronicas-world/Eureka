@@ -1,6 +1,7 @@
 'use server'
 
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 type ActionState = { error: string } | null
@@ -279,4 +280,31 @@ export async function addSignal(
     .from('signals')
     .insert({ company_id: companyId, ...data })
   if (error) throw new Error(error.message)
+}
+
+// ── Reorder companies (drag-and-drop on /database) ───────────────────────────
+//
+// Takes a list of company IDs in their NEW global order. Assigns each row a
+// fresh display_order (10, 20, 30, …). Using gaps of 10 leaves room for future
+// inserts/optimization; we re-flatten everything on each drag for simplicity.
+export async function reorderCompanies(orderedIds: string[]): Promise<void> {
+  if (!Array.isArray(orderedIds) || orderedIds.length === 0) return
+
+  const supabase = await createServerSupabaseClient()
+
+  // Run the updates in parallel — Supabase doesn't support a true bulk
+  // "case when id = ... then N" UPDATE through PostgREST, but for typical
+  // VC-pipeline sizes (tens to a few hundred companies) parallel single-row
+  // UPDATEs are perfectly fine.
+  await Promise.all(
+    orderedIds.map((id, index) =>
+      supabase
+        .from('companies')
+        .update({ display_order: (index + 1) * 10 })
+        .eq('id', id)
+    )
+  )
+
+  revalidatePath('/database')
+  revalidatePath('/dashboard')
 }

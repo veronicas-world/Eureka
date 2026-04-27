@@ -224,3 +224,45 @@ alter table companies add column if not exists last_funding_date   text;
 
 -- Degree from education history
 alter table people add column if not exists degree text;
+
+-- ------------------------------------------------------------
+-- Cleanup: delete legacy "enriched via Harmonic" noise signals
+-- (new enrichment runs no longer emit these)
+-- ------------------------------------------------------------
+delete from signals where headline ilike '%enriched via Harmonic%';
+
+-- ------------------------------------------------------------
+-- Stage constraint expansion (migration)
+--   Full list: bootstrapped, pre-seed, seed, series-a..series-h,
+--              growth, private, ipo, acquired
+--   Note: legacy 'public' values are renamed to 'ipo' first so the
+--   new CHECK constraint won't fail on existing rows.
+-- ------------------------------------------------------------
+alter table companies drop constraint if exists companies_stage_check;
+update companies set stage = 'ipo' where stage = 'public';
+alter table companies add constraint companies_stage_check
+  check (stage in (
+    'bootstrapped',
+    'pre-seed',
+    'seed',
+    'series-a',
+    'series-b',
+    'series-c',
+    'series-d',
+    'series-e',
+    'series-f',
+    'series-g',
+    'series-h',
+    'growth',
+    'private',
+    'ipo',
+    'acquired'
+  ));
+
+-- ------------------------------------------------------------
+-- display_order: user-curated row position on the /database page
+-- (drag-and-drop). Lower = higher in the list. NULLS LAST so new
+-- rows appear at the end until they're explicitly placed.
+-- ------------------------------------------------------------
+alter table companies add column if not exists display_order double precision;
+create index if not exists idx_companies_display_order on companies (display_order nulls last);

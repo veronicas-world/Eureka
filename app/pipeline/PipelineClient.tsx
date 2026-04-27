@@ -29,11 +29,16 @@ interface Props {
 
 export default function PipelineClient({ companies }: Props) {
   return (
-    <div className="px-8 py-8 min-h-screen">
-      <div className="mb-6">
-        <h1 className="text-lg font-semibold text-gray-900">Pipeline</h1>
-        <p className="text-sm text-gray-500 mt-0.5">Track companies through your deal workflow</p>
-      </div>
+    <div style={{ padding: '36px 44px 80px' }} className="min-h-screen">
+      <header className="mb-7">
+        <h1 className="flex items-baseline gap-2.5 m-0" style={{ fontSize: 22, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.005em' }}>
+          <span>pipeline</span>
+          <span style={{ color: 'var(--ink-faint)', fontSize: 14, fontWeight: 400 }}>⋆˚‧₊☁︎ ˙‧₊✩₊‧｡☾⋆⁺</span>
+        </h1>
+        <p className="mt-1.5" style={{ fontSize: 12, color: 'var(--ink-soft)', letterSpacing: '0.02em' }}>
+          where every conversation stands tonight
+        </p>
+      </header>
 
       <div className="flex gap-3 items-start overflow-x-auto pb-6">
         {columns.map((col) => {

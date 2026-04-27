@@ -14,3 +14,56 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ── Eureka twilight palette ─────────────────────────────────────────────── */
+:root {
+  --paper:        #F4F2EB;
+  --paper-soft:   #ECE9DF;
+  --surface:      #FBFAF5;
+  --surface-2:    #F9F6EE;
+  --ink:          #1B2240;
+  --ink-2:        #303759;
+  --ink-soft:     #4A5374;
+  --ink-faint:    #8A92AB;
+  --ink-ghost:    #B8BDD0;
+  --hairline:     rgba(27, 34, 64, 0.10);
+  --hairline-2:   rgba(27, 34, 64, 0.18);
+  --accent:       #5B73B8;
+  --accent-soft:  #C9D2E8;
+  --accent-bg:    #E6EBF5;
+  --accent-deep:  #3F548F;
+  --lavender:     #9C90BF;
+  --warm:         #B89B6E;
+  --muted-red:    #9B5567;
+  --portfolio:    #6F8E83;
+  --nav:          #161B33;
+  --nav-2:        #1E2547;
+  --nav-ink:      #D6DBEC;
+  --nav-ink-soft: #8E96B5;
+  --nav-hairline: rgba(255, 255, 255, 0.06);
+  --nav-active:   rgba(255, 255, 255, 0.07);
+}
+
+/* Body uses the warm paper background */
+body {
+  background: var(--paper);
+}
+
+/* Dotted rule utility */
+.dotted-rule {
+  border-bottom: 1px dotted var(--hairline-2);
+}
+
+/* Scrollbars */
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb { background: var(--hairline-2); border-radius: 3px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* Twinkle animation for empty states */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 1; }
+}
+.twinkle     { animation: twinkle 2.6s ease-in-out infinite; display: inline-block; }
+.twinkle-d2  { animation: twinkle 2.6s ease-in-out 0.6s infinite; }
+.twinkle-d3  { animation: twinkle 2.6s ease-in-out 1.2s infinite; }

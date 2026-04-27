@@ -1,26 +1,41 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useTransition } from 'react'
 import Link from 'next/link'
-import { Search, Plus, ExternalLink, Pencil } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Search, Plus, ExternalLink, Pencil, GripVertical } from 'lucide-react'
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  SortableContext,
+  useSortable,
+  arrayMove,
+  verticalListSortingStrategy,
+  sortableKeyboardCoordinates,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
 import type { CompanyRow } from '@/lib/queries'
 import { formatCurrency, formatFundingRound } from '@/lib/utils'
 import { SignalBadge, StatusBadge, StageBadge } from '@/components/ui/Badge'
 import EnrichButton from '@/components/EnrichButton'
 import CompanyLogo from '@/components/CompanyLogo'
+import { STAGE_VALUES, STAGE_LABELS } from '@/lib/stages'
+import { reorderCompanies } from '@/app/actions/companies'
 
 const ALL = 'All'
 
-const stageOptions = [ALL, 'pre-seed', 'seed', 'series-a', 'series-b', 'growth']
-const statusOptions = [ALL, 'tracking', 'outreached', 'passed', 'portfolio']
+const stageOptions = [ALL, ...STAGE_VALUES]
+const statusOptions = [ALL, 'tracking', 'outreached', 'meeting booked', 'passed', 'portfolio']
 
-const stageLabels: Record<string, string> = {
-  'pre-seed': 'Pre-Seed',
-  'seed':     'Seed',
-  'series-a': 'Series A',
-  'series-b': 'Series B',
-  'growth':   'Growth',
-}
+const stageLabels: Record<string, string> = STAGE_LABELS
 
 interface Props {
   companies: CompanyRow[]
@@ -28,15 +43,41 @@ interface Props {
 }
 
 export default function DatabaseClient({ companies, sectors }: Props) {
-  const [query, setQuery]   = useState('')
-  const [stage, setStage]   = useState(ALL)
-  const [sector, setSector] = useState(ALL)
-  const [status, setStatus] = useState(ALL)
+  const searchParams = useSearchParams()
+  const initialStage  = searchParams.get('stage')  ?? ALL
+  const initialStatus = searchParams.get('status') ?? ALL
+  const initialSector = searchParams.get('sector') ?? ALL
+  const initialQuery  = searchParams.get('q')      ?? ''
+
+  const [query, setQuery]   = useState(initialQuery)
+  const [stage, setStage]   = useState(initialStage)
+  const [sector, setSector] = useState(initialSector)
+  const [status, setStatus] = useState(initialStatus)
+
+  // Local copy of companies so we can optimistically reflect drag-and-drop
+  // ordering before the server round-trip finishes.
+  const [localCompanies, setLocalCompanies] = useState<CompanyRow[]>(companies)
+  const [, startTransition] = useTransition()
+
+  // Re-sync from props whenever the server fetch returns a new list (e.g.
+  // after a revalidatePath following a reorder).
+  useEffect(() => {
+    setLocalCompanies(companies)
+  }, [companies])
+
+  // Sync filters when the URL changes (e.g. user clicks a dashboard bar
+  // while already on /database).
+  useEffect(() => {
+    setStage(searchParams.get('stage')   ?? ALL)
+    setStatus(searchParams.get('status') ?? ALL)
+    setSector(searchParams.get('sector') ?? ALL)
+    setQuery(searchParams.get('q')       ?? '')
+  }, [searchParams])
 
   const sectorOptions = [ALL, ...sectors]
 
   const filtered = useMemo(() => {
-    return companies.filter((c) => {
+    return localCompanies.filter((c) => {
       const q = query.toLowerCase()
       if (q && !c.name.toLowerCase().includes(q) && !(c.sector ?? '').toLowerCase().includes(q)) return false
       if (stage  !== ALL && c.stage  !== stage)  return false
@@ -44,35 +85,82 @@ export default function DatabaseClient({ companies, sectors }: Props) {
       if (status !== ALL && c.status !== status) return false
       return true
     })
-  }, [companies, query, stage, sector, status])
+  }, [localCompanies, query, stage, sector, status])
+
+  // ── Drag-and-drop ────────────────────────────────────────────────────────
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      // 6px so a click on a row link still works without triggering a drag
+      activationConstraint: { distance: 6 },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    // Map the visible drag (active → over) onto the FULL companies list so
+    // the saved order stays globally consistent even when filters are on.
+    const fromGlobal = localCompanies.findIndex((c) => c.id === active.id)
+    const toGlobal   = localCompanies.findIndex((c) => c.id === over.id)
+    if (fromGlobal === -1 || toGlobal === -1) return
+
+    const reordered = arrayMove(localCompanies, fromGlobal, toGlobal)
+    setLocalCompanies(reordered) // optimistic
+
+    const orderedIds = reordered.map((c) => c.id)
+    startTransition(() => {
+      reorderCompanies(orderedIds).catch((err) => {
+        console.error('[reorderCompanies]', err)
+        // On failure, fall back to the server's view of the world.
+        setLocalCompanies(companies)
+      })
+    })
+  }
 
   return (
-    <div className="px-8 py-8">
+    <div style={{ padding: '36px 44px 80px', maxWidth: 1180 }}>
       {/* Page header */}
-      <div className="flex items-center justify-between mb-6">
+      <header className="flex items-end justify-between gap-5 mb-6">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900">Companies</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{filtered.length} companies</p>
+          <h1 className="flex items-baseline gap-2.5 m-0" style={{ fontSize: 22, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.005em' }}>
+            <span>database</span>
+            <span style={{ color: 'var(--ink-faint)', fontSize: 14, fontWeight: 400 }}>˚‧₊☁︎ ˙‧₊✩₊‧｡☾⋆⁺</span>
+          </h1>
+          <p className="mt-1.5" style={{ fontSize: 12, color: 'var(--ink-soft)', letterSpacing: '0.02em' }}>
+            {filtered.length} {filtered.length === 1 ? 'company' : 'companies'}
+            <span style={{ marginLeft: 8, color: 'var(--ink-faint)' }}>· drag rows to reorder</span>
+          </p>
         </div>
         <Link
           href="/companies/new"
-          className="inline-flex items-center gap-1.5 h-8 px-3 text-sm font-medium rounded-md bg-gray-900 text-white hover:bg-gray-800 active:bg-gray-950 transition-colors shadow-sm"
+          className="inline-flex items-center gap-1.5 h-8 px-3 rounded transition-colors"
+          style={{ fontSize: 12, fontWeight: 500, background: 'var(--ink)', color: 'var(--paper)', border: '1px solid var(--ink)' }}
         >
-          <Plus size={14} />
-          Add Company
+          <Plus size={12} />
+          add company
         </Link>
-      </div>
+      </header>
 
       {/* Filters */}
       <div className="flex items-center gap-2 mb-5">
         <div className="relative flex-1 max-w-xs">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--ink-faint)' }} />
           <input
             type="text"
-            placeholder="Search companies..."
+            placeholder="search companies…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full h-8 pl-8 pr-3 text-sm bg-white border border-gray-200 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+            className="w-full h-8 pl-8 pr-3 rounded outline-none transition-shadow"
+            style={{
+              fontSize: 12.5,
+              background: 'var(--surface)',
+              border: '1px solid var(--hairline-2)',
+              color: 'var(--ink)',
+            }}
           />
         </div>
 
@@ -80,121 +168,196 @@ export default function DatabaseClient({ companies, sectors }: Props) {
           value={stage}
           onChange={setStage}
           options={stageOptions}
-          formatter={(v) => v === ALL ? 'All Stages' : stageLabels[v] ?? v}
+          formatter={(v) => v === ALL ? 'all stages' : (stageLabels[v] ?? v).toLowerCase()}
         />
         <FilterSelect
           value={sector}
           onChange={setSector}
           options={sectorOptions}
-          formatter={(v) => v === ALL ? 'All Sectors' : v}
+          formatter={(v) => v === ALL ? 'all sectors' : v.toLowerCase()}
         />
         <FilterSelect
           value={status}
           onChange={setStatus}
           options={statusOptions}
-          formatter={(v) => v === ALL ? 'All Statuses' : capitalize(v)}
+          formatter={(v) => v === ALL ? 'all statuses' : v}
         />
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-        <table className="w-full text-sm">
+      <div className="rounded-md overflow-hidden" style={{ background: 'var(--surface)', border: '1px solid var(--hairline)' }}>
+        <table className="w-full" style={{ fontSize: 12.5, borderCollapse: 'collapse' }}>
           <thead>
-            <tr className="border-b border-gray-100 bg-gray-50/70">
-              <Th>Company</Th>
-              <Th>Sector</Th>
-              <Th>Stage</Th>
-              <Th>Country</Th>
-              <Th>Signal</Th>
-              <Th>Status</Th>
-              <Th>Total Funding</Th>
-              <Th>Last Round</Th>
-              <Th>Founded</Th>
+            <tr style={{ borderBottom: '1px solid var(--hairline-2)' }}>
+              <Th className="w-8" />
+              <Th>company</Th>
+              <Th>sector</Th>
+              <Th>stage</Th>
+              <Th>country</Th>
+              <Th>signal</Th>
+              <Th>status</Th>
+              <Th>total funding</Th>
+              <Th>last round</Th>
+              <Th>founded</Th>
               <Th className="w-10" />
             </tr>
           </thead>
-          <tbody>
-            {filtered.length === 0 ? (
+          {filtered.length === 0 ? (
+            <tbody>
               <tr>
-                <td colSpan={10} className="py-16 text-center text-sm text-gray-400">
-                  {companies.length === 0
-                    ? 'No companies in your database yet.'
-                    : 'No companies match your filters.'}
+                <td colSpan={11} className="py-16 text-center" style={{ color: 'var(--ink-faint)', fontSize: 12.5 }}>
+                  <span className="twinkle">⋆</span>{' '}
+                  {localCompanies.length === 0
+                    ? 'no companies in your database yet.'
+                    : 'no companies match these filters.'}
                 </td>
               </tr>
-            ) : (
-              filtered.map((company) => (
-                <tr
-                  key={company.id}
-                  className="border-b border-gray-100 last:border-0 hover:bg-gray-50/60 transition-colors group"
-                >
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <CompanyLogo
-                        name={company.name}
-                        logoUrl={company.logo_url}
-                        domain={company.website}
-                        size={24}
-                        shape="circle"
-                      />
-                      <Link
-                        href={`/companies/${company.id}`}
-                        className="font-medium text-gray-900 hover:text-gray-600 transition-colors"
-                      >
-                        {company.name}
-                      </Link>
-                      {company.website && (
-                        <a
-                          href={company.website.startsWith('http') ? company.website : `https://${company.website}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-gray-600"
-                        >
-                          <ExternalLink size={12} />
-                        </a>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">{company.sector ?? '—'}</td>
-                  <td className="px-4 py-3">
-                    {company.stage ? <StageBadge stage={company.stage} /> : <span className="text-gray-400">—</span>}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">{company.country ?? '—'}</td>
-                  <td className="px-4 py-3">
-                    <SignalBadge score={company.signal_score} />
-                  </td>
-                  <td className="px-4 py-3">
-                    {company.status ? <StatusBadge status={company.status} /> : <span className="text-gray-400">—</span>}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600 tabular-nums">
-                    {formatCurrency(company.total_funding_usd)}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">{formatFundingRound(company.last_funding_round)}</td>
-                  <td className="px-4 py-3 text-gray-500">{company.founded_year ?? '—'}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-0.5">
-                      <EnrichButton companyId={company.id} website={company.website} variant="icon" />
-                      <Link
-                        href={`/companies/${company.id}/edit`}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 inline-flex"
-                      >
-                        <Pencil size={14} />
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
+            </tbody>
+          ) : (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={filtered.map((c) => c.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <tbody>
+                  {filtered.map((company) => (
+                    <SortableCompanyRow key={company.id} company={company} />
+                  ))}
+                </tbody>
+              </SortableContext>
+            </DndContext>
+          )}
         </table>
       </div>
     </div>
   )
 }
 
+// --------------------------------------------------------------
+// Sortable row
+// --------------------------------------------------------------
+
+function SortableCompanyRow({ company }: { company: CompanyRow }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: company.id })
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : 1,
+    background: isDragging ? 'var(--paper-soft)' : undefined,
+  }
+
+  return (
+    <tr
+      ref={setNodeRef}
+      style={style}
+      className="group transition-colors"
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(91,115,184,0.04)' }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = '' }}
+    >
+      {/* Drag handle */}
+      <td style={{ padding: '12px 8px 12px 12px', width: 32, borderBottom: '1px dotted var(--hairline)' }}>
+        <button
+          type="button"
+          aria-label="Drag to reorder"
+          className="cursor-grab active:cursor-grabbing touch-none"
+          style={{ color: 'var(--ink-ghost)', display: 'inline-flex' }}
+          {...attributes}
+          {...listeners}
+        >
+          <GripVertical size={14} />
+        </button>
+      </td>
+
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', verticalAlign: 'middle' }}>
+        <div className="flex items-center gap-2">
+          <CompanyLogo
+            name={company.name}
+            logoUrl={company.logo_url}
+            domain={company.website}
+            size={24}
+            shape="square"
+          />
+          <Link
+            href={`/companies/${company.id}`}
+            style={{ fontWeight: 600, color: 'var(--ink)' }}
+          >
+            {company.name}
+          </Link>
+          {company.website && (
+            <a
+              href={company.website.startsWith('http') ? company.website : `https://${company.website}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ color: 'var(--ink-faint)' }}
+            >
+              <ExternalLink size={11} />
+            </a>
+          )}
+        </div>
+      </td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', color: 'var(--ink-soft)', verticalAlign: 'middle' }}>{company.sector ?? '—'}</td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', verticalAlign: 'middle' }}>
+        {company.stage ? <StageBadge stage={company.stage} /> : <span style={{ color: 'var(--ink-ghost)' }}>—</span>}
+      </td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', color: 'var(--ink-soft)', verticalAlign: 'middle' }}>{company.country ?? '—'}</td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', verticalAlign: 'middle' }}>
+        <SignalBadge score={company.signal_score} />
+      </td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', verticalAlign: 'middle' }}>
+        {company.status ? <StatusBadge status={company.status} /> : <span style={{ color: 'var(--ink-ghost)' }}>—</span>}
+      </td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', color: 'var(--ink-soft)', textAlign: 'right', fontVariantNumeric: 'tabular-nums', verticalAlign: 'middle' }}>
+        {formatCurrency(company.total_funding_usd)}
+      </td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', color: 'var(--ink-soft)', verticalAlign: 'middle' }}>{formatFundingRound(company.last_funding_round)}</td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', color: 'var(--ink-faint)', verticalAlign: 'middle' }}>{company.founded_year ?? '—'}</td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', verticalAlign: 'middle' }}>
+        <div className="flex items-center gap-0.5">
+          <EnrichButton companyId={company.id} website={company.website} variant="icon" />
+          <Link
+            href={`/companies/${company.id}/edit`}
+            className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded inline-flex"
+            style={{ color: 'var(--ink-faint)' }}
+          >
+            <Pencil size={13} />
+          </Link>
+        </div>
+      </td>
+    </tr>
+  )
+}
+
+// --------------------------------------------------------------
+// Helpers
+// --------------------------------------------------------------
+
 function Th({ children, className = '' }: { children?: React.ReactNode; className?: string }) {
   return (
-    <th className={`px-4 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wide ${className}`}>
+    <th
+      className={className}
+      style={{
+        padding: '10px 12px',
+        textAlign: 'left',
+        fontSize: 9.5,
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        letterSpacing: '0.18em',
+        color: 'var(--ink-faint)',
+      }}
+    >
       {children}
     </th>
   )
@@ -215,9 +378,13 @@ function FilterSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="h-8 pl-3 pr-7 text-sm bg-white border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent appearance-none cursor-pointer"
+      className="h-8 pl-3 pr-7 rounded appearance-none cursor-pointer outline-none transition-shadow"
       style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+        fontSize: 12,
+        background: 'var(--surface)',
+        border: '1px solid var(--hairline-2)',
+        color: 'var(--ink)',
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A92AB' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'right 8px center',
       }}

@@ -61,12 +61,17 @@ export default function SignalsFeed({ signals }: Props) {
   }, [signals, query, typeFilter, strength])
 
   return (
-    <div className="px-8 py-8 max-w-4xl">
+    <div style={{ padding: '36px 44px 80px', maxWidth: 880 }}>
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-lg font-semibold text-gray-900">Signal Feed</h1>
-        <p className="text-sm text-gray-500 mt-0.5">Latest signals across all tracked companies</p>
-      </div>
+      <header className="mb-7">
+        <h1 className="flex items-baseline gap-2.5 m-0" style={{ fontSize: 22, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.005em' }}>
+          <span>signals</span>
+          <span style={{ color: 'var(--ink-faint)', fontSize: 14, fontWeight: 400 }}>⋆˚‧₊☁︎ ˙‧₊✩₊‧｡☾⋆⁺</span>
+        </h1>
+        <p className="mt-1.5" style={{ fontSize: 12, color: 'var(--ink-soft)', letterSpacing: '0.02em' }}>
+          activity across tracked companies
+        </p>
+      </header>
 
       {/* Filter bar */}
       <div className="flex items-center gap-2 mb-6">

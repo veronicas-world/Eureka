@@ -377,20 +377,35 @@ export default function SearchClient() {
     (filters.maxFoundedYear ? 1 : 0)
 
   return (
-    <div className="px-8 py-8 max-w-5xl">
+    <div style={{ padding: '36px 44px 80px', maxWidth: 1100 }}>
+      {/* Page header */}
+      <header className="mb-7">
+        <h1 className="flex items-baseline gap-2.5 m-0" style={{ fontSize: 22, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.005em' }}>
+          <span>search</span>
+          <span style={{ color: 'var(--ink-faint)', fontSize: 14, fontWeight: 400 }}>⋆˚‧₊☁︎ ˙‧₊✩₊‧｡☾⋆⁺</span>
+        </h1>
+      </header>
+
       {/* Search input */}
       <div className="relative mb-3">
         <Search
-          size={18}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+          size={16}
+          className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+          style={{ color: 'var(--ink-faint)' }}
         />
         <input
           ref={inputRef}
           type="text"
           value={query}
           onChange={handleQueryChange}
-          placeholder="Search companies, people, and signals..."
-          className="w-full h-12 pl-11 pr-12 text-base bg-white border border-gray-200 rounded-xl shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition"
+          placeholder="search companies, people, signals…"
+          className="w-full h-12 pl-11 pr-12 rounded-md outline-none transition-shadow"
+          style={{
+            fontSize: 14,
+            background: 'var(--surface)',
+            border: '1px solid var(--hairline-2)',
+            color: 'var(--ink)',
+          }}
         />
         {status === 'loading' && (
           <div className="absolute right-4 top-1/2 -translate-y-1/2">
