@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import {
   LineChart,
   Line,
@@ -9,7 +10,6 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   ReferenceLine,
-  Label as RLabel,
 } from 'recharts'
 import { formatCurrency, formatFundingRound } from '@/lib/utils'
 
@@ -23,6 +23,7 @@ export interface FundingEvent {
   date: string               // ISO date
   roundType: string | null   // raw Harmonic enum (e.g. "SERIES_A")
   amountUsd: number | null
+  leadInvestor?: string | null
 }
 
 interface Props {
@@ -46,7 +47,6 @@ function formatTick(tsMs: number): string {
   return new Date(tsMs).toLocaleDateString('en-US', { month: 'short', year: '2-digit' })
 }
 
-// Generate roughly-even tick positions (6 ticks) across the time domain.
 function generateTicks(firstMs: number, lastMs: number, count = 6): number[] {
   if (lastMs <= firstMs || count < 2) return [firstMs, lastMs]
   const ticks: number[] = []
@@ -55,6 +55,24 @@ function generateTicks(firstMs: number, lastMs: number, count = 6): number[] {
     ticks.push(Math.round(firstMs + step * i))
   }
   return ticks
+}
+
+function abbrevRound(roundType: string | null): string {
+  if (!roundType) return '?'
+  const t = roundType.toUpperCase().replace(/\s+/g, '_')
+  const seriesMatch = t.match(/SERIES_?([A-H])/)
+  if (seriesMatch) return `S ${seriesMatch[1]}`
+  if (t.includes('PRE_SEED') || t.includes('PRESEED')) return 'Pre'
+  if (t === 'SEED') return 'Seed'
+  if (t === 'GROWTH' || t.includes('LATE_STAGE')) return 'Grw'
+  if (t.includes('PRIVATE_EQUITY')) return 'PE'
+  if (t === 'ANGEL') return 'Ang'
+  if (t.includes('CONVERTIBLE')) return 'Cvt'
+  if (t.includes('STRATEGIC')) return 'Strat'
+  if (t.includes('SECONDARY')) return 'Sec'
+  if (t.includes('DEBT')) return 'Dbt'
+  if (t === 'IPO' || t.includes('POST_IPO')) return 'IPO'
+  return t.slice(0, 3)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,6 +88,129 @@ function CustomTooltip({ active, payload }: any) {
       <p className="font-semibold text-gray-900">
         {payload[0].value.toLocaleString()} employees
       </p>
+    </div>
+  )
+}
+
+type PlottableEvent = FundingEvent & { tsMs: number }
+
+function FundingTimeline({
+  plottable,
+  firstMs,
+  lastMs,
+}: {
+  plottable: PlottableEvent[]
+  firstMs: number
+  lastMs: number
+}) {
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
+
+  if (plottable.length === 0) return null
+
+  const isScrollable = plottable.length > 15
+  const timeSpan = lastMs - firstMs
+
+  return (
+    // margin-left matches YAxis width (40px); margin-right matches chart right margin (20px)
+    <div
+      style={{
+        marginLeft: 40,
+        marginRight: 20,
+        overflowX: isScrollable ? 'auto' : 'visible',
+      }}
+    >
+      <div
+        style={{
+          position: 'relative',
+          height: 48,
+          minWidth: isScrollable ? `${plottable.length * 44}px` : undefined,
+        }}
+      >
+        {plottable.map((ev, i) => {
+          const pct = timeSpan > 0
+            ? ((ev.tsMs - firstMs) / timeSpan) * 100
+            : 0
+          const isHovered = hoveredIdx === i
+
+          return (
+            <div
+              key={`${ev.date}-${i}`}
+              style={{
+                position: 'absolute',
+                left: `${pct}%`,
+                transform: 'translateX(-50%)',
+                top: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2,
+                cursor: 'default',
+              }}
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+            >
+              {/* Dot */}
+              <div
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: '#f59e0b',
+                  flexShrink: 0,
+                  marginTop: 4,
+                }}
+              />
+              {/* Abbreviated label */}
+              <span
+                style={{
+                  fontSize: 8.5,
+                  fontWeight: 600,
+                  color: '#92400e',
+                  whiteSpace: 'nowrap',
+                  lineHeight: 1,
+                }}
+              >
+                {abbrevRound(ev.roundType)}
+              </span>
+
+              {/* Hover tooltip — floats above the dot */}
+              {isHovered && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '100%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    marginBottom: 8,
+                    background: '#111827',
+                    color: '#f9fafb',
+                    borderRadius: 8,
+                    padding: '8px 10px',
+                    fontSize: 11.5,
+                    whiteSpace: 'nowrap',
+                    zIndex: 40,
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
+                    pointerEvents: 'none',
+                  }}
+                >
+                  <p style={{ fontWeight: 600, marginBottom: 2 }}>
+                    {ev.roundType ? formatFundingRound(ev.roundType) : 'Funding'}
+                  </p>
+                  {ev.amountUsd != null && ev.amountUsd > 0 && (
+                    <p style={{ color: '#d1d5db' }}>{formatCurrency(ev.amountUsd)}</p>
+                  )}
+                  <p style={{ color: '#9ca3af', fontSize: 10.5 }}>{ev.date}</p>
+                  {ev.leadInvestor && (
+                    <p style={{ color: '#d1d5db', marginTop: 3 }}>
+                      Lead: {ev.leadInvestor}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -91,8 +232,6 @@ export default function OverviewChart({ series, events }: Props) {
   const firstMs = chartData[0].tsMs
   const lastMs  = chartData[chartData.length - 1].tsMs
 
-  // Only plot funding events whose date falls within the chart's time range.
-  type PlottableEvent = FundingEvent & { tsMs: number }
   const plottable: PlottableEvent[] = []
   for (const ev of events) {
     const ms = new Date(ev.date).getTime()
@@ -105,6 +244,7 @@ export default function OverviewChart({ series, events }: Props) {
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+      {/* Header: title + legend */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
@@ -116,14 +256,23 @@ export default function OverviewChart({ series, events }: Props) {
         </div>
         {plottable.length > 0 && (
           <div className="flex items-center gap-2 text-xs text-gray-500">
-            <span className="inline-block w-3 h-[2px] bg-amber-500" />
+            <span
+              style={{
+                display: 'inline-block',
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: '#f59e0b',
+              }}
+            />
             <span>Funding round</span>
           </div>
         )}
       </div>
 
+      {/* Line chart — reference lines are unlabeled, subtle markers only */}
       <ResponsiveContainer width="100%" height={280}>
-        <LineChart data={chartData} margin={{ top: 28, right: 20, bottom: 4, left: 0 }}>
+        <LineChart data={chartData} margin={{ top: 8, right: 20, bottom: 4, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
           <XAxis
             dataKey="tsMs"
@@ -146,33 +295,17 @@ export default function OverviewChart({ series, events }: Props) {
           />
           <Tooltip content={<CustomTooltip />} />
 
-          {plottable.map((ev, i) => {
-            const labelParts: string[] = []
-            if (ev.roundType) labelParts.push(formatFundingRound(ev.roundType))
-            if (ev.amountUsd && ev.amountUsd > 0) labelParts.push(formatCurrency(ev.amountUsd))
-            const text = labelParts.join(' · ') || 'Funding'
-            return (
-              <ReferenceLine
-                key={`${ev.date}-${i}`}
-                x={ev.tsMs}
-                stroke="#f59e0b"
-                strokeDasharray="3 3"
-                strokeWidth={1.5}
-                ifOverflow="visible"
-              >
-                <RLabel
-                  value={text}
-                  position="top"
-                  offset={8}
-                  style={{
-                    fontSize: 10,
-                    fill: '#b45309',
-                    fontWeight: 600,
-                  }}
-                />
-              </ReferenceLine>
-            )
-          })}
+          {plottable.map((ev, i) => (
+            <ReferenceLine
+              key={`${ev.date}-${i}`}
+              x={ev.tsMs}
+              stroke="#f59e0b"
+              strokeDasharray="3 3"
+              strokeWidth={1.5}
+              strokeOpacity={0.6}
+              ifOverflow="visible"
+            />
+          ))}
 
           <Line
             type="monotone"
@@ -184,6 +317,15 @@ export default function OverviewChart({ series, events }: Props) {
           />
         </LineChart>
       </ResponsiveContainer>
+
+      {/* Timeline strip — round dots aligned with the chart x-axis */}
+      {plottable.length > 0 && (
+        <FundingTimeline
+          plottable={plottable}
+          firstMs={firstMs}
+          lastMs={lastMs}
+        />
+      )}
     </div>
   )
 }

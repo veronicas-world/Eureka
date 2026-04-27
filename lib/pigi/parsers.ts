@@ -226,13 +226,32 @@ export function parseCompany(raw: Record<string, unknown>): ParsedCompany {
   // Website domain
   const websiteDomain = str(websiteObj.domain)
 
+  // Stage: try raw.stage first; fall back to inferring from last_funding_type
+  let stage: string | null = mapStage(str(raw.stage))
+  if (!stage) {
+    const lft = (str(funding.last_funding_type) ?? '').toUpperCase()
+    const inferredStage = mapStage(lft)
+    if (inferredStage) {
+      stage = inferredStage
+    } else if (
+      lft === 'SECONDARY' ||
+      lft === 'STRATEGIC_ROUND' ||
+      lft === 'STRATEGIC' ||
+      lft === 'DEBT' ||
+      lft === 'CONVERTIBLE_NOTE'
+    ) {
+      const totalFunding = num(funding.funding_total) ?? num(funding.total_funding_raised) ?? 0
+      stage = totalFunding > 50_000_000 ? 'venture-unknown' : null
+    }
+  }
+
   const out: ParsedCompany = {
     name:                    str(raw.name),
     description:             str(raw.description),
     short_description:       str(raw.short_description),
     logo_url:                str(raw.logo_url),
     customer_type:           str(raw.customer_type),
-    stage:                   mapStage(str(raw.stage)),
+    stage,
     founded_year,
     employee_count:          num(raw.headcount) ?? num(raw.corrected_headcount),
     country:                 str(location.country),
@@ -284,7 +303,7 @@ export function extractRoles(people: unknown[]): PersonRole[] {
   for (const rel of people) {
     if (!rel || typeof rel !== 'object') continue
     const r = rel as Record<string, unknown>
-    if (r.is_current_position !== true) continue
+    if (r.is_current_position === false) continue
     // Relationship objects have .person = the URN string
     const urn = str(r.person ?? r.entity_urn)
     if (!urn) continue

@@ -30,6 +30,40 @@ import CompanyLogo from '@/components/CompanyLogo'
 import { STAGE_VALUES, STAGE_LABELS } from '@/lib/stages'
 import { reorderCompanies } from '@/app/actions/companies'
 
+function getMarketVerticals(tagsV2: unknown): string[] {
+  if (!Array.isArray(tagsV2)) return []
+  return tagsV2
+    .filter((t): t is Record<string, unknown> =>
+      t !== null && typeof t === 'object' &&
+      (t as Record<string, unknown>).type === 'MARKET_VERTICAL'
+    )
+    .map((t) => t.display_value as string)
+    .filter((v): v is string => typeof v === 'string' && v.length > 0)
+}
+
+function SectorCell({ company }: { company: CompanyRow }) {
+  if (company.sector) {
+    return <span style={{ color: 'var(--ink-soft)' }}>{company.sector}</span>
+  }
+  const verticals = getMarketVerticals(company.tags_v2)
+  if (verticals.length === 0) return <span style={{ color: 'var(--ink-ghost)' }}>—</span>
+  const extra = verticals.length - 1
+  return (
+    <span className="flex items-center gap-1" style={{ color: 'var(--ink-soft)' }}>
+      <span>{verticals[0]}</span>
+      {extra > 0 && (
+        <span
+          className="inline-flex items-center px-1.5 h-4 rounded-full text-[10px] font-medium cursor-help"
+          style={{ background: 'var(--surface)', border: '1px solid var(--hairline-2)', color: 'var(--ink-faint)' }}
+          title={verticals.join(', ')}
+        >
+          +{extra}
+        </span>
+      )}
+    </span>
+  )
+}
+
 const ALL = 'All'
 
 const stageOptions = [ALL, ...STAGE_VALUES]
@@ -306,7 +340,9 @@ function SortableCompanyRow({ company }: { company: CompanyRow }) {
           )}
         </div>
       </td>
-      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', color: 'var(--ink-soft)', verticalAlign: 'middle' }}>{company.sector ?? '—'}</td>
+      <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', verticalAlign: 'middle' }}>
+        <SectorCell company={company} />
+      </td>
       <td style={{ padding: '12px', borderBottom: '1px dotted var(--hairline)', verticalAlign: 'middle' }}>
         {company.stage ? <StageBadge stage={company.stage} /> : <span style={{ color: 'var(--ink-ghost)' }}>—</span>}
       </td>

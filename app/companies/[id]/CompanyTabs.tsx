@@ -19,6 +19,7 @@ import HeadcountChart from './HeadcountChart'
 import TractionTab from './TractionTab'
 import FundingTab from './FundingTab'
 import OverviewChart, { type HeadcountPoint, type FundingEvent } from './OverviewChart'
+import CompanyTagPills from './CompanyTagPills'
 import EnrichButton from '@/components/EnrichButton'
 import DeleteCompanyButton from './DeleteCompanyButton'
 import CompanyLogo from '@/components/CompanyLogo'
@@ -934,6 +935,7 @@ interface RawRoundForChart {
   money_raised?: number
   funding_amount_usd?: number
   amount?: number
+  investors?: Array<{ investor_name?: string; name?: string; is_lead?: boolean; lead?: boolean } | string>
 }
 
 function parseHeadcountSeries(traction: unknown): HeadcountPoint[] {
@@ -968,10 +970,25 @@ function parseFundingEvents(rounds: unknown): FundingEvent[] {
     const amount = raw.funding_amount ?? raw.money_raised
                 ?? raw.funding_amount_usd ?? raw.amount ?? null
     const roundType = raw.funding_round_type ?? raw.funding_type ?? raw.round_type ?? null
+
+    // Lead investor: prefer explicitly flagged lead, fall back to first
+    let leadInvestor: string | null = null
+    if (Array.isArray(raw.investors) && raw.investors.length > 0) {
+      const leadEntry = raw.investors.find((inv) =>
+        typeof inv === 'object' && inv !== null && (inv.is_lead || inv.lead)
+      ) ?? raw.investors[0]
+      if (typeof leadEntry === 'string') {
+        leadInvestor = leadEntry
+      } else if (leadEntry && typeof leadEntry === 'object') {
+        leadInvestor = leadEntry.investor_name ?? leadEntry.name ?? null
+      }
+    }
+
     out.push({
       date,
       roundType,
       amountUsd: typeof amount === 'number' && amount > 0 ? amount : null,
+      leadInvestor,
     })
   }
   return out
@@ -1538,6 +1555,9 @@ export default function CompanyPage({ company, activeTab, relatedCompanies = [] 
           </div>
         </div>
       </div>
+
+      {/* ── Tag pills (tags_v2 + highlights) ────────────────────────────── */}
+      <CompanyTagPills company={company} />
 
       {/* ── Tab navigation ──────────────────────────────────────────────── */}
       <div className="bg-white border border-gray-200 border-t-gray-100 shadow-sm flex gap-0 overflow-x-auto">

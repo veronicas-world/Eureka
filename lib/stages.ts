@@ -40,7 +40,7 @@ export const STAGE_OPTIONS: { value: Stage; label: string; color: string }[] = [
   { value: 'private',      label: 'Private',      color: '#475569' },
   { value: 'ipo',          label: 'IPO',          color: '#06b6d4' },
   { value: 'acquired',         label: 'Acquired',            color: '#6b7280' },
-  { value: 'venture-unknown', label: 'Venture (Unknown)',    color: '#94a3b8' },
+  { value: 'venture-unknown', label: 'Late Stage',           color: '#94a3b8' },
 ]
 
 export const STAGE_VALUES = STAGE_OPTIONS.map((s) => s.value)
