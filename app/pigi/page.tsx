@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { getPigiHomeData } from '@/lib/queries'
-import PigiAvatar from './PigiAvatar'
+import PigiAvatar, { type PigiMood } from './PigiAvatar'
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -32,6 +32,22 @@ function stateLine(count: number, lastRunAt: string | null): string {
   if (count <= 5)   return `she found ${count} things while you were away`
   if (count <= 15)  return `she found ${count} things \u2014 worth a look`
   return `she found a lot \u2014 ${count} things \u2014 take your time`
+}
+
+/**
+ * Pick the sketch that matches the moment.
+ *
+ *   sleepy  — she hasn't run yet, or her last run was more than ~36h ago
+ *             (she's been waiting / dormant)
+ *   excited — she found 5 or more new signals in the past week
+ *   idle    — recent run, modest amount of movement (the "default" pigi)
+ */
+function pigiMood(lastRunAt: string | null, signalCount: number): PigiMood {
+  if (!lastRunAt) return 'sleepy'
+  const ageHours = (Date.now() - new Date(lastRunAt).getTime()) / 3_600_000
+  if (ageHours > 36) return 'sleepy'
+  if (signalCount >= 5) return 'excited'
+  return 'idle'
 }
 
 const signalTypeColor: Record<string, string> = {
@@ -78,15 +94,33 @@ const signalTypeLabel: Record<string, string> = {
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function PigiPage() {
+type SearchParams = { mood?: string | string[] }
+
+export default async function PigiPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>
+}) {
   const { lastRunAt, recentDiffSignals, totalCompanies, totalSnapshots } =
     await getPigiHomeData()
+
+  // Allow ?mood=sleepy|excited|idle to force-preview a state.
+  // Useful for QA without waiting for time / signal counts to drift.
+  const params = await searchParams
+  const moodParam = Array.isArray(params.mood) ? params.mood[0] : params.mood
+  const overrideMood: PigiMood | null =
+    moodParam === 'sleepy'  ? 'sleepy'  :
+    moodParam === 'excited' ? 'excited' :
+    moodParam === 'idle'    ? 'idle'    :
+    null
+
+  const mood = overrideMood ?? pigiMood(lastRunAt, recentDiffSignals.length)
 
   return (
     <div style={{ padding: '36px 44px 80px', maxWidth: 1180 }}>
       {/* ── Header ─────────────────────────────────────────────────── */}
       <header className="mb-5" style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <PigiAvatar size={140} />
+        <PigiAvatar size={140} mood={mood} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <h1
             className="flex items-baseline gap-2.5 m-0"

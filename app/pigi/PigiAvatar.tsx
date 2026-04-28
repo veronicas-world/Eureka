@@ -2,9 +2,20 @@
 
 import { useState } from 'react'
 
+export type PigiMood = 'idle' | 'sleepy' | 'excited'
+
 interface Props {
   size?: number
+  /** Which sketch to show. Defaults to "idle". */
+  mood?: PigiMood
+  /** Override the image src directly (rare — usually use `mood`). */
   src?:  string
+}
+
+const moodSrc: Record<PigiMood, string> = {
+  idle:    '/pigi/idle.png',
+  sleepy:  '/pigi/sleepy.png',
+  excited: '/pigi/excited.png',
 }
 
 /**
@@ -12,8 +23,9 @@ interface Props {
  * been saved to /public/pigi/ yet — so the page never shows a broken
  * image icon while Veronica drops in the scanned art.
  */
-export default function PigiAvatar({ size = 96, src = '/pigi/idle.png' }: Props) {
+export default function PigiAvatar({ size = 96, mood = 'idle', src }: Props) {
   const [imageOk, setImageOk] = useState(true)
+  const resolvedSrc = src ?? moodSrc[mood]
 
   return (
     <div
@@ -30,8 +42,8 @@ export default function PigiAvatar({ size = 96, src = '/pigi/idle.png' }: Props)
       {imageOk ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={src}
-          alt="pigi"
+          src={resolvedSrc}
+          alt={`pigi (${mood})`}
           onError={() => setImageOk(false)}
           style={{
             width:        '100%',
