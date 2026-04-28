@@ -14,7 +14,7 @@ import {
   addInteraction, addSignal,
 } from '@/app/actions/companies'
 import { Badge, SignalBadge, StatusBadge, StageBadge } from '@/components/ui/Badge'
-import { formatCurrency, formatGrowth, formatDegree } from '@/lib/utils'
+import { formatCurrency, formatDegree } from '@/lib/utils'
 import HeadcountChart from './HeadcountChart'
 import TractionTab from './TractionTab'
 import FundingTab from './FundingTab'
@@ -916,6 +916,42 @@ function TeamTab({ company }: { company: CompanyWithRelations }) {
   )
 }
 
+// ── Investor list with truncation toggle ─────────────────────────────────────
+
+const MAX_INVESTORS_VISIBLE = 6
+
+function InvestorList({ investors }: { investors: string[] }) {
+  const [showAll, setShowAll] = useState(false)
+  const extra = investors.length - MAX_INVESTORS_VISIBLE
+  const visible = showAll ? investors : investors.slice(0, MAX_INVESTORS_VISIBLE)
+
+  return (
+    <div>
+      <div className="flex flex-wrap gap-1.5">
+        {visible.map((inv) => <Badge key={inv} variant="gray">{inv}</Badge>)}
+        {!showAll && extra > 0 && (
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="inline-flex items-center h-5 px-2 rounded-full text-[11px] font-medium bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors"
+          >
+            +{extra} more
+          </button>
+        )}
+      </div>
+      {showAll && extra > 0 && (
+        <button
+          type="button"
+          onClick={() => setShowAll(false)}
+          className="mt-1.5 text-xs text-gray-400 hover:text-gray-700 transition-colors"
+        >
+          Show less
+        </button>
+      )}
+    </div>
+  )
+}
+
 // ── Overview tab ──────────────────────────────────────────────────────────────
 
 // ── Overview helpers: parse headcount series + funding events ───────────────
@@ -1062,6 +1098,20 @@ function OverviewTab({
     [company.funding_rounds_data],
   )
 
+  // Prefer 90d window for headcount delta; fall back to 30d
+  const hcGrowth = company.headcount_90d_growth ?? company.headcount_30d_growth
+  const hcWindow = company.headcount_90d_growth != null ? '90d' : '30d'
+  let hcSub: string | undefined
+  let hcSubColor: 'green' | 'red' | undefined
+  if (hcGrowth != null) {
+    if (hcGrowth > -0.02 && hcGrowth <= 0) {
+      hcSub = '≈ flat'
+    } else {
+      hcSub = `${hcGrowth > 0 ? '+' : ''}${(hcGrowth * 100).toFixed(1)}%`
+      hcSubColor = hcGrowth > 0 ? 'green' : 'red'
+    }
+  }
+
   const recentSignals = (company.signals ?? []).slice(0, 3)
   const recentNotes   = (company.notes   ?? []).slice(0, 2)
 
@@ -1073,8 +1123,9 @@ function OverviewTab({
         <StatCell
           label="Headcount"
           value={company.employee_count?.toLocaleString() ?? '—'}
-          sub={formatGrowth(company.headcount_30d_growth) || undefined}
-          subColor={company.headcount_30d_growth == null ? undefined : company.headcount_30d_growth > 0 ? 'green' : 'red'}
+          sub={hcSub}
+          subColor={hcSubColor}
+          subLabel={hcGrowth != null ? `vs ${hcWindow} ago` : undefined}
         />
         <StatCell label="Funding Rounds"    value={company.funding_rounds_count?.toString() ?? '—'} />
         <StatCell label="Latest Valuation"  value={formatCurrency(company.latest_valuation_usd ?? undefined)} />
@@ -1118,9 +1169,7 @@ function OverviewTab({
       {company.investors && company.investors.length > 0 && (
         <div className="px-6 py-5">
           <SectionLabel>Investors</SectionLabel>
-          <div className="flex flex-wrap gap-1.5">
-            {company.investors.map(inv => <Badge key={inv} variant="gray">{inv}</Badge>)}
-          </div>
+          <InvestorList investors={company.investors} />
         </div>
       )}
 
@@ -1463,8 +1512,8 @@ function NotesTab({ companyId, notes, interactions }: {
 
 // ── Stat cell (shared) ────────────────────────────────────────────────────────
 
-function StatCell({ label, value, sub, subColor }: {
-  label: string; value: string; sub?: string; subColor?: 'green' | 'red'
+function StatCell({ label, value, sub, subColor, subLabel }: {
+  label: string; value: string; sub?: string; subColor?: 'green' | 'red'; subLabel?: string
 }) {
   return (
     <div className="min-w-0">
@@ -1474,6 +1523,9 @@ function StatCell({ label, value, sub, subColor }: {
         <p className={`text-xs font-medium mt-0.5 ${
           subColor === 'green' ? 'text-emerald-600' : subColor === 'red' ? 'text-red-500' : 'text-gray-400'
         }`}>{sub}</p>
+      )}
+      {subLabel && (
+        <p className="text-[10px] text-gray-400 mt-px">{subLabel}</p>
       )}
     </div>
   )

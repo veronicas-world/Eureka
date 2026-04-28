@@ -436,7 +436,19 @@ export default function FundingTab({ company }: { company: CompanyWithRelations 
       {/* ── Funding events timeline (rich) ────────────────── */}
       {hasRounds && (
         <div className="px-6 py-5">
-          <SectionLabel>Funding Events</SectionLabel>
+          <div className="flex items-center justify-between mb-3">
+            <SectionLabel>Funding Events</SectionLabel>
+            <span className="text-[11px] text-gray-400">Showing {rounds.length} rounds</span>
+          </div>
+          <div
+            style={{
+              maxHeight: 480,
+              overflowY: 'auto',
+              border: '1px solid #e5e7eb',
+              borderRadius: 6,
+              padding: '4px 16px 4px 0',
+            }}
+          >
           <div className="relative pl-4">
             <div className="absolute left-0 top-2 bottom-2 w-px bg-gray-200" />
             {rounds.map((r, idx) => (
@@ -490,6 +502,7 @@ export default function FundingTab({ company }: { company: CompanyWithRelations 
                 )}
               </div>
             ))}
+          </div>
           </div>
         </div>
       )}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   LineChart,
   Line,
@@ -36,7 +36,7 @@ interface ChartPoint {
   value: number
 }
 
-function formatNumber(n: number): string {
+function formatCompact(n: number): string {
   if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`
@@ -94,6 +94,11 @@ function CustomTooltip({ active, payload }: any) {
 
 type PlottableEvent = FundingEvent & { tsMs: number }
 
+const COLLISION_PX = 35
+const MAX_ROWS = 3
+const BASE_HEIGHT = 28   // strip height for 1 row
+const ROW_HEIGHT_PX = 24 // additional height per extra row
+
 function FundingTimeline({
   plottable,
   firstMs,
@@ -104,11 +109,55 @@ function FundingTimeline({
   lastMs: number
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width ?? 0
+      setContainerWidth(w)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   if (plottable.length === 0) return null
 
   const isScrollable = plottable.length > 15
   const timeSpan = lastMs - firstMs
+
+  const pcts = plottable.map((ev) =>
+    timeSpan > 0 ? ((ev.tsMs - firstMs) / timeSpan) * 100 : 0
+  )
+
+  // Greedy row assignment — collisions within COLLISION_PX get pushed to next row
+  const rowAssignments: number[] = new Array(plottable.length).fill(0)
+  if (containerWidth > 0) {
+    const rowLastX: number[] = []
+    for (let i = 0; i < plottable.length; i++) {
+      const x = (pcts[i] / 100) * containerWidth
+      let assigned = false
+      for (let r = 0; r < MAX_ROWS; r++) {
+        if (rowLastX[r] == null || x - rowLastX[r] >= COLLISION_PX) {
+          rowAssignments[i] = r
+          rowLastX[r] = x
+          assigned = true
+          break
+        }
+      }
+      if (!assigned) {
+        rowAssignments[i] = MAX_ROWS - 1
+        rowLastX[MAX_ROWS - 1] = x
+      }
+    }
+  }
+
+  const numRows = containerWidth > 0
+    ? Math.max(1, ...rowAssignments.map((r) => r + 1))
+    : 1
+  const stripHeight = BASE_HEIGHT + (numRows - 1) * ROW_HEIGHT_PX
 
   return (
     // margin-left matches YAxis width (40px); margin-right matches chart right margin (20px)
@@ -120,17 +169,18 @@ function FundingTimeline({
       }}
     >
       <div
+        ref={containerRef}
         style={{
           position: 'relative',
-          height: 48,
+          height: stripHeight,
           minWidth: isScrollable ? `${plottable.length * 44}px` : undefined,
         }}
       >
         {plottable.map((ev, i) => {
-          const pct = timeSpan > 0
-            ? ((ev.tsMs - firstMs) / timeSpan) * 100
-            : 0
+          const pct = pcts[i]
+          const row = rowAssignments[i]
           const isHovered = hoveredIdx === i
+          const topOffset = row * ROW_HEIGHT_PX
 
           return (
             <div
@@ -139,7 +189,7 @@ function FundingTimeline({
                 position: 'absolute',
                 left: `${pct}%`,
                 transform: 'translateX(-50%)',
-                top: 0,
+                top: topOffset,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -186,7 +236,7 @@ function FundingTimeline({
                     color: '#f9fafb',
                     borderRadius: 8,
                     padding: '8px 10px',
-                    fontSize: 11.5,
+                    fontSize: 12.5,
                     whiteSpace: 'nowrap',
                     zIndex: 40,
                     boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
@@ -196,10 +246,21 @@ function FundingTimeline({
                   <p style={{ fontWeight: 600, marginBottom: 2 }}>
                     {ev.roundType ? formatFundingRound(ev.roundType) : 'Funding'}
                   </p>
-                  {ev.amountUsd != null && ev.amountUsd > 0 && (
-                    <p style={{ color: '#d1d5db' }}>{formatCurrency(ev.amountUsd)}</p>
-                  )}
-                  <p style={{ color: '#9ca3af', fontSize: 10.5 }}>{ev.date}</p>
+                  {/* Amount · date on one line */}
+                  <p style={{ color: '#d1d5db' }}>
+                    {[
+                      ev.amountUsd != null && ev.amountUsd > 0 ? formatCurrency(ev.amountUsd) : null,
+                      ev.date
+                        ? new Date(ev.date).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                          })
+                        : null,
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
                   {ev.leadInvestor && (
                     <p style={{ color: '#d1d5db', marginTop: 3 }}>
                       Lead: {ev.leadInvestor}
@@ -224,10 +285,6 @@ export default function OverviewChart({ series, events }: Props) {
     .sort((a, b) => a.tsMs - b.tsMs)
 
   if (chartData.length < 2) return null
-
-  const minVal = Math.min(...chartData.map((d) => d.value))
-  const maxVal = Math.max(...chartData.map((d) => d.value))
-  const padding = Math.round((maxVal - minVal) * 0.2) || Math.round(minVal * 0.1) || 10
 
   const firstMs = chartData[0].tsMs
   const lastMs  = chartData[chartData.length - 1].tsMs
@@ -286,8 +343,9 @@ export default function OverviewChart({ series, events }: Props) {
             allowDataOverflow={false}
           />
           <YAxis
-            domain={[Math.max(0, minVal - padding), maxVal + padding]}
-            tickFormatter={formatNumber}
+            domain={['auto', 'auto']}
+            allowDecimals={false}
+            tickFormatter={formatCompact}
             tick={{ fontSize: 11, fill: '#9ca3af' }}
             axisLine={false}
             tickLine={false}
