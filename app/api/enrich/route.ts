@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
 
     const raw = await harmonicRes.json().catch(() => null)
     console.log('[enrich] status:', harmonicRes.status)
+    if (!harmonicRes.ok) console.log('[enrich] error body:', raw)
 
     // 404 = not yet in Harmonic — enrichment queued; store the URN if present
     if (harmonicRes.status === 404) {
@@ -60,10 +61,32 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // 422 = Harmonic understood the request but rejected it (e.g. acquired
+    // company that needs to be looked up by parent URN, ambiguous domain,
+    // or domain that resolves to multiple entities). Surface Harmonic's
+    // detail so the user knows what to do.
+    if (harmonicRes.status === 422) {
+      const detail = (raw as Record<string, unknown> | null)?.detail
+        ?? (raw as Record<string, unknown> | null)?.message
+        ?? (raw as Record<string, unknown> | null)?.error
+        ?? 'Harmonic could not process this domain (often happens for acquired companies — try the parent company domain instead).'
+      return NextResponse.json(
+        { success: false, error: typeof detail === 'string' ? detail : JSON.stringify(detail) },
+        { status: 422 },
+      )
+    }
+
     // 201 = stale data returned + refresh queued — treat as success
     if (!harmonicRes.ok && harmonicRes.status !== 201) {
+      const detail = (raw as Record<string, unknown> | null)?.detail
+        ?? (raw as Record<string, unknown> | null)?.message
       return NextResponse.json(
-        { success: false, error: `Harmonic returned ${harmonicRes.status}` },
+        {
+          success: false,
+          error: detail
+            ? `Harmonic ${harmonicRes.status}: ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`
+            : `Harmonic returned ${harmonicRes.status}`,
+        },
         { status: 502 },
       )
     }

@@ -1,0 +1,15 @@
+{
+  "_section": "J — Scout / AI surface",
+  "_status": "AWAITING MANUAL CAPTURE",
+  "_instructions": [
+    "1. Open Harmonic in Chrome (or Firefox).",
+    "2. Open DevTools → Network tab. Check \"Preserve log\". Clear existing entries.",
+    "3. Type any query into the Scout AI chat (the 4-dot icon in the left rail).",
+    "4. In DevTools, find the request that carried your query. It will be a POST or WS frame.",
+    "5. Right-click → Copy → Copy as cURL, then paste the curl command below.",
+    "6. Also paste the full response JSON.",
+    "7. Replace this entire file with the captured data."
+  ],
+  "_captured_curl": null,
+  "_captured_response": null
+}

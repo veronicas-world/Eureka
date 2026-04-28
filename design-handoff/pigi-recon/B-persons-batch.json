@@ -1,0 +1,1676 @@
+[
+  {
+    "full_name": "Mike Krieger",
+    "first_name": "Mike",
+    "last_name": "Krieger",
+    "profile_picture_url": "https://assets.harmonic.ai/_person79cff063b2cd8ea4d9e2853cbadfab2b04ea47a8243979a8d72aaa21dc548180.jpeg",
+    "contact": {
+      "emails": [
+        "mike.krieger@gmail.com",
+        "mikekrieger@gmail.com",
+        "mkrieger@anthropic.com"
+      ],
+      "phone_numbers": [
+        "+55.95312942"
+      ],
+      "exec_emails": [],
+      "primary_email": "mkrieger@anthropic.com",
+      "primary_email_person_id": null
+    },
+    "location": {
+      "address_formatted": "San Francisco, CA, USA",
+      "location": "San Francisco, California, United States of America",
+      "street": "",
+      "city": "San Francisco",
+      "state": "California",
+      "zip": "",
+      "country": "United States",
+      "metro_areas": [
+        "San Francisco Bay Area"
+      ]
+    },
+    "education": [
+      {
+        "school": {
+          "name": "Stanford University",
+          "linkedin_url": "https://linkedin.com/school/stanford-university",
+          "logo_url": "https://assets.harmonic.ai/school_7a709d91c95e4fed47f0bc2d0628c4028cd3cc7e8f5661d51ef9032334003622.png",
+          "entity_urn": "urn:harmonic:school:354afe5b-9cd6-40be-b4c3-e4d877e63854"
+        },
+        "degree": "MS",
+        "standardized_degree": "MASTERS_DEGREE",
+        "field": "Symbolic Systems - Human-Computer Interaction",
+        "grade": null,
+        "start_date": "2007-01-01T00:00:00Z",
+        "end_date": "2008-12-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Stanford University",
+          "linkedin_url": "https://linkedin.com/school/stanford-university",
+          "logo_url": "https://assets.harmonic.ai/school_7a709d91c95e4fed47f0bc2d0628c4028cd3cc7e8f5661d51ef9032334003622.png",
+          "entity_urn": "urn:harmonic:school:354afe5b-9cd6-40be-b4c3-e4d877e63854"
+        },
+        "degree": "BS",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "Symbolic Systems (Human-Computer Interaction, Psychology, Philosophy, Computer Science)",
+        "grade": null,
+        "start_date": "2004-01-01T00:00:00Z",
+        "end_date": "2008-12-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Stanford University",
+          "linkedin_url": "https://linkedin.com/school/stanford-university",
+          "logo_url": "https://assets.harmonic.ai/school_7a709d91c95e4fed47f0bc2d0628c4028cd3cc7e8f5661d51ef9032334003622.png",
+          "entity_urn": "urn:harmonic:school:354afe5b-9cd6-40be-b4c3-e4d877e63854"
+        },
+        "degree": null,
+        "standardized_degree": null,
+        "field": "Mayfield Fellow",
+        "grade": null,
+        "start_date": "2007-01-01T00:00:00Z",
+        "end_date": "2007-12-31T00:00:00Z"
+      }
+    ],
+    "socials": {
+      "LINKEDIN": {
+        "url": "https://linkedin.com/in/mikekrieger",
+        "follower_count": null,
+        "username": null,
+        "status": null
+      },
+      "TWITTER": {
+        "url": "https://twitter.com/mikeyk",
+        "follower_count": null,
+        "username": null,
+        "status": null
+      }
+    },
+    "experience": [
+      {
+        "contact": null,
+        "title": "Chief Product Officer",
+        "department": "Product",
+        "description": null,
+        "start_date": "2024-05-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco, California, United States",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:3068389",
+        "company_name": "Anthropic"
+      },
+      {
+        "contact": null,
+        "title": "Co-founder & CTO",
+        "department": "Operations",
+        "description": null,
+        "start_date": "2021-06-01T00:00:00Z",
+        "end_date": "2024-05-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "FOUNDER",
+        "company": "urn:harmonic:company:11580195",
+        "company_name": "Artifact"
+      },
+      {
+        "contact": null,
+        "title": "Co-founder & CTO",
+        "department": "Operations",
+        "description": "Kevin Systrom & I started Instagram in mid-2010, and both designed & developed the application. I've spent the last few years scaling the Instagram engineering team into a 450+ person organization, now within FB.",
+        "start_date": "2010-06-01T00:00:00Z",
+        "end_date": "2018-10-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, CA",
+        "role_type": "FOUNDER",
+        "company": "urn:harmonic:company:1428812",
+        "company_name": "Instagram"
+      },
+      {
+        "contact": null,
+        "title": "User Experience Designer & Engineer",
+        "department": "Engineering",
+        "description": "Prototyped & tested several new products. Later transitioned to designing & developing the internal & external stats and visualization tools for our partners.",
+        "start_date": "2009-01-01T00:00:00Z",
+        "end_date": "2010-05-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Mountain View, CA",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:1456564",
+        "company_name": "Meebo"
+      },
+      {
+        "contact": null,
+        "title": "Advising Fellow",
+        "department": "Advisor",
+        "description": "Organizing events, presentations, and other activities related to Symbolic Systems, a Stanford interdisciplinary program that unites Cognitive Science, Psychology, Computer Science, Philosophy, and Linguistics. Holding office hours for current majors and prospective students to receive advice about the major and related classes.",
+        "start_date": "2006-09-01T00:00:00Z",
+        "end_date": "2008-12-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Parma, Emilia-Romagna, Italy",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:2075136",
+        "company_name": "Symbolic S.p.A"
+      },
+      {
+        "contact": null,
+        "title": "Oral Communications Tutor",
+        "department": "Marketing",
+        "description": "One-on-one sessions with students who have upcoming presentations in their classes, as well as class visits to explain broader points about Oral Communications. Also, through this position and my work at Microsoft, I've been invited to speak at Oral Communications-centered courses on the art and science of visual aids and effective use of slideware.",
+        "start_date": "2005-01-01T00:00:00Z",
+        "end_date": "2008-08-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Stanford, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:3226269",
+        "company_name": "Stanford University"
+      },
+      {
+        "contact": null,
+        "title": "Product Development Intern",
+        "department": "Product",
+        "description": "Designing and implementing features for next-gen search engine. Took features from paper prototypes to implementation in Python/JS/HTML.",
+        "start_date": "2007-06-01T00:00:00Z",
+        "end_date": "2007-09-30T00:00:00Z",
+        "is_current_position": false,
+        "location": null,
+        "role_type": "INTERN",
+        "company": "urn:harmonic:company:-1",
+        "company_name": "Foxmarks, Inc."
+      },
+      {
+        "contact": null,
+        "title": "Program Manager Intern",
+        "department": "Operations",
+        "description": "Coordinated feature teams (Program Manager, Test, and Development) to implement and polish features in PowerPoint and OfficeArt. Work focused on accessibility, photo import with the Photo Album, and successful management of features as product moved towards ship date. Several features already shipped as part of the Beta 2 Technical Refresh.",
+        "start_date": "2006-06-01T00:00:00Z",
+        "end_date": "2006-09-30T00:00:00Z",
+        "is_current_position": false,
+        "location": "Redmond, Washington, United States",
+        "role_type": "INTERN",
+        "company": "urn:harmonic:company:3205143",
+        "company_name": "Microsoft"
+      },
+      {
+        "contact": null,
+        "title": "Instagram co-founder, now CPO",
+        "department": null,
+        "description": null,
+        "start_date": null,
+        "end_date": null,
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:3068389",
+        "company_name": "Anthropic"
+      }
+    ],
+    "unstandardized_experience__internal": [
+      {
+        "contact": null,
+        "title": "Chief Product Officer",
+        "department": "Product",
+        "description": null,
+        "start_date": "2024-05-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco, California, United States",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:3068389"
+      },
+      {
+        "contact": null,
+        "title": "Co-founder & CTO",
+        "department": "Operations",
+        "description": null,
+        "start_date": "2021-06-01T00:00:00Z",
+        "end_date": "2024-05-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "FOUNDER",
+        "company": "urn:harmonic:company:11580195"
+      },
+      {
+        "contact": null,
+        "title": "Co-founder & CTO",
+        "department": "Operations",
+        "description": "Kevin Systrom & I started Instagram in mid-2010, and both designed & developed the application. I've spent the last few years scaling the Instagram engineering team into a 450+ person organization, now within FB.",
+        "start_date": "2010-06-01T00:00:00Z",
+        "end_date": "2018-10-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, CA",
+        "role_type": "FOUNDER",
+        "company": "urn:harmonic:company:1428812"
+      },
+      {
+        "contact": null,
+        "title": "User Experience Designer & Engineer",
+        "department": "Engineering",
+        "description": "Prototyped & tested several new products. Later transitioned to designing & developing the internal & external stats and visualization tools for our partners.",
+        "start_date": "2009-01-01T00:00:00Z",
+        "end_date": "2010-05-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Mountain View, CA",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:1456564"
+      },
+      {
+        "contact": null,
+        "title": "Advising Fellow",
+        "department": "Advisor",
+        "description": "Organizing events, presentations, and other activities related to Symbolic Systems, a Stanford interdisciplinary program that unites Cognitive Science, Psychology, Computer Science, Philosophy, and Linguistics. Holding office hours for current majors and prospective students to receive advice about the major and related classes.",
+        "start_date": "2006-09-01T00:00:00Z",
+        "end_date": "2008-12-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Parma, Emilia-Romagna, Italy",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:2075136"
+      },
+      {
+        "contact": null,
+        "title": "Oral Communications Tutor",
+        "department": "Marketing",
+        "description": "One-on-one sessions with students who have upcoming presentations in their classes, as well as class visits to explain broader points about Oral Communications. Also, through this position and my work at Microsoft, I've been invited to speak at Oral Communications-centered courses on the art and science of visual aids and effective use of slideware.",
+        "start_date": "2005-01-01T00:00:00Z",
+        "end_date": "2008-08-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Stanford, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:3226269"
+      },
+      {
+        "contact": null,
+        "title": "Product Development Intern",
+        "department": "Product",
+        "description": "Designing and implementing features for next-gen search engine. Took features from paper prototypes to implementation in Python/JS/HTML.",
+        "start_date": "2007-06-01T00:00:00Z",
+        "end_date": "2007-09-30T00:00:00Z",
+        "is_current_position": false,
+        "location": null,
+        "role_type": "INTERN",
+        "company": "Foxmarks, Inc."
+      },
+      {
+        "contact": null,
+        "title": "Program Manager Intern",
+        "department": "Operations",
+        "description": "Coordinated feature teams (Program Manager, Test, and Development) to implement and polish features in PowerPoint and OfficeArt. Work focused on accessibility, photo import with the Photo Album, and successful management of features as product moved towards ship date. Several features already shipped as part of the Beta 2 Technical Refresh.",
+        "start_date": "2006-06-01T00:00:00Z",
+        "end_date": "2006-09-30T00:00:00Z",
+        "is_current_position": false,
+        "location": "Redmond, Washington, United States",
+        "role_type": "INTERN",
+        "company": "urn:harmonic:company:3205143"
+      },
+      {
+        "contact": null,
+        "title": "Instagram co-founder, now CPO",
+        "department": null,
+        "description": null,
+        "start_date": null,
+        "end_date": null,
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:3068389"
+      }
+    ],
+    "websites": [],
+    "linkedin_connections": 500,
+    "usurping_person_id": null,
+    "linkedin_headline": "Instagram co-founder, now building at Anthropic Labs",
+    "linkedin_profile_visibility_type": "EXPERIENCE_AND_EDUCATION_BLURRED",
+    "last_checked_at": "2026-04-21T21:00:08Z",
+    "languages": [
+      {
+        "name": "Portuguese",
+        "proficiency": null
+      }
+    ],
+    "entity_urn": "urn:harmonic:person:9902",
+    "id": 9902,
+    "highlights": [
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Mike Krieger: Stanford",
+        "company_urn": null
+      },
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Mike Krieger: MS @ Stanford",
+        "company_urn": null
+      },
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Mike Krieger: BS @ Stanford",
+        "company_urn": null
+      },
+      {
+        "category": "Top AI Experience",
+        "date_added": null,
+        "text": "Top AI Experience, Mike Krieger: Instagram co-founder, now CPO @ Anthropic, 3/2025-4/2026",
+        "company_urn": "urn:harmonic:company:3068389"
+      },
+      {
+        "category": "Seasoned Founder",
+        "date_added": null,
+        "text": "Seasoned Founder, Mike Krieger: Instagram co-founder, now CPO @ Anthropic (4097 Employees) 3/2025-4/2026",
+        "company_urn": "urn:harmonic:company:3068389"
+      },
+      {
+        "category": "Seasoned Founder",
+        "date_added": null,
+        "text": "Seasoned Founder, Mike Krieger: Co-founder & CTO @ Instagram (51917 Employees) 6/2010-10/2018",
+        "company_urn": "urn:harmonic:company:1428812"
+      },
+      {
+        "category": "Prior VC Backed Founder",
+        "date_added": null,
+        "text": "Prior VC Backed Founder, Mike Krieger: Instagram co-founder, now CPO @ Anthropic, Backed By: Center for Emerging Risk Research, Dustin Moskovitz, Eric Schmidt, Jaan Tallinn, James McClave",
+        "company_urn": "urn:harmonic:company:3068389"
+      },
+      {
+        "category": "Prior VC Backed Founder",
+        "date_added": null,
+        "text": "Prior VC Backed Founder, Mike Krieger: Co-founder & CTO @ Instagram, Backed By: Adam D'Angelo, Andreessen Horowitz, Baseline Ventures, Benchmark (San Francisco), Binary Capital",
+        "company_urn": "urn:harmonic:company:1428812"
+      },
+      {
+        "category": "Prior Exit",
+        "date_added": null,
+        "text": "Prior Exit, Mike Krieger: Co-founder & CTO @ Instagram, 6/2010-10/2018",
+        "company_urn": "urn:harmonic:company:1428812"
+      },
+      {
+        "category": "$5M Club",
+        "date_added": null,
+        "text": "$5M Club, Mike Krieger: Co-founder & CTO @ Instagram, $7.5M Raised, Backed By: Adam D'Angelo, Andreessen Horowitz, Baseline Ventures, Benchmark (San Francisco), Binary Capital",
+        "company_urn": "urn:harmonic:company:1428812"
+      },
+      {
+        "category": "$50M+ Club",
+        "date_added": null,
+        "text": "$50M+ Club, Mike Krieger: Instagram co-founder, now CPO @ Anthropic, $75804M Raised, Backed By: Center for Emerging Risk Research, Dustin Moskovitz, Eric Schmidt, Jaan Tallinn, James McClave",
+        "company_urn": "urn:harmonic:company:3068389"
+      }
+    ],
+    "updated_at": "2026-04-21T22:23:04Z",
+    "awards__beta": [],
+    "recommendations__beta": [],
+    "current_company_urns": [
+      "urn:harmonic:company:3068389"
+    ],
+    "last_refreshed_at": "2026-04-21T21:00:08Z",
+    "investor_urn": "urn:harmonic:investor:38970",
+    "is_redacted": false
+  },
+  {
+    "full_name": "Scott White",
+    "first_name": "Scott",
+    "last_name": "White",
+    "profile_picture_url": "https://assets.harmonic.ai/person_a6c185ecbc4fa585077ee31e874803f8dc8f1ed2fed310baeae40a175bcc66c3.png",
+    "contact": {
+      "emails": [
+        "scottwhite@anthropic.com",
+        "scott.white@anthropic.com",
+        "swhite14@stanford.edu",
+        "scott@walrus.ai",
+        "scott.white@morganstanley.com",
+        "white.scott92@gmail.com",
+        "scott@anthropic.com"
+      ],
+      "phone_numbers": [],
+      "exec_emails": [],
+      "primary_email": "scott.white@anthropic.com",
+      "primary_email_person_id": null
+    },
+    "location": {
+      "address_formatted": "Berkeley, CA, USA",
+      "location": "Berkeley, California, United States",
+      "street": "",
+      "city": "Berkeley",
+      "state": "California",
+      "zip": "",
+      "country": "United States",
+      "metro_areas": [
+        "San Francisco Bay Area"
+      ]
+    },
+    "education": [
+      {
+        "school": {
+          "name": "Stanford University",
+          "linkedin_url": "https://linkedin.com/school/stanford-university",
+          "logo_url": "https://assets.harmonic.ai/school_7a709d91c95e4fed47f0bc2d0628c4028cd3cc7e8f5661d51ef9032334003622.png",
+          "entity_urn": "urn:harmonic:school:354afe5b-9cd6-40be-b4c3-e4d877e63854"
+        },
+        "degree": "Bachelor of Arts (B.A.)",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "Economics",
+        "grade": null,
+        "start_date": null,
+        "end_date": null
+      }
+    ],
+    "socials": {
+      "LINKEDIN": {
+        "url": "https://linkedin.com/in/scottiewhite",
+        "follower_count": null,
+        "username": null,
+        "status": null
+      }
+    },
+    "experience": [
+      {
+        "contact": null,
+        "title": "Head of Product, Enterprise",
+        "department": "Sales",
+        "description": "Leading enterprise products + new 0->1 vertical bets.\n\nJoined as the first non-research PM, responsible for Claude.ai.",
+        "start_date": "2024-01-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco Bay Area",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:3068389",
+        "company_name": "Anthropic"
+      },
+      {
+        "contact": null,
+        "title": "Head of End User Product",
+        "department": null,
+        "description": "Core Product, AI, Solutions",
+        "start_date": "2021-10-01T00:00:00Z",
+        "end_date": "2024-01-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:2160828",
+        "company_name": "Airtable"
+      },
+      {
+        "contact": null,
+        "title": "Co-Founder, CEO",
+        "department": "Operations",
+        "description": "No-code DevTestOps. Acquired by Airtable.",
+        "start_date": "2019-01-01T00:00:00Z",
+        "end_date": "2021-10-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "FOUNDER",
+        "company": "urn:harmonic:company:106500",
+        "company_name": "walrus.ai"
+      },
+      {
+        "contact": null,
+        "title": "Group PM, Growth and Monetization",
+        "department": null,
+        "description": "Led Express (subscription), checkout, pricing.",
+        "start_date": "2018-02-01T00:00:00Z",
+        "end_date": "2019-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:72105",
+        "company_name": "Instacart"
+      },
+      {
+        "contact": null,
+        "title": "Senior Product Manager",
+        "department": "Product",
+        "description": "Product lead for Financial Services (investment and banking products)",
+        "start_date": "2015-01-01T00:00:00Z",
+        "end_date": "2018-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Redwood City, CA",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:1443168",
+        "company_name": "Wealthfront"
+      },
+      {
+        "contact": null,
+        "title": "Growth",
+        "department": "Marketing",
+        "description": "Drove user growth and retention for Dropbox's consumer and enterprise products\n\nLaunched global partnerships across mobile carrier networks, software providers, and OEMs",
+        "start_date": "2014-07-01T00:00:00Z",
+        "end_date": "2015-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, CA",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:7720814",
+        "company_name": "Dropbox"
+      },
+      {
+        "contact": null,
+        "title": "Analyst",
+        "department": "Data",
+        "description": "Leveraged Finance and Securitized Products",
+        "start_date": "2013-06-01T00:00:00Z",
+        "end_date": "2013-08-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "New York, NY",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:12188663",
+        "company_name": "Morgan Stanley"
+      }
+    ],
+    "unstandardized_experience__internal": [
+      {
+        "contact": null,
+        "title": "Head of Product, Enterprise",
+        "department": "Sales",
+        "description": "Leading enterprise products + new 0->1 vertical bets.\n\nJoined as the first non-research PM, responsible for Claude.ai.",
+        "start_date": "2024-01-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco Bay Area",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:3068389"
+      },
+      {
+        "contact": null,
+        "title": "Head of End User Product",
+        "department": null,
+        "description": "Core Product, AI, Solutions",
+        "start_date": "2021-10-01T00:00:00Z",
+        "end_date": "2024-01-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:2160828"
+      },
+      {
+        "contact": null,
+        "title": "Co-Founder, CEO",
+        "department": "Operations",
+        "description": "No-code DevTestOps. Acquired by Airtable.",
+        "start_date": "2019-01-01T00:00:00Z",
+        "end_date": "2021-10-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "FOUNDER",
+        "company": "urn:harmonic:company:106500"
+      },
+      {
+        "contact": null,
+        "title": "Group PM, Growth and Monetization",
+        "department": null,
+        "description": "Led Express (subscription), checkout, pricing.",
+        "start_date": "2018-02-01T00:00:00Z",
+        "end_date": "2019-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:72105"
+      },
+      {
+        "contact": null,
+        "title": "Senior Product Manager",
+        "department": "Product",
+        "description": "Product lead for Financial Services (investment and banking products)",
+        "start_date": "2015-01-01T00:00:00Z",
+        "end_date": "2018-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Redwood City, CA",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:1443168"
+      },
+      {
+        "contact": null,
+        "title": "Growth",
+        "department": "Marketing",
+        "description": "Drove user growth and retention for Dropbox's consumer and enterprise products\n\nLaunched global partnerships across mobile carrier networks, software providers, and OEMs",
+        "start_date": "2014-07-01T00:00:00Z",
+        "end_date": "2015-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, CA",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:7720814"
+      },
+      {
+        "contact": null,
+        "title": "Analyst",
+        "department": "Data",
+        "description": "Leveraged Finance and Securitized Products",
+        "start_date": "2013-06-01T00:00:00Z",
+        "end_date": "2013-08-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "New York, NY",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:12188663"
+      }
+    ],
+    "websites": [],
+    "linkedin_connections": 4643,
+    "usurping_person_id": null,
+    "linkedin_headline": "Product Leadership at Anthropic",
+    "linkedin_profile_visibility_type": "FULLY_PUBLIC",
+    "last_checked_at": "2026-04-14T04:14:45Z",
+    "languages": [],
+    "entity_urn": "urn:harmonic:person:29840",
+    "id": 29840,
+    "highlights": [
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Scott White: Bachelor of Arts (B.A.) @ Stanford",
+        "company_urn": null
+      },
+      {
+        "category": "Seasoned Operator",
+        "date_added": null,
+        "text": "Seasoned Operator, Scott White: Head of End User Product @ Airtable (933 Employees) 10/2021-1/2024",
+        "company_urn": "urn:harmonic:company:2160828"
+      },
+      {
+        "category": "Prior VC Backed Founder",
+        "date_added": null,
+        "text": "Prior VC Backed Founder, Scott White: Co-Founder, CEO @ walrus.ai, Backed By: Felicis Ventures, Homebrew, Leadout Capital",
+        "company_urn": "urn:harmonic:company:106500"
+      },
+      {
+        "category": "Prior Exit",
+        "date_added": null,
+        "text": "Prior Exit, Scott White: Co-Founder, CEO @ walrus.ai, 1/2019-10/2021",
+        "company_urn": "urn:harmonic:company:106500"
+      },
+      {
+        "category": "Major Tech Company Experience",
+        "date_added": null,
+        "text": "Major Tech Company Experience, Scott White: Head of End User Product @ Airtable, 10/2021-1/2024",
+        "company_urn": "urn:harmonic:company:2160828"
+      },
+      {
+        "category": "Major Tech Company Experience",
+        "date_added": null,
+        "text": "Major Tech Company Experience, Scott White: Growth @ Dropbox, 7/2014-12/2015",
+        "company_urn": "urn:harmonic:company:7720814"
+      },
+      {
+        "category": "Major Tech Company Experience",
+        "date_added": null,
+        "text": "Major Tech Company Experience, Scott White: Group PM, Growth and Monetization @ Instacart, 2/2018-12/2019",
+        "company_urn": "urn:harmonic:company:72105"
+      },
+      {
+        "category": "Founder Turned Operator",
+        "date_added": null,
+        "text": "Founder Turned Operator, Scott White: Founder @ walrus.ai, Current Operator @ Anthropic",
+        "company_urn": "urn:harmonic:company:3068389"
+      }
+    ],
+    "updated_at": "2026-04-14T15:33:27Z",
+    "awards__beta": [],
+    "recommendations__beta": [],
+    "current_company_urns": [
+      "urn:harmonic:company:3068389"
+    ],
+    "last_refreshed_at": "2026-04-14T04:14:45Z",
+    "investor_urn": null,
+    "is_redacted": false
+  },
+  {
+    "full_name": "Krishna Rao",
+    "first_name": "Krishna",
+    "last_name": "Rao",
+    "profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/bgaqk7x4ntjz0wg67d8u723eb",
+    "contact": {
+      "emails": [
+        "krishna.rao@airbnb.com",
+        "krao@aol.com",
+        "krao@post.harvard.edu",
+        "krishna@anthropic.com",
+        "krishna.a.rao@gmail.com"
+      ],
+      "phone_numbers": [],
+      "exec_emails": [],
+      "primary_email": "krishna@anthropic.com",
+      "primary_email_person_id": null
+    },
+    "location": {
+      "address_formatted": null,
+      "location": "California, United States of America",
+      "street": null,
+      "city": "San Francisco Bay Area",
+      "state": "California",
+      "zip": null,
+      "country": "United States",
+      "metro_areas": []
+    },
+    "education": [
+      {
+        "school": {
+          "name": "Yale Law School",
+          "linkedin_url": "https://linkedin.com/school/yale-law-school",
+          "logo_url": null,
+          "entity_urn": "urn:harmonic:school:e9e86fd6-e4c0-4c47-8cd4-45ef047f5ae5"
+        },
+        "degree": "Juris Doctor (J.D.)",
+        "standardized_degree": "JURIS_DOCTOR",
+        "field": null,
+        "grade": null,
+        "start_date": "2008-01-01T00:00:00Z",
+        "end_date": "2011-01-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Harvard University",
+          "linkedin_url": "https://linkedin.com/school/harvard-university",
+          "logo_url": "https://assets.harmonic.ai/school_12ff3fb94c906e34a7c7c519dc590488ba35b7ce7fa00bdd6bb7ef338a31056e.png",
+          "entity_urn": "urn:harmonic:school:a47ab25c-9d7f-45f7-9a32-7778aa706d99"
+        },
+        "degree": "A.B.",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "summa cum laude, Economics",
+        "grade": null,
+        "start_date": "2001-01-01T00:00:00Z",
+        "end_date": "2005-12-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Harvard University",
+          "linkedin_url": "https://linkedin.com/school/harvard-university",
+          "logo_url": "https://assets.harmonic.ai/school_12ff3fb94c906e34a7c7c519dc590488ba35b7ce7fa00bdd6bb7ef338a31056e.png",
+          "entity_urn": "urn:harmonic:school:a47ab25c-9d7f-45f7-9a32-7778aa706d99"
+        },
+        "degree": "A.B., summa cum laude",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "Economics",
+        "grade": null,
+        "start_date": "2001-01-01T00:00:00Z",
+        "end_date": "2005-12-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Harvard University",
+          "linkedin_url": "https://linkedin.com/school/harvard-university",
+          "logo_url": "https://assets.harmonic.ai/school_12ff3fb94c906e34a7c7c519dc590488ba35b7ce7fa00bdd6bb7ef338a31056e.png",
+          "entity_urn": "urn:harmonic:school:a47ab25c-9d7f-45f7-9a32-7778aa706d99"
+        },
+        "degree": "A.B., summa cum laude, Economics",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "summa cum laude",
+        "grade": null,
+        "start_date": "2001-01-01T00:00:00Z",
+        "end_date": "2005-01-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Harvard University",
+          "linkedin_url": "https://linkedin.com/school/coppin",
+          "logo_url": null,
+          "entity_urn": "urn:harmonic:school:9bcb370c-3e26-44e5-b864-d2a49106d977"
+        },
+        "degree": "A.B., summa cum laude, Economics",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "summa cum laude",
+        "grade": null,
+        "start_date": "2001-01-01T00:00:00Z",
+        "end_date": "2005-01-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Simmons College - Simmons School of Management",
+          "linkedin_url": "https://linkedin.com/school/bain-and-company",
+          "logo_url": null,
+          "entity_urn": "urn:harmonic:school:77f68a9d-12cd-4c0d-8e96-41c19e1b9b6a"
+        },
+        "degree": "A.B., summa cum laude",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": null,
+        "grade": null,
+        "start_date": "2001-01-01T00:00:00Z",
+        "end_date": "2005-01-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Harvard University",
+          "linkedin_url": "https://linkedin.com/school/harvard-university",
+          "logo_url": "https://assets.harmonic.ai/school_12ff3fb94c906e34a7c7c519dc590488ba35b7ce7fa00bdd6bb7ef338a31056e.png",
+          "entity_urn": "urn:harmonic:school:a47ab25c-9d7f-45f7-9a32-7778aa706d99"
+        },
+        "degree": "A.B., summa cum laude",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": null,
+        "grade": null,
+        "start_date": "2001-01-01T00:00:00Z",
+        "end_date": "2005-01-01T00:00:00Z"
+      }
+    ],
+    "socials": {
+      "LINKEDIN": {
+        "url": "https://linkedin.com/in/krishna-rao-193b613",
+        "follower_count": null,
+        "username": null,
+        "status": null
+      }
+    },
+    "experience": [
+      {
+        "contact": null,
+        "title": "Chief Financial Officer",
+        "department": "Finance",
+        "description": null,
+        "start_date": "2024-05-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:3068389",
+        "company_name": "Anthropic"
+      },
+      {
+        "contact": null,
+        "title": "Fellow",
+        "department": "Other",
+        "description": null,
+        "start_date": "2021-01-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:2010285",
+        "company_name": "Tidemark"
+      },
+      {
+        "contact": null,
+        "title": "Chief Financial Officer, Fanatics Commerce",
+        "department": null,
+        "description": null,
+        "start_date": "2023-01-01T00:00:00Z",
+        "end_date": "2024-05-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:122569",
+        "company_name": "Fanatics"
+      },
+      {
+        "contact": null,
+        "title": "Chief Financial Officer",
+        "department": "Finance",
+        "description": "Led the finance function for Cedar, an innovative healthcare payments and patient engagement platform. Strategic finance partner to sales, delivery, product & engineering, marketing, and HR functions. Operational leadership over efficiency initiatives and client service center.",
+        "start_date": "2021-01-01T00:00:00Z",
+        "end_date": "2023-01-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:203855",
+        "company_name": "Cedar"
+      },
+      {
+        "contact": null,
+        "title": "Global Head of Corporate & Business Development",
+        "department": "Sales",
+        "description": "Capital Markets & Investor Relations: Leadership role in Airbnb’s $3.7bn IPO including drafting of S-1 and roadshow materials, transaction structuring, investor Q&A preparation, and valuation analysis. Led board pricing committee meetings and investor allocation process. Subsequently led $2bn zero coupon convertible note transaction, Airbnb’s first capital raise as a public company. As a private company: (i) led $2bn term loan issuance during pandemic (April 2020); (ii) co-led $1bn Series F (primary capital & tender offer); (iii) completed closing of $1.5bn Series E; and (iv) secured $1bn corporate revolver.\n\nCorporate & Business Development: Built and led team responsible for thesis development, due diligence, execution, and integration of more than 10 acquisitions. Built transaction execution and strategic partnerships teams, deal committee and board review process, and acquisition integration management function.",
+        "start_date": "2018-01-01T00:00:00Z",
+        "end_date": "2021-01-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:2138562",
+        "company_name": "Airbnb"
+      },
+      {
+        "contact": null,
+        "title": "Director, FP&A",
+        "department": "Finance",
+        "description": "Corporate FP&A: Led FP&A team responsible for: (i) P&L consolidation and budget variance analysis; (ii) revenue forecasting; (iii) Airbnb’s annual planning process; and (iv) investor and board reporting. \n \nOperations FP&A: Led FP&A team responsible for analytics and budgeting for: (i) community support; (ii) trust & safety; (iii) regulation & public policy; and (iv) Airbnb’s businesses in China and India.",
+        "start_date": "2015-01-01T00:00:00Z",
+        "end_date": "2018-01-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:2138562",
+        "company_name": "Airbnb"
+      },
+      {
+        "contact": null,
+        "title": "Principal, Private Equity Group",
+        "department": "Finance",
+        "description": "Evaluated and executed control transactions and minority investments in private and public companies within the consumer/retail, business services, and financial technology sectors.\n\nBoard member of Service King Collision Repair, Performance Food Group (NYSE:PFGC), and GCA Services; board observer of Crocs, Inc (NASDAQ:CROX).",
+        "start_date": "2011-01-01T00:00:00Z",
+        "end_date": "2015-12-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "New York, NY",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:11444818",
+        "company_name": "Blackstone"
+      },
+      {
+        "contact": null,
+        "title": "Senior Associate Consultant",
+        "department": "Advisor",
+        "description": null,
+        "start_date": "2007-01-01T00:00:00Z",
+        "end_date": "2008-12-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Boston, Massachusetts, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:76174",
+        "company_name": "Bain & Company"
+      },
+      {
+        "contact": null,
+        "title": "Associate Consultant",
+        "department": "Advisor",
+        "description": null,
+        "start_date": "2005-01-01T00:00:00Z",
+        "end_date": "2007-12-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Boston, Massachusetts, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:76174",
+        "company_name": "Bain & Company"
+      }
+    ],
+    "unstandardized_experience__internal": [
+      {
+        "contact": null,
+        "title": "Chief Financial Officer",
+        "department": "Finance",
+        "description": null,
+        "start_date": "2024-05-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:3068389"
+      },
+      {
+        "contact": null,
+        "title": "Fellow",
+        "department": "Other",
+        "description": null,
+        "start_date": "2021-01-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:2010285"
+      },
+      {
+        "contact": null,
+        "title": "Chief Financial Officer, Fanatics Commerce",
+        "department": null,
+        "description": null,
+        "start_date": "2023-01-01T00:00:00Z",
+        "end_date": "2024-05-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:122569"
+      },
+      {
+        "contact": null,
+        "title": "Chief Financial Officer",
+        "department": "Finance",
+        "description": "Led the finance function for Cedar, an innovative healthcare payments and patient engagement platform. Strategic finance partner to sales, delivery, product & engineering, marketing, and HR functions. Operational leadership over efficiency initiatives and client service center.",
+        "start_date": "2021-01-01T00:00:00Z",
+        "end_date": "2023-01-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:203855"
+      },
+      {
+        "contact": null,
+        "title": "Global Head of Corporate & Business Development",
+        "department": "Sales",
+        "description": "Capital Markets & Investor Relations: Leadership role in Airbnb’s $3.7bn IPO including drafting of S-1 and roadshow materials, transaction structuring, investor Q&A preparation, and valuation analysis. Led board pricing committee meetings and investor allocation process. Subsequently led $2bn zero coupon convertible note transaction, Airbnb’s first capital raise as a public company. As a private company: (i) led $2bn term loan issuance during pandemic (April 2020); (ii) co-led $1bn Series F (primary capital & tender offer); (iii) completed closing of $1.5bn Series E; and (iv) secured $1bn corporate revolver.\n\nCorporate & Business Development: Built and led team responsible for thesis development, due diligence, execution, and integration of more than 10 acquisitions. Built transaction execution and strategic partnerships teams, deal committee and board review process, and acquisition integration management function.",
+        "start_date": "2018-01-01T00:00:00Z",
+        "end_date": "2021-01-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:2138562"
+      },
+      {
+        "contact": null,
+        "title": "Director, FP&A",
+        "department": "Finance",
+        "description": "Corporate FP&A: Led FP&A team responsible for: (i) P&L consolidation and budget variance analysis; (ii) revenue forecasting; (iii) Airbnb’s annual planning process; and (iv) investor and board reporting. \n \nOperations FP&A: Led FP&A team responsible for analytics and budgeting for: (i) community support; (ii) trust & safety; (iii) regulation & public policy; and (iv) Airbnb’s businesses in China and India.",
+        "start_date": "2015-01-01T00:00:00Z",
+        "end_date": "2018-01-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco, California, United States",
+        "role_type": "OPERATOR",
+        "company": "urn:harmonic:company:2138562"
+      },
+      {
+        "contact": null,
+        "title": "Principal, Private Equity Group",
+        "department": "Finance",
+        "description": "Evaluated and executed control transactions and minority investments in private and public companies within the consumer/retail, business services, and financial technology sectors.\n\nBoard member of Service King Collision Repair, Performance Food Group (NYSE:PFGC), and GCA Services; board observer of Crocs, Inc (NASDAQ:CROX).",
+        "start_date": "2011-01-01T00:00:00Z",
+        "end_date": "2015-12-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "New York, NY",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:11444818"
+      },
+      {
+        "contact": null,
+        "title": "Senior Associate Consultant",
+        "department": "Advisor",
+        "description": null,
+        "start_date": "2007-01-01T00:00:00Z",
+        "end_date": "2008-12-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Boston, Massachusetts, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:76174"
+      },
+      {
+        "contact": null,
+        "title": "Associate Consultant",
+        "department": "Advisor",
+        "description": null,
+        "start_date": "2005-01-01T00:00:00Z",
+        "end_date": "2007-12-31T00:00:00Z",
+        "is_current_position": false,
+        "location": "Boston, Massachusetts, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:76174"
+      }
+    ],
+    "websites": [],
+    "linkedin_connections": 3251,
+    "usurping_person_id": null,
+    "linkedin_headline": "Chief Financial Officer at Anthropic",
+    "linkedin_profile_visibility_type": "EXPERIENCE_AND_EDUCATION_BLURRED",
+    "last_checked_at": "2026-04-22T19:02:42Z",
+    "languages": [],
+    "entity_urn": "urn:harmonic:person:47360",
+    "id": 47360,
+    "highlights": [
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Krishna Rao: Juris Doctor (J.D.) @ Yale Law School",
+        "company_urn": null
+      },
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Krishna Rao: A.B., summa cum laude, Economics @ Harvard",
+        "company_urn": null
+      },
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Krishna Rao: A.B., summa cum laude @ Harvard",
+        "company_urn": null
+      },
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Krishna Rao: A.B., summa cum laude @ Harvard",
+        "company_urn": null
+      },
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Krishna Rao: A.B. @ Harvard",
+        "company_urn": null
+      },
+      {
+        "category": "Top Company Alum",
+        "date_added": null,
+        "text": "Top Company Alum, Krishna Rao: Chief Financial Officer @ Cedar, 1/2021-1/2023",
+        "company_urn": "urn:harmonic:company:203855"
+      },
+      {
+        "category": "Seasoned Operator",
+        "date_added": null,
+        "text": "Seasoned Operator, Krishna Rao: Global Head of Corporate & Business Development @ Airbnb (66905 Employees) 1/2018-1/2021",
+        "company_urn": "urn:harmonic:company:2138562"
+      },
+      {
+        "category": "Seasoned Executive",
+        "date_added": null,
+        "text": "Seasoned Executive, Krishna Rao: Chief Financial Officer, Fanatics Commerce @ Fanatics (14373 Employees) 1/2023-5/2024",
+        "company_urn": "urn:harmonic:company:122569"
+      },
+      {
+        "category": "Seasoned Executive",
+        "date_added": null,
+        "text": "Seasoned Executive, Krishna Rao: Chief Financial Officer @ Cedar (821 Employees) 1/2021-1/2023",
+        "company_urn": "urn:harmonic:company:203855"
+      },
+      {
+        "category": "Prior VC Backed Executive",
+        "date_added": null,
+        "text": "Prior VC Backed Executive, Krishna Rao: Chief Financial Officer, Fanatics Commerce @ Fanatics, Backed By: Thrive Capital, Silver Lake, Neuberger Berman Group, Major League Baseball, Franklin Templeton Investments, Fidelity Investments, Blackstone Group, Fidelity Management and Research Company, SoftBank Vision Fund, NFL, Bank of America, Insight Partners, Andreessen Horowitz, Temasek Holdings, Alibaba Group",
+        "company_urn": "urn:harmonic:company:122569"
+      },
+      {
+        "category": "Prior VC Backed Executive",
+        "date_added": null,
+        "text": "Prior VC Backed Executive, Krishna Rao: Chief Financial Officer @ Cedar, Backed By: Tiger Global Management, Andreessen Horowitz, Concord Health Partners, Jeff Vacirca, Jerod Mayo",
+        "company_urn": "urn:harmonic:company:203855"
+      },
+      {
+        "category": "Prior Exit",
+        "date_added": null,
+        "text": "Prior Exit, Krishna Rao: Chief Financial Officer, Fanatics Commerce @ Fanatics, 1/2023-5/2024",
+        "company_urn": "urn:harmonic:company:122569"
+      },
+      {
+        "category": "Major Tech Company Experience",
+        "date_added": null,
+        "text": "Major Tech Company Experience, Krishna Rao: Global Head of Corporate & Business Development @ Airbnb, 1/2018-1/2021",
+        "company_urn": "urn:harmonic:company:2138562"
+      },
+      {
+        "category": "Elite Industry Experience",
+        "date_added": null,
+        "text": "Elite Industry Experience, Krishna Rao: Senior Associate Consultant @ Bain & Company, 1/2007-12/2008",
+        "company_urn": "urn:harmonic:company:76174"
+      }
+    ],
+    "updated_at": "2026-04-22T20:01:29Z",
+    "awards__beta": [],
+    "recommendations__beta": [],
+    "current_company_urns": [
+      "urn:harmonic:company:2010285",
+      "urn:harmonic:company:3068389"
+    ],
+    "last_refreshed_at": "2026-04-22T19:02:42Z",
+    "investor_urn": null,
+    "is_redacted": false
+  },
+  {
+    "full_name": "Dario Amodei",
+    "first_name": "Dario",
+    "last_name": "Amodei",
+    "profile_picture_url": "https://cdn.mixrank.com/md5/a65cc391f8f6c9dc38706b680c7c0e4b",
+    "contact": {
+      "emails": [
+        "damodei@anthropic.com",
+        "damodei@gmail.com",
+        "d.amodei@gmail.com",
+        "dario@anthropic.com"
+      ],
+      "phone_numbers": [
+        "+14155055563"
+      ],
+      "exec_emails": [],
+      "primary_email": "damodei@anthropic.com",
+      "primary_email_person_id": null
+    },
+    "location": {
+      "address_formatted": "San Francisco, CA, USA",
+      "location": "San Francisco, California, United States",
+      "street": "",
+      "city": "San Francisco",
+      "state": "California",
+      "zip": "",
+      "country": "United States",
+      "metro_areas": [
+        "San Francisco Bay Area"
+      ]
+    },
+    "education": [
+      {
+        "school": {
+          "name": "Princeton University",
+          "linkedin_url": "https://linkedin.com/school/princeton-university",
+          "logo_url": "https://assets.harmonic.ai/school_1a1d2a01642b5f83e3bf9e5e59769f9f4d3cb8ea35f2018213acae6d5551b3f0.png",
+          "entity_urn": "urn:harmonic:school:96b9ce69-aacf-4893-ace2-4378e2edd563"
+        },
+        "degree": "PhD",
+        "standardized_degree": "PHD",
+        "field": "(Bio)physics",
+        "grade": null,
+        "start_date": "2006-01-01T00:00:00Z",
+        "end_date": "2011-12-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Stanford University",
+          "linkedin_url": "https://linkedin.com/school/stanford-university",
+          "logo_url": "https://assets.harmonic.ai/school_7a709d91c95e4fed47f0bc2d0628c4028cd3cc7e8f5661d51ef9032334003622.png",
+          "entity_urn": "urn:harmonic:school:354afe5b-9cd6-40be-b4c3-e4d877e63854"
+        },
+        "degree": "BS",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "Physics",
+        "grade": null,
+        "start_date": "2004-01-01T00:00:00Z",
+        "end_date": "2006-12-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Stanford University",
+          "linkedin_url": "https://linkedin.com/school/applied-minds",
+          "logo_url": null,
+          "entity_urn": "urn:harmonic:school:0eb5b31e-b56f-40cc-9077-04615e51db42"
+        },
+        "degree": "BS",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "Physics",
+        "grade": null,
+        "start_date": "2004-01-01T00:00:00Z",
+        "end_date": "2006-01-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Caltech",
+          "linkedin_url": "https://linkedin.com/school/california-institute-of-technology",
+          "logo_url": "https://assets.harmonic.ai/school_2584c16bc063a99c2fc555545b5e4df553195db8801a254a16a9786b8cada90b.png",
+          "entity_urn": "urn:harmonic:school:ff78d362-d204-473d-8fd8-739c758718d3"
+        },
+        "degree": "Progress towards BS",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "Physics",
+        "grade": null,
+        "start_date": "2001-01-01T00:00:00Z",
+        "end_date": "2003-12-31T00:00:00Z"
+      },
+      {
+        "school": {
+          "name": "Stanford University",
+          "linkedin_url": "https://linkedin.com/school/applied-minds",
+          "logo_url": null,
+          "entity_urn": "urn:harmonic:school:0eb5b31e-b56f-40cc-9077-04615e51db42"
+        },
+        "degree": "Progress towards BS",
+        "standardized_degree": "BACHELORS_DEGREE",
+        "field": "Physics",
+        "grade": null,
+        "start_date": "2001-01-01T00:00:00Z",
+        "end_date": "2003-01-31T00:00:00Z"
+      }
+    ],
+    "socials": {
+      "LINKEDIN": {
+        "url": "https://linkedin.com/in/dario-amodei-3934934",
+        "follower_count": null,
+        "username": null,
+        "status": null
+      }
+    },
+    "experience": [
+      {
+        "contact": null,
+        "title": "CEO and Co-Founder",
+        "department": "Operations",
+        "description": "Combining scaling and long-term AI alignment methods to build steerable, interpretable, and robust AI systems.",
+        "start_date": "2021-02-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco, California, United States",
+        "role_type": "FOUNDER",
+        "company": "urn:harmonic:company:3068389",
+        "company_name": "Anthropic"
+      },
+      {
+        "contact": null,
+        "title": "Vice President of Research",
+        "department": "Data",
+        "description": "* I led the efforts to build GPT-2 and GPT-3 (https://arxiv.org/abs/2005.14165).\n* I am one of two people who sets overall research direction at OpenAI and writes its annual research roadmap.\n* In addition I have built and lead several teams focused on long-term safety research, including how to make AI systems more interpretable and how to embed human preferences and values in future powerful AI systems.",
+        "start_date": "2019-12-01T00:00:00Z",
+        "end_date": "2020-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:75639",
+        "company_name": "OpenAI"
+      },
+      {
+        "contact": null,
+        "title": "Research Director",
+        "department": "Data",
+        "description": null,
+        "start_date": "2018-09-01T00:00:00Z",
+        "end_date": "2019-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:75639",
+        "company_name": "OpenAI"
+      },
+      {
+        "contact": null,
+        "title": "Team Lead for AI Safety",
+        "department": "Operations",
+        "description": null,
+        "start_date": "2016-07-01T00:00:00Z",
+        "end_date": "2018-09-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:75639",
+        "company_name": "OpenAI"
+      },
+      {
+        "contact": null,
+        "title": "Senior Research Scientist",
+        "department": "Data",
+        "description": "I worked as a deep learning researcher on the Google Brain team, working to extend the capabilities of neural networks.  I have also worked on the safety and reliability of AI systems, and recently published a paper (with Chris Olah and several other researchers) laying out some key problems for preventing accidents in AI systems.  Our work (https://arxiv.org/abs/1606.06565) is described here (https://www.technologyreview.com/s/601750/google-gets-practical-about-the-dangers-of-ai/).",
+        "start_date": "2015-10-01T00:00:00Z",
+        "end_date": "2016-07-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Mountain View",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:2261160",
+        "company_name": "Google"
+      },
+      {
+        "contact": null,
+        "title": "Research Scientist",
+        "department": "Data",
+        "description": "I work with Andrew Ng and a small team of AI scientists and systems engineers to solve hard problems in deep learning and AI, including speech recognition and natural language processing.\n\n* Performed the majority of machine learning research for Deep Speech 2 (http://arxiv.org/abs/1512.02595), listed by MIT Technology Review as one of the top 10 technological breakthroughs of 2016 (https://www.technologyreview.com/s/600766/10-breakthrough-technologies-2016-conversational-interfaces/)\n* Conceived, prototyped and implemented a neural network architecture that achieved a 35% relative reduction in the word error rate (WER) of the lab's English speech system.\n* Conceived, prototyped and implemented a neural network architecture that achieved a 15% relative reduction in the WER of the lab's Chinese speech system.\n* Increased speed of decoder by 10x in Chinese and English, removing a key obstacle to deployment of the lab's speech system to Baidu users.\n* Increased speed of training for Chinese system by 27% and reduced memory usage by 50%, resulting in a substantial increase in lab-wide productivity and computational efficiency.\n* Co-developer (with Jim Fan and Jesse Engel) of Baidu's internal neural network library\n* Awarded \"Star Employee of the Quarter\" for Q2 2015.",
+        "start_date": "2014-11-01T00:00:00Z",
+        "end_date": "2015-10-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Sunnyvale",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:10186463",
+        "company_name": "Baidu, Inc."
+      },
+      {
+        "contact": null,
+        "title": "Software Developer (part-time)",
+        "department": "Engineering",
+        "description": "Skyline is a comprehensive software suite essential to the research of a large fraction of the proteomics community: 30,000 unique installs, 7000 instances/week, 300K lines of C# code, 10 professional programmers\n• Personally contributed 14K lines of code (net, human-generated) + 50 pages tutorials and docs.\n• Invented and implemented peak picking, binary classification, Storey-Tipshirani, and signal processing algorithms for mass spectrometry data, now widely employed by Skyline’s user base.\n• Instructor at weeklong course (Zurich, February 2014) attended by 40 on how to use Skyline, invited to teach second course in Barcelona (October 2014).\n• Featured speaker at Skyline user group meeting (June 2014, attendees: 250), and IMSC Work-\nshop (August 2014, attendees: 100+)\n• Regularly handle support requests from Skyline users (3-4 requests/week)",
+        "start_date": "2013-05-01T00:00:00Z",
+        "end_date": "2014-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": null,
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:-1",
+        "company_name": "Skyline Targeted Proteomics Environment"
+      },
+      {
+        "contact": null,
+        "title": "Postdoctoral Scholar",
+        "department": "Operations",
+        "description": "- Researching improved computational methods for acquisition and analysis of high-throughput protein expression data (C#, Python, Matlab).\n- Invented, developed, and implemented protein detection and statistical confidence algorithms and tools that have driven the field-wide adoption of next-generation high throughput mass spectrometry.\n- Developed multiplexing technique that increases peptides detected per run by 25%.\n- Contributed to open source proteomics software projects, including Skyline and Proteowizard.\n- Developed method for distinguishing cancer cells from normal cells using biophysical modeling and linear classification.",
+        "start_date": "2011-12-01T00:00:00Z",
+        "end_date": "2014-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Stanford, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:3226269",
+        "company_name": "Stanford University"
+      },
+      {
+        "contact": null,
+        "title": "Consulant",
+        "department": "Other",
+        "description": "• Help invent and develop breakthrough products for industry and government.\n• Design and conduct simulations to address unusually difficult physics and math problems. \n• Experience with electromagnetic devices, complex mechanical systems.",
+        "start_date": "2008-02-01T00:00:00Z",
+        "end_date": "2013-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Burbank, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:698291",
+        "company_name": "Applied Minds"
+      },
+      {
+        "contact": null,
+        "title": "PhD Student in Computational Neuroscience",
+        "department": "Data",
+        "description": "- Dissertation awarded Hertz Doctoral Thesis Prize, 2012.\n- Co-authored grant proposal leading to McKnight Technological Innovations in Neuroscience Award (4 awards given out of 97 proposals).\n- Developed Hopfield-style statistical models for real (biological) neural networks in retina and cortex (implemented in C/Matlab).\n- Helped develop novel algorithms to solve neural mixed-signal (spike sorting) problems at 300 neuron scale (C/C++).  Performed first ever recording of a complete 0.5x0.5mm patch of retina.\n- Co-invented and developed novel device for in vivo intracellular recording, personally built initial prototypes in fabrication facility.",
+        "start_date": "2006-09-01T00:00:00Z",
+        "end_date": "2011-11-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Princeton, New Jersey, United States",
+        "role_type": "ALUMNI",
+        "company": "urn:harmonic:company:10176909",
+        "company_name": "Princeton University Investment Company"
+      },
+      {
+        "contact": null,
+        "title": "Geophysicist",
+        "department": "Engineering",
+        "description": "• Invented and developed highly mathematical techniques in computational seismology. \n• Published non-confidential portions of my research in Physical Review E. \n• Sole author on Schlumberger confidential report (35 pages) on remaining research.\n• Wrote 5000 lines of Matlab, Fortran to implement theoretical work.",
+        "start_date": "2004-02-01T00:00:00Z",
+        "end_date": "2004-09-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Houston, Texas, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:9347699",
+        "company_name": "SLB"
+      },
+      {
+        "contact": null,
+        "title": "Research Intern",
+        "department": "Data",
+        "description": "• Designed robust, fault-tolerant, highly mathematical algorithms for parallel distributed systems. \n• Participated actively and independently in whole development pipeline, from theoretical algo-\nrithm development to software simulation to building a physical network of microcontrollers. \n• Results published in confidential AMI report.",
+        "start_date": "2003-07-01T00:00:00Z",
+        "end_date": "2003-09-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Burbank, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:698291",
+        "company_name": "Applied Minds"
+      }
+    ],
+    "unstandardized_experience__internal": [
+      {
+        "contact": null,
+        "title": "CEO and Co-Founder",
+        "department": "Operations",
+        "description": "Combining scaling and long-term AI alignment methods to build steerable, interpretable, and robust AI systems.",
+        "start_date": "2021-02-01T00:00:00Z",
+        "end_date": null,
+        "is_current_position": true,
+        "location": "San Francisco, California, United States",
+        "role_type": "FOUNDER",
+        "company": "urn:harmonic:company:3068389"
+      },
+      {
+        "contact": null,
+        "title": "Vice President of Research",
+        "department": "Data",
+        "description": "* I led the efforts to build GPT-2 and GPT-3 (https://arxiv.org/abs/2005.14165).\n* I am one of two people who sets overall research direction at OpenAI and writes its annual research roadmap.\n* In addition I have built and lead several teams focused on long-term safety research, including how to make AI systems more interpretable and how to embed human preferences and values in future powerful AI systems.",
+        "start_date": "2019-12-01T00:00:00Z",
+        "end_date": "2020-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:75639"
+      },
+      {
+        "contact": null,
+        "title": "Research Director",
+        "department": "Data",
+        "description": null,
+        "start_date": "2018-09-01T00:00:00Z",
+        "end_date": "2019-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:75639"
+      },
+      {
+        "contact": null,
+        "title": "Team Lead for AI Safety",
+        "department": "Operations",
+        "description": null,
+        "start_date": "2016-07-01T00:00:00Z",
+        "end_date": "2018-09-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "San Francisco Bay Area",
+        "role_type": "EXECUTIVE",
+        "company": "urn:harmonic:company:75639"
+      },
+      {
+        "contact": null,
+        "title": "Senior Research Scientist",
+        "department": "Data",
+        "description": "I worked as a deep learning researcher on the Google Brain team, working to extend the capabilities of neural networks.  I have also worked on the safety and reliability of AI systems, and recently published a paper (with Chris Olah and several other researchers) laying out some key problems for preventing accidents in AI systems.  Our work (https://arxiv.org/abs/1606.06565) is described here (https://www.technologyreview.com/s/601750/google-gets-practical-about-the-dangers-of-ai/).",
+        "start_date": "2015-10-01T00:00:00Z",
+        "end_date": "2016-07-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Mountain View",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:2261160"
+      },
+      {
+        "contact": null,
+        "title": "Research Scientist",
+        "department": "Data",
+        "description": "I work with Andrew Ng and a small team of AI scientists and systems engineers to solve hard problems in deep learning and AI, including speech recognition and natural language processing.\n\n* Performed the majority of machine learning research for Deep Speech 2 (http://arxiv.org/abs/1512.02595), listed by MIT Technology Review as one of the top 10 technological breakthroughs of 2016 (https://www.technologyreview.com/s/600766/10-breakthrough-technologies-2016-conversational-interfaces/)\n* Conceived, prototyped and implemented a neural network architecture that achieved a 35% relative reduction in the word error rate (WER) of the lab's English speech system.\n* Conceived, prototyped and implemented a neural network architecture that achieved a 15% relative reduction in the WER of the lab's Chinese speech system.\n* Increased speed of decoder by 10x in Chinese and English, removing a key obstacle to deployment of the lab's speech system to Baidu users.\n* Increased speed of training for Chinese system by 27% and reduced memory usage by 50%, resulting in a substantial increase in lab-wide productivity and computational efficiency.\n* Co-developer (with Jim Fan and Jesse Engel) of Baidu's internal neural network library\n* Awarded \"Star Employee of the Quarter\" for Q2 2015.",
+        "start_date": "2014-11-01T00:00:00Z",
+        "end_date": "2015-10-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Sunnyvale",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:10186463"
+      },
+      {
+        "contact": null,
+        "title": "Software Developer (part-time)",
+        "department": "Engineering",
+        "description": "Skyline is a comprehensive software suite essential to the research of a large fraction of the proteomics community: 30,000 unique installs, 7000 instances/week, 300K lines of C# code, 10 professional programmers\n• Personally contributed 14K lines of code (net, human-generated) + 50 pages tutorials and docs.\n• Invented and implemented peak picking, binary classification, Storey-Tipshirani, and signal processing algorithms for mass spectrometry data, now widely employed by Skyline’s user base.\n• Instructor at weeklong course (Zurich, February 2014) attended by 40 on how to use Skyline, invited to teach second course in Barcelona (October 2014).\n• Featured speaker at Skyline user group meeting (June 2014, attendees: 250), and IMSC Work-\nshop (August 2014, attendees: 100+)\n• Regularly handle support requests from Skyline users (3-4 requests/week)",
+        "start_date": "2013-05-01T00:00:00Z",
+        "end_date": "2014-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": null,
+        "role_type": "EMPLOYEE",
+        "company": "Skyline Targeted Proteomics Environment"
+      },
+      {
+        "contact": null,
+        "title": "Postdoctoral Scholar",
+        "department": "Operations",
+        "description": "- Researching improved computational methods for acquisition and analysis of high-throughput protein expression data (C#, Python, Matlab).\n- Invented, developed, and implemented protein detection and statistical confidence algorithms and tools that have driven the field-wide adoption of next-generation high throughput mass spectrometry.\n- Developed multiplexing technique that increases peptides detected per run by 25%.\n- Contributed to open source proteomics software projects, including Skyline and Proteowizard.\n- Developed method for distinguishing cancer cells from normal cells using biophysical modeling and linear classification.",
+        "start_date": "2011-12-01T00:00:00Z",
+        "end_date": "2014-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Stanford, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:3226269"
+      },
+      {
+        "contact": null,
+        "title": "Consulant",
+        "department": "Other",
+        "description": "• Help invent and develop breakthrough products for industry and government.\n• Design and conduct simulations to address unusually difficult physics and math problems. \n• Experience with electromagnetic devices, complex mechanical systems.",
+        "start_date": "2008-02-01T00:00:00Z",
+        "end_date": "2013-12-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Burbank, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:698291"
+      },
+      {
+        "contact": null,
+        "title": "PhD Student in Computational Neuroscience",
+        "department": "Data",
+        "description": "- Dissertation awarded Hertz Doctoral Thesis Prize, 2012.\n- Co-authored grant proposal leading to McKnight Technological Innovations in Neuroscience Award (4 awards given out of 97 proposals).\n- Developed Hopfield-style statistical models for real (biological) neural networks in retina and cortex (implemented in C/Matlab).\n- Helped develop novel algorithms to solve neural mixed-signal (spike sorting) problems at 300 neuron scale (C/C++).  Performed first ever recording of a complete 0.5x0.5mm patch of retina.\n- Co-invented and developed novel device for in vivo intracellular recording, personally built initial prototypes in fabrication facility.",
+        "start_date": "2006-09-01T00:00:00Z",
+        "end_date": "2011-11-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Princeton, New Jersey, United States",
+        "role_type": "ALUMNI",
+        "company": "urn:harmonic:company:10176909"
+      },
+      {
+        "contact": null,
+        "title": "Geophysicist",
+        "department": "Engineering",
+        "description": "• Invented and developed highly mathematical techniques in computational seismology. \n• Published non-confidential portions of my research in Physical Review E. \n• Sole author on Schlumberger confidential report (35 pages) on remaining research.\n• Wrote 5000 lines of Matlab, Fortran to implement theoretical work.",
+        "start_date": "2004-02-01T00:00:00Z",
+        "end_date": "2004-09-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Houston, Texas, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:9347699"
+      },
+      {
+        "contact": null,
+        "title": "Research Intern",
+        "department": "Data",
+        "description": "• Designed robust, fault-tolerant, highly mathematical algorithms for parallel distributed systems. \n• Participated actively and independently in whole development pipeline, from theoretical algo-\nrithm development to software simulation to building a physical network of microcontrollers. \n• Results published in confidential AMI report.",
+        "start_date": "2003-07-01T00:00:00Z",
+        "end_date": "2003-09-01T00:00:00Z",
+        "is_current_position": false,
+        "location": "Burbank, California, United States",
+        "role_type": "EMPLOYEE",
+        "company": "urn:harmonic:company:698291"
+      }
+    ],
+    "websites": [],
+    "linkedin_connections": 334,
+    "usurping_person_id": null,
+    "linkedin_headline": "CEO and Co-Founder at Anthropic",
+    "linkedin_profile_visibility_type": "FULLY_PUBLIC",
+    "last_checked_at": "2026-04-22T09:20:06Z",
+    "languages": [],
+    "entity_urn": "urn:harmonic:person:88334",
+    "id": 88334,
+    "highlights": [
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Dario Amodei: Progress towards BS @ California Institute of Technology",
+        "company_urn": null
+      },
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Dario Amodei: PhD @ Princeton",
+        "company_urn": null
+      },
+      {
+        "category": "Top University",
+        "date_added": null,
+        "text": "Top University, Dario Amodei: BS @ Stanford",
+        "company_urn": null
+      },
+      {
+        "category": "Top AI Experience",
+        "date_added": null,
+        "text": "Top AI Experience, Dario Amodei: Vice President of Research @ OpenAI, 12/2019-12/2020",
+        "company_urn": "urn:harmonic:company:75639"
+      },
+      {
+        "category": "Seasoned Executive",
+        "date_added": null,
+        "text": "Seasoned Executive, Dario Amodei: Vice President of Research @ OpenAI (5613 Employees) 12/2019-12/2020",
+        "company_urn": "urn:harmonic:company:75639"
+      },
+      {
+        "category": "Prior VC Backed Executive",
+        "date_added": null,
+        "text": "Prior VC Backed Executive, Dario Amodei: Vice President of Research @ OpenAI, Backed By: Y Combinator, Microsoft, Khosla Ventures",
+        "company_urn": "urn:harmonic:company:75639"
+      },
+      {
+        "category": "Prior Exit",
+        "date_added": null,
+        "text": "Prior Exit, Dario Amodei: Vice President of Research @ OpenAI, 12/2019-12/2020",
+        "company_urn": "urn:harmonic:company:75639"
+      },
+      {
+        "category": "Major Tech Company Experience",
+        "date_added": null,
+        "text": "Major Tech Company Experience, Dario Amodei: Senior Research Scientist @ Google, 10/2015-7/2016",
+        "company_urn": "urn:harmonic:company:2261160"
+      },
+      {
+        "category": "Major Research Institution Experience",
+        "date_added": null,
+        "text": "Major Research Institution Experience, Dario Amodei: PhD, (Bio)physics @ Princeton University",
+        "company_urn": null
+      }
+    ],
+    "updated_at": "2026-04-22T09:51:42Z",
+    "awards__beta": [],
+    "recommendations__beta": [],
+    "current_company_urns": [
+      "urn:harmonic:company:3068389"
+    ],
+    "last_refreshed_at": "2026-04-22T09:20:06Z",
+    "investor_urn": "urn:harmonic:investor:286055",
+    "is_redacted": false
+  }
+]

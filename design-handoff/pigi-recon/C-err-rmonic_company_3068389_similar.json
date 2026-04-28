@@ -1,0 +1,7 @@
+{
+  "endpoint": "/companies/urn:harmonic:company:3068389/similar",
+  "status": 404,
+  "body": {
+    "detail": "Not Found"
+  }
+}

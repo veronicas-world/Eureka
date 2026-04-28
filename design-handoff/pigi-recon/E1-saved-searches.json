@@ -1,0 +1,4099 @@
+[
+  {
+    "name": "Stealth Founders (top schools)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_position_company_id",
+            "comparator": "anyOf",
+            "filter_value": [
+              "1690825",
+              "10177114",
+              "4533170",
+              "579095",
+              "579631"
+            ]
+          },
+          {
+            "field": "person_highlights_category_list",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Legacy Tech Person Experience",
+              "Seasoned Adviser",
+              "Seasoned Operator",
+              "Major Tech Person Experience",
+              "Seasoned Founder",
+              "Elite Industry Experience",
+              "Unicorn Alum",
+              "Major Research Institution Experience",
+              "Deep Technical Background",
+              "Founder Turned Operator"
+            ]
+          },
+          {
+            "field": "person_education_experience_school",
+            "comparator": "anyOf",
+            "filter_value": [
+              "Stanford University",
+              "Massachusetts Institute of Technology",
+              "University of California, Berkeley",
+              "Harvard University",
+              "Tel Aviv University",
+              "University of Cambridge",
+              "University of Oxford",
+              "Indian Institute of Technology, Bombay",
+              "Indian Institute of Technology, Delhi",
+              "Indian Institute of Technology, Kharagpur",
+              "Indian Institute of Technology, Madras",
+              "Indian Institute of Technology, Kanpur",
+              "KTH Royal Institute of Technology"
+            ]
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_last_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              },
+              {
+                "field": "person_position_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "california"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "new york"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "israel"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "seattle"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 90816,
+    "entity_urn": "urn:harmonic:saved_search:90816",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-21T23:19:51.032493",
+    "created_at": "2023-09-15T22:35:54.114164",
+    "column_view_settings": []
+  },
+  {
+    "name": "Stealth Founders (all v1)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_position_company_id",
+            "comparator": "anyOf",
+            "filter_value": [
+              "1690825",
+              "10177114",
+              "4533170",
+              "579095",
+              "579631"
+            ]
+          },
+          {
+            "field": "person_highlights_category_list",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Legacy Tech Person Experience",
+              "Seasoned Adviser",
+              "Seasoned Operator",
+              "Major Tech Person Experience",
+              "Seasoned Founder",
+              "Elite Industry Experience",
+              "Unicorn Alum",
+              "Major Research Institution Experience",
+              "Deep Technical Background",
+              "Founder Turned Operator"
+            ]
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_last_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              },
+              {
+                "field": "person_position_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "california"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "new york"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "israel"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "seattle"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 90544,
+    "entity_urn": "urn:harmonic:saved_search:90544",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-21T23:19:41.733052",
+    "created_at": "2023-09-12T17:23:34.374851",
+    "column_view_settings": []
+  },
+  {
+    "name": "Pre-Seed / Seed Founders (top alums)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_highlights_category_list",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Legacy Tech Person Experience",
+              "Seasoned Adviser",
+              "Seasoned Operator",
+              "Major Tech Person Experience",
+              "Seasoned Founder",
+              "Elite Industry Experience",
+              "Unicorn Alum",
+              "Major Research Institution Experience",
+              "Deep Technical Background",
+              "Founder Turned Operator"
+            ]
+          },
+          {
+            "field": "person_position_company_founded_date",
+            "comparator": "afterDate",
+            "filter_value": "2021-01-01"
+          },
+          {
+            "field": "person_position_company_headcount",
+            "comparator": "lessThanOrEquals",
+            "filter_value": 10
+          },
+          {
+            "field": "person_experience_company_id",
+            "comparator": "anyOf",
+            "filter_value": [
+              "3679159",
+              "4297805",
+              "10618",
+              "2261160",
+              "75639",
+              "1428971",
+              "3205143",
+              "7384889",
+              "2141357",
+              "2141317",
+              "185211",
+              "10176288",
+              "3100676",
+              "9013"
+            ]
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_company_tags",
+                "comparator": "anyOfArray",
+                "filter_value": [
+                  "Data Analytics",
+                  "Security / Encryption Tech",
+                  "Next Gen Industry",
+                  "Robotics",
+                  "Platform Software",
+                  "SaaS",
+                  "Cybersecurity",
+                  "AI / ML",
+                  "Dev Tools",
+                  "Data Visualization",
+                  "Cloud Infrastructure",
+                  "Enterprise Cloud Infrastructure",
+                  "Next Gen Computing"
+                ]
+              },
+              {
+                "field": "person_position_company_tags",
+                "comparator": "notAnyOfArray",
+                "filter_value": [
+                  "Social Networking",
+                  "Education",
+                  "Energy / Sustainability / Natural Resources",
+                  "Blockchain / Crypto",
+                  "Staffing / Recruiting / HR",
+                  "Real Estate / Property",
+                  "Education Tech"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              },
+              {
+                "field": "person_last_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "california"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "new york"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "israel"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "seattle"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 90902,
+    "entity_urn": "urn:harmonic:saved_search:90902",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-06-24T20:00:29.956509",
+    "created_at": "2023-09-18T21:56:13.767978",
+    "column_view_settings": []
+  },
+  {
+    "name": "Sourcing List from Founder Factories - Europe",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_founding_date",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_list_and_more_location",
+            "arguments": {
+              "region": [
+                "EUROPE"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_team_founding_experience",
+            "arguments": {
+              "past_companies": [],
+              "past_roles": [],
+              "past_role_titles": [],
+              "past_schools": [],
+              "past_company_list_ids": [
+                "888432c4-a2e5-4e6a-a629-61202a9b7764"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_foundation_date",
+            "arguments": {
+              "range_value": "custom",
+              "custom_range": [
+                "2023-12-31",
+                null
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_list_and_more_exclude_from_watchlist",
+            "arguments": {
+              "watchlist_ids": [
+                "888432c4-a2e5-4e6a-a629-61202a9b7764"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 134495,
+    "entity_urn": "urn:harmonic:saved_search:134495",
+    "creator": "urn:harmonic:user:6224",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-06-09T15:00:57.129028",
+    "created_at": "2025-04-02T16:04:08.313360",
+    "column_view_settings": []
+  },
+  {
+    "name": "SaaS Cloud 100 Alum",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_created_at",
+            "comparator": "inDaysAgoRange",
+            "filter_value": "365~1"
+          },
+          {
+            "field": "company_founding_date",
+            "comparator": "inDaysAgoRange",
+            "filter_value": "365~0"
+          },
+          {
+            "field": "company_type",
+            "comparator": "anyOf",
+            "filter_value": [
+              "STARTUP"
+            ]
+          },
+          {
+            "field": "company_and_employee_highlight_count",
+            "comparator": "greaterThanOrEquals",
+            "filter_value": 1
+          },
+          {
+            "field": "company_headcount",
+            "comparator": "lessThanOrEquals",
+            "filter_value": 5
+          },
+          {
+            "field": "company_last_funding_total",
+            "comparator": "lessThan",
+            "filter_value": 1
+          },
+          {
+            "field": "company_funding_total",
+            "comparator": "lessThan",
+            "filter_value": 1
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_sortable_name",
+          "descending": true
+        },
+        {
+          "sort_field": "company_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_team_founding_experience",
+            "arguments": {
+              "past_companies": [
+                "Plaid",
+                "Figma",
+                "Databricks",
+                "Celonis",
+                "Lacework",
+                "MessageBird",
+                "Lucid Software",
+                "Checkout.com",
+                "Stripe",
+                "Airtable",
+                "1Password",
+                "Fivetran",
+                "SYNK",
+                "Attentive",
+                "Carta",
+                "ServiceTitan",
+                "TripActions",
+                "Dataminr",
+                "Personio",
+                "Socure",
+                "Deel",
+                "Claroty",
+                "ClickUp",
+                "Dataiku",
+                "Miro",
+                "Razorpay",
+                "Rubrik Inc.",
+                "OutSystems",
+                "Cybereason",
+                "Calendly",
+                "Automattic",
+                "Scale AI",
+                "Klaviyo",
+                "DataRobot",
+                "Automation Anywhere",
+                "Netskope",
+                "Branch",
+                "Forter",
+                "HighRadius",
+                "OneTrust",
+                "Rapyd",
+                "Cockroach Labs",
+                "Notion",
+                "Axonius",
+                "Cedar",
+                "Mambu",
+                "Guild Education",
+                "Checkr, Inc.",
+                "Cohesity",
+                "Collibra",
+                "Flutterwave",
+                "Gong",
+                "Papaya Global",
+                "Rippling",
+                "WIZ",
+                "Highspot",
+                "ThoughtSpot",
+                "ActiveCampaign",
+                "Grafana Labs",
+                "OwnBackup",
+                "Gusto",
+                "Harness",
+                "Yotpo",
+                "Postman",
+                "dbt Labs",
+                "Talkdesk",
+                "Aiven",
+                "Podium",
+                "6sense",
+                "Airwallex",
+                "Arctic Wolf",
+                "Benchling",
+                "Canva",
+                "Grammarly",
+                "Outreach",
+                "Tanium",
+                "Workato",
+                "LaunchDarkly",
+                "Motive",
+                "Seismic",
+                "Contentful",
+                "Lattice",
+                "Chainalysis Inc.",
+                "HiBob",
+                "Alloy",
+                "Algolia",
+                "Pendo.io",
+                "Vercel",
+                "Webflow",
+                "Intercom",
+                "Mural",
+                "Cloudinary",
+                "Netlify",
+                "Kong Inc.",
+                "Sentry (sentry.io)",
+                "Icertis",
+                "Zapier",
+                "Shippo",
+                "Front",
+                "YARDI SYSTEMS LIMITED"
+              ],
+              "past_roles": [],
+              "past_schools": []
+            }
+          },
+          {
+            "generator_id": "search_v2_company_team_highlights",
+            "arguments": {
+              "highlights": [
+                "Seasoned Operator",
+                "Elite Industry Experience"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "SEED",
+                "PRE_SEED"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_sector_exclude_keywords",
+            "arguments": {
+              "keywords": [
+                "crypto",
+                "web3",
+                "blockchain",
+                "stealth"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 64815,
+    "entity_urn": "urn:harmonic:saved_search:64815",
+    "creator": "urn:harmonic:user:518",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-21T23:12:22.649542",
+    "created_at": "2023-02-03T03:14:40.517357",
+    "column_view_settings": []
+  },
+  {
+    "name": "Series A map of our top 10 competitors Europe",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_last_funding_type",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_funding_investors_deal_search",
+            "arguments": {
+              "use_most_recent_round": false,
+              "funding_types": [
+                "SERIES_A"
+              ],
+              "date_range_value": "custom_rolling",
+              "custom_date_range": [
+                "TODAY",
+                "18 MONTHS"
+              ],
+              "investor_ids": [
+                213580,
+                205545,
+                199655,
+                212874,
+                147739,
+                19,
+                214169,
+                226768,
+                229149,
+                173470
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_list_and_more_location",
+            "arguments": {
+              "region": [
+                "EUROPE"
+              ],
+              "locations": []
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "SERIES_A"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 170607,
+    "entity_urn": "urn:harmonic:saved_search:170607",
+    "creator": "urn:harmonic:user:23329",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-30T12:08:14.597072",
+    "created_at": "2026-03-17T10:52:00.085440",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_type",
+        "column_width": 261
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_funding_total",
+        "column_width": 181
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_investor_names",
+        "column_width": 1570
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_lead_investor_names",
+        "column_width": 687
+      }
+    ]
+  },
+  {
+    "name": "Weekly Key Multi-Stage Competitor Deals",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_last_funding_type",
+            "field_urn": "urn:harmonic:company_field:company_last_funding_type",
+            "comparator": "notAnyOf",
+            "filter_value": [
+              "DEBT",
+              "DEBT_FINANCING",
+              "EQUITY_CROWDFUNDING",
+              "GRANT",
+              "INITIAL_COIN_OFFERING",
+              "NON_EQUITY_ASSISTANCE",
+              "POST_IPO_DEBT",
+              "POST_IPO_SECONDARY",
+              "POST_IPO_EQUITY",
+              "PRIVATE_EQUITY",
+              "PRODUCT_CROWDFUNDING",
+              "DEBT_PP",
+              "VENTURE_DEBT",
+              "PIPE",
+              "BUYOUT_LBO",
+              "OUT_OF_BUSINESS",
+              "M_AND_A",
+              "IPO",
+              "STRATEGIC"
+            ]
+          },
+          {
+            "field": "company_last_funding_date",
+            "field_urn": "urn:harmonic:company_field:company_last_funding_date",
+            "comparator": "inDaysAgoRange",
+            "filter_value": "0~7"
+          },
+          {
+            "field": "company_country",
+            "field_urn": "urn:harmonic:company_field:company_country",
+            "comparator": "notAnyOf",
+            "filter_value": [
+              "India",
+              "China"
+            ]
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_last_funding_total",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_funding_investors_deal_search",
+            "arguments": {
+              "investor_ids": [
+                213580,
+                19,
+                205003,
+                199655,
+                167505,
+                164082,
+                215810,
+                205545,
+                214169,
+                160545,
+                233691,
+                177995,
+                226768,
+                166112,
+                193872,
+                147739,
+                229149,
+                168753,
+                124021,
+                164602,
+                160804,
+                246607,
+                156417,
+                191084,
+                173086,
+                200694,
+                227288,
+                205024,
+                206842,
+                213601,
+                240018,
+                185632,
+                173470,
+                212874,
+                129657,
+                242046,
+                189215,
+                129336,
+                174780,
+                247405,
+                157749
+              ],
+              "excluded_investor_ids": [
+                148812
+              ],
+              "use_most_recent_round": false,
+              "is_lead": true
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 163636,
+    "entity_urn": "urn:harmonic:saved_search:163636",
+    "creator": "urn:harmonic:user:19623",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-04-17T15:32:09.166187",
+    "created_at": "2026-01-08T22:18:18.337755",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_valuation",
+        "column_width": 156
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_investor_names",
+        "column_width": 303
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_customers_connections_last_meeting_person_email",
+        "column_width": 184
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_type",
+        "column_width": 119
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_date",
+        "column_width": 127
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_total",
+        "column_width": 149
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_customers_affinity_lists",
+        "column_width": 235
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_customers_connections",
+        "column_width": 300
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_description",
+        "column_width": 512
+      }
+    ]
+  },
+  {
+    "name": "AI Talent -> Startups (last 6 M)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_past_experience",
+            "arguments": {
+              "company_in_watchlist_ids_any_of": [
+                "2f7ab57d-140a-47e5-a0f2-f1164bb30e77",
+                "d8acf1b3-bf76-4af1-b2c1-a122277c8795",
+                "72354eba-d5ed-4369-94de-9cc4e91b0b07",
+                "408b09ca-fa4d-4d81-b777-d41a7a8dcd81",
+                "6e6a1183-1db7-449b-b546-8e1c1d06e034"
+              ],
+              "current_or_past": "past",
+              "role_end_date_mode": "rollingRange",
+              "role_end_date_value": [
+                "TODAY",
+                "3 MONTHS"
+              ],
+              "role_department_any_of": [
+                "Design",
+                "Data",
+                "Engineering",
+                "Product"
+              ],
+              "role_type_any_of": [
+                "EXECUTIVE",
+                "OPERATOR",
+                "EMPLOYEE"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_people_general_location",
+            "arguments": {
+              "locations": [
+                {
+                  "entity_urn": "urn:harmonic:location_metro_area:2",
+                  "text": "New York Metropolitan Area",
+                  "location_type": "METRO_AREA",
+                  "city": null,
+                  "state": null,
+                  "country": "",
+                  "metro_area_id": 2
+                },
+                {
+                  "entity_urn": "urn:harmonic:location_metro_area:1",
+                  "text": "San Francisco Bay Area",
+                  "location_type": "METRO_AREA",
+                  "city": null,
+                  "state": null,
+                  "country": "",
+                  "metro_area_id": 1
+                }
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "company_in_watchlist_ids_none_of": [
+                "2f7ab57d-140a-47e5-a0f2-f1164bb30e77",
+                "6e6a1183-1db7-449b-b546-8e1c1d06e034",
+                "408b09ca-fa4d-4d81-b777-d41a7a8dcd81",
+                "01c29727-cec9-4601-9db9-6d0b61ff42d7",
+                "72354eba-d5ed-4369-94de-9cc4e91b0b07",
+                "d8acf1b3-bf76-4af1-b2c1-a122277c8795",
+                "bcedfe12-7e8f-470c-aff4-3ca814598a15",
+                "73651e41-5401-42cf-976d-4782767ceb73"
+              ],
+              "current_or_past": "current",
+              "company_headcount_range": [
+                0,
+                10
+              ],
+              "company_industry_tags_exclude_all_of": [
+                "Private Investing",
+                "Venture Capital",
+                "Private Equity",
+                "Consulting",
+                "Technology & Digital Consulting",
+                "Management & Strategy Consulting"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 159769,
+    "entity_urn": "urn:harmonic:saved_search:159769",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-12-16T20:31:34.308218",
+    "created_at": "2025-10-22T23:49:04.567421",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:person_list_custom_field:2871",
+        "column_width": 162
+      },
+      {
+        "entity_urn": "urn:harmonic:person_list_custom_field:2827",
+        "column_width": 147
+      }
+    ]
+  },
+  {
+    "name": "Stealth Talent",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_created_at",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_team_founding_experience",
+            "arguments": {
+              "past_companies": [],
+              "past_roles": [],
+              "past_role_titles": [],
+              "past_schools": [],
+              "past_company_list_ids": [
+                "9551764f-f70e-4b97-b7d0-82293e8424a1",
+                "73651e41-5401-42cf-976d-4782767ceb73",
+                "d7eaf178-9307-4e3e-8fa3-28ed474ff412",
+                "2e6d4ac9-4c9d-4408-80a3-a6dbbc909462",
+                "2f7ab57d-140a-47e5-a0f2-f1164bb30e77",
+                "d5544cf9-5297-46d6-9413-04afbfaf565f",
+                "a6674450-a68e-476b-a9b4-d6573c6c213e",
+                "57159140-2098-4095-b308-7e6505bafa40",
+                "7a21c2c8-88ab-4a5f-a018-21a155a64aa1",
+                "5284c723-fb76-47d0-97af-77faf4fe4392",
+                "87f2248c-6ae1-49c8-b3f1-6ca86bde1d61"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_total_range",
+            "arguments": {
+              "range": [
+                0,
+                2000000
+              ],
+              "include_undisclosed": true
+            }
+          },
+          {
+            "generator_id": "search_v2_company_sector_exclude_industry_tags",
+            "arguments": {
+              "industry_tags": [
+                "Consulting",
+                "Venture Capital",
+                "Government and public sector",
+                "Private Equity",
+                "Biotechnology & Pharmaceuticals",
+                "Medical Devices & Diagnostics"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "STEALTH",
+                "PRE_SEED",
+                "SEED"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_list_and_more_initialized_date",
+            "arguments": {
+              "range_value": "past_thirty_days"
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 159765,
+    "entity_urn": "urn:harmonic:saved_search:159765",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-11-25T21:07:23.893172",
+    "created_at": "2023-09-22T01:04:25.043150",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_leadership_last_companies",
+        "column_width": 401
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_description",
+        "column_width": 381
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_team_linkedin_profiles",
+        "column_width": 400
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_name",
+        "column_width": 288
+      }
+    ]
+  },
+  {
+    "name": "NEA CROs",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ],
+              "current_or_past": "current",
+              "role_type_any_of": [
+                "EXECUTIVE",
+                "FOUNDER"
+              ],
+              "role_department_any_of": [
+                "Sales"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 162028,
+    "entity_urn": "urn:harmonic:saved_search:162028",
+    "creator": "urn:harmonic:user:10174",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-12-16T20:43:00.846246",
+    "created_at": "2025-12-16T20:18:18.320528",
+    "column_view_settings": []
+  },
+  {
+    "name": "Traction <$15M, Quality Founders",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_headcount_percent_change_365d_ago",
+            "field_urn": "urn:harmonic:company_field:company_headcount_percent_change_365d_ago",
+            "comparator": "greaterThan",
+            "filter_value": 50
+          },
+          {
+            "field": "company_linkedin_follower_count_real_change_365d_ago",
+            "field_urn": "urn:harmonic:company_field:company_linkedin_follower_count_real_change_365d_ago",
+            "comparator": "greaterThan",
+            "filter_value": 5000
+          },
+          {
+            "field": "web_traffic_real_change_365d_ago",
+            "field_urn": "urn:harmonic:company_field:web_traffic_real_change_365d_ago",
+            "comparator": "greaterThan",
+            "filter_value": 5000
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_headcount_percent_change_180d_ago",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "SERIES_A",
+                "SEED",
+                "PRE_SEED",
+                "SERIES_B"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_foundation_date",
+            "arguments": {
+              "range_value": "custom_rolling",
+              "custom_range": [
+                "TODAY",
+                "5 YEARS"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_list_and_more_location",
+            "arguments": {
+              "region": [
+                "NORTH_AMERICA",
+                "EUROPE"
+              ],
+              "locations": []
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_total_range",
+            "arguments": {
+              "range": [
+                0,
+                15000000
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_team_highlights",
+            "arguments": {
+              "highlights": [
+                "Prior Exit",
+                "Major Tech Company Experience",
+                "Top University",
+                "Top Company Alum",
+                "Prior VC Backed Founder",
+                "Prior VC Backed Executive",
+                "Deep Technical Background",
+                "Major Research Institution Experience",
+                "$5M Club",
+                "Elite Industry Experience",
+                "$10M Club",
+                "Angel Backed",
+                "$50M+ Club",
+                "Seasoned Operator",
+                "Seasoned Founder",
+                "YC Backed Founder",
+                "Top AI Experience"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_sector_include_technology_tags",
+            "arguments": {
+              "technology_tags": [
+                "Data Analytics",
+                "Software",
+                "Manufacturing",
+                "Sensors",
+                "Artificial intelligence",
+                "Robotics"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_sector_exclude_technology_tags",
+            "arguments": {
+              "technology_tags": [
+                "Hardware",
+                "Biotechnology",
+                "Blockchain",
+                "Augmented and Virtual Reality"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_team_headcount_range",
+            "arguments": {
+              "range": [
+                10,
+                null
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_team_headcount_percent_growth_range",
+            "arguments": {
+              "range": [
+                0,
+                null
+              ],
+              "timeline": "three_months"
+            }
+          },
+          {
+            "generator_id": "search_v2_company_sector_exclude_industry_tags",
+            "arguments": {
+              "industry_tags": [
+                "Venture Capital",
+                "Consulting",
+                "Media and entertainment",
+                "Agriculture",
+                "Private Equity",
+                "Technology & Digital Consulting",
+                "Management & Strategy Consulting"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 159768,
+    "entity_urn": "urn:harmonic:saved_search:159768",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-11-17T14:58:44.629109",
+    "created_at": "2024-01-23T21:42:09.909722",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:relevance_score",
+        "column_width": 178
+      }
+    ]
+  },
+  {
+    "name": "New NEA Exec (90 days)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_position_company_id",
+            "comparator": "isInList",
+            "filter_value": [
+              "1b375aaa-06bd-47e8-9d2e-dbf41e1aaf98"
+            ]
+          },
+          {
+            "field": "person_position_role_type",
+            "comparator": "anyOf",
+            "filter_value": [
+              "FOUNDER",
+              "EXECUTIVE",
+              "OPERATOR"
+            ]
+          },
+          {
+            "field": "person_last_company_id",
+            "comparator": "isNotInList",
+            "filter_value": [
+              "1b375aaa-06bd-47e8-9d2e-dbf41e1aaf98"
+            ]
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_start_date",
+                "comparator": "inDaysAgoRange",
+                "filter_value": "90~1"
+              }
+            ],
+            "filter_groups": [],
+            "filter_group_generators": []
+          }
+        ],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 103571,
+    "entity_urn": "urn:harmonic:saved_search:103571",
+    "creator": "urn:harmonic:user:10174",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-21T23:18:08.650556",
+    "created_at": "2024-03-06T22:04:48.972264",
+    "column_view_settings": []
+  },
+  {
+    "name": "Stealth Founders (top alums)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_position_company_id",
+            "comparator": "anyOf",
+            "filter_value": [
+              "1690825",
+              "10177114",
+              "4533170",
+              "579095",
+              "579631"
+            ]
+          },
+          {
+            "field": "person_highlights_category_list",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Legacy Tech Person Experience",
+              "Seasoned Adviser",
+              "Seasoned Operator",
+              "Major Tech Person Experience",
+              "Seasoned Founder",
+              "Elite Industry Experience",
+              "Unicorn Alum",
+              "Major Research Institution Experience",
+              "Deep Technical Background",
+              "Founder Turned Operator"
+            ]
+          },
+          {
+            "field": "person_experience_company_id",
+            "comparator": "anyOf",
+            "filter_value": [
+              "3679159",
+              "4297805",
+              "10618",
+              "2261160",
+              "75639",
+              "1428971",
+              "3205143",
+              "7384889",
+              "2141357",
+              "2141317",
+              "185211",
+              "10176288",
+              "3100676",
+              "9013",
+              "3884808"
+            ]
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_last_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              },
+              {
+                "field": "person_position_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "california"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "new york"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "israel"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "seattle"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 90815,
+    "entity_urn": "urn:harmonic:saved_search:90815",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-21T23:18:48.044190",
+    "created_at": "2023-09-15T21:37:44.902182",
+    "column_view_settings": []
+  },
+  {
+    "name": "Pre-Seed / Seed Founders (all v2)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_highlights_category_list",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Legacy Tech Person Experience",
+              "Seasoned Adviser",
+              "Seasoned Operator",
+              "Major Tech Person Experience",
+              "Seasoned Founder",
+              "Elite Industry Experience",
+              "Unicorn Alum",
+              "Major Research Institution Experience",
+              "Deep Technical Background",
+              "Founder Turned Operator"
+            ]
+          },
+          {
+            "field": "person_position_company_founded_date",
+            "comparator": "afterDate",
+            "filter_value": "2021-01-01"
+          },
+          {
+            "field": "person_position_company_headcount",
+            "comparator": "lessThanOrEquals",
+            "filter_value": 10
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_company_tags",
+                "comparator": "anyOfArray",
+                "filter_value": [
+                  "Data Analytics",
+                  "Next Gen Industry",
+                  "Security / Encryption Tech",
+                  "Robotics",
+                  "Platform Software",
+                  "SaaS",
+                  "Cybersecurity",
+                  "AI / ML",
+                  "Dev Tools",
+                  "Data Visualization",
+                  "Cloud Infrastructure",
+                  "Enterprise Cloud Infrastructure",
+                  "Next Gen Computing"
+                ]
+              },
+              {
+                "field": "person_position_company_tags",
+                "comparator": "notAnyOfArray",
+                "filter_value": [
+                  "Social Networking",
+                  "Relationship / Dating",
+                  "Education",
+                  "Energy / Sustainability / Natural Resources",
+                  "Medical Devices",
+                  "Blockchain / Crypto",
+                  "Staffing / Recruiting / HR",
+                  "Fashion / Apparel",
+                  "Biotechnology",
+                  "Real Estate / Property",
+                  "Education Tech"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              },
+              {
+                "field": "person_last_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "california"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "new york"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "israel"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "seattle"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 91048,
+    "entity_urn": "urn:harmonic:saved_search:91048",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-06-24T20:06:32.008002",
+    "created_at": "2023-09-20T07:58:45.364658",
+    "column_view_settings": []
+  },
+  {
+    "name": "Stealth Founders (all v2)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_position_company_id",
+            "comparator": "anyOf",
+            "filter_value": [
+              "1690825",
+              "10177114",
+              "4533170",
+              "579095",
+              "579631"
+            ]
+          },
+          {
+            "field": "person_highlights_category_list",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Legacy Tech Person Experience",
+              "Seasoned Adviser",
+              "Seasoned Operator",
+              "Major Tech Person Experience",
+              "Seasoned Founder",
+              "Elite Industry Experience",
+              "Unicorn Alum",
+              "Major Research Institution Experience",
+              "Deep Technical Background",
+              "Founder Turned Operator"
+            ]
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_company_tags",
+                "comparator": "anyOfArray",
+                "filter_value": [
+                  "Data Analytics",
+                  "Next Gen Industry",
+                  "Security / Encryption Tech",
+                  "Robotics",
+                  "Platform Software",
+                  "SaaS",
+                  "Cybersecurity",
+                  "AI / ML",
+                  "Dev Tools",
+                  "Data Visualization",
+                  "Cloud Infrastructure",
+                  "Enterprise Cloud Infrastructure",
+                  "Next Gen Computing"
+                ]
+              },
+              {
+                "field": "person_position_company_tags",
+                "comparator": "notAnyOfArray",
+                "filter_value": [
+                  "Social Networking",
+                  "Relationship / Dating",
+                  "Education",
+                  "Energy / Sustainability / Natural Resources",
+                  "Medical Devices",
+                  "Blockchain / Crypto",
+                  "Staffing / Recruiting / HR",
+                  "Fashion / Apparel",
+                  "Biotechnology",
+                  "Real Estate / Property",
+                  "Education Tech"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_last_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              },
+              {
+                "field": "person_position_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "california"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "new york"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "israel"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "seattle"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 91050,
+    "entity_urn": "urn:harmonic:saved_search:91050",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-06-24T20:01:00.569479",
+    "created_at": "2023-09-20T08:04:52.116475",
+    "column_view_settings": []
+  },
+  {
+    "name": "AI Talent",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_company_id",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "75639",
+                  "3068389",
+                  "72834",
+                  "75704",
+                  "1552363",
+                  "650506",
+                  "749226",
+                  "6757934",
+                  "619226",
+                  "723147",
+                  "4301842",
+                  "9013",
+                  "1449250",
+                  "41812506"
+                ]
+              },
+              {
+                "field": "person_position_department",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "Data",
+                  "Engineering",
+                  "Product",
+                  "Advisor"
+                ]
+              },
+              {
+                "field": "person_position_title",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "research"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 100623,
+    "entity_urn": "urn:harmonic:saved_search:100623",
+    "creator": "urn:harmonic:user:6224",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-21T23:20:06.637668",
+    "created_at": "2024-02-06T13:24:14.708939",
+    "column_view_settings": []
+  },
+  {
+    "name": "HR Co Screen ",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "featured",
+          "descending": true
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 105556,
+    "entity_urn": "urn:harmonic:saved_search:105556",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-21T23:20:06.902679",
+    "created_at": "2024-03-29T21:07:47.268026",
+    "column_view_settings": []
+  },
+  {
+    "name": "yc w22",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "tag_value",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "W22"
+                ]
+              }
+            ],
+            "filter_groups": [],
+            "filter_group_generators": []
+          }
+        ],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 12219,
+    "entity_urn": "urn:harmonic:saved_search:12219",
+    "creator": "urn:harmonic:user:513",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-22T00:12:23.555318",
+    "created_at": "2021-10-12T21:48:38.975825",
+    "column_view_settings": []
+  },
+  {
+    "name": "Pre-Seed / Seed Founders (all v1)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_highlights_category_list",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Legacy Tech Person Experience",
+              "Seasoned Adviser",
+              "Seasoned Operator",
+              "Major Tech Person Experience",
+              "Seasoned Founder",
+              "Elite Industry Experience",
+              "Unicorn Alum",
+              "Major Research Institution Experience",
+              "Deep Technical Background",
+              "Founder Turned Operator"
+            ]
+          },
+          {
+            "field": "person_position_company_founded_date",
+            "comparator": "afterDate",
+            "filter_value": "2021-01-01"
+          },
+          {
+            "field": "person_position_company_headcount",
+            "comparator": "lessThanOrEquals",
+            "filter_value": 10
+          },
+          {
+            "field": "person_position_company_tags",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Data Analytics",
+              "Next Gen Industry",
+              "Security / Encryption Tech",
+              "Robotics",
+              "Platform Software",
+              "SaaS",
+              "Cybersecurity",
+              "AI / ML",
+              "Dev Tools",
+              "Data Visualization",
+              "Cloud Infrastructure",
+              "Enterprise Cloud Infrastructure",
+              "Next Gen Computing"
+            ]
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              },
+              {
+                "field": "person_last_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "california"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "new york"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "israel"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "seattle"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 90562,
+    "entity_urn": "urn:harmonic:saved_search:90562",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-06-24T20:06:40.656945",
+    "created_at": "2023-09-13T01:41:05.005307",
+    "column_view_settings": []
+  },
+  {
+    "name": "Pre-Seed / Seed Founders (top schools)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_highlights_category_list",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Legacy Tech Person Experience",
+              "Seasoned Adviser",
+              "Seasoned Operator",
+              "Major Tech Person Experience",
+              "Seasoned Founder",
+              "Elite Industry Experience",
+              "Unicorn Alum",
+              "Major Research Institution Experience",
+              "Deep Technical Background",
+              "Founder Turned Operator"
+            ]
+          },
+          {
+            "field": "person_position_company_founded_date",
+            "comparator": "afterDate",
+            "filter_value": "2021-01-01"
+          },
+          {
+            "field": "person_position_company_headcount",
+            "comparator": "lessThanOrEquals",
+            "filter_value": 10
+          },
+          {
+            "field": "person_education_experience_school",
+            "comparator": "anyOf",
+            "filter_value": [
+              "Stanford University",
+              "Massachusetts Institute of Technology",
+              "University of California, Berkeley",
+              "Harvard Business School",
+              "Harvard University",
+              "The Wharton School",
+              "Stanford University Graduate School of Business",
+              "Tel Aviv University",
+              "University of Cambridge",
+              "University of Oxford",
+              "Indian Institute of Technology, Bombay",
+              "Indian Institute of Technology, Delhi",
+              "Indian Institute of Technology, Kharagpur",
+              "Indian Institute of Technology, Madras",
+              "Indian Institute of Technology, Kanpur",
+              "KTH Royal Institute of Technology",
+              "University of Pennsylvania",
+              "Carnegie Mellon University",
+              "Caltech",
+              "Princeton University"
+            ]
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_company_tags",
+                "comparator": "anyOfArray",
+                "filter_value": [
+                  "Data Analytics",
+                  "Next Gen Industry",
+                  "Security / Encryption Tech",
+                  "Robotics",
+                  "Platform Software",
+                  "SaaS",
+                  "Cybersecurity",
+                  "AI / ML",
+                  "Dev Tools",
+                  "Data Visualization",
+                  "Cloud Infrastructure",
+                  "Enterprise Cloud Infrastructure",
+                  "Next Gen Computing"
+                ]
+              },
+              {
+                "field": "person_position_company_tags",
+                "comparator": "notAnyOfArray",
+                "filter_value": [
+                  "Social Networking",
+                  "Relationship / Dating",
+                  "Education",
+                  "Energy / Sustainability / Natural Resources",
+                  "Blockchain / Crypto",
+                  "Staffing / Recruiting / HR",
+                  "Fashion / Apparel",
+                  "Biotechnology",
+                  "Real Estate / Property",
+                  "Education Tech"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "and",
+            "filters": [
+              {
+                "field": "person_position_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              },
+              {
+                "field": "person_last_role_type",
+                "comparator": "anyOf",
+                "filter_value": [
+                  "FOUNDER",
+                  "EXECUTIVE",
+                  "OPERATOR"
+                ]
+              }
+            ],
+            "filter_groups": []
+          },
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "california"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "new york"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "seattle"
+                ]
+              },
+              {
+                "field": "person_location",
+                "comparator": "substringMatch",
+                "filter_value": [
+                  "israel"
+                ]
+              }
+            ],
+            "filter_groups": []
+          }
+        ]
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "merge_query_for_nested_fields": false
+    },
+    "id": 91029,
+    "entity_urn": "urn:harmonic:saved_search:91029",
+    "creator": "urn:harmonic:user:8727",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-06-24T20:06:44.207799",
+    "created_at": "2023-09-20T04:54:55.841189",
+    "column_view_settings": []
+  },
+  {
+    "name": "Tiffany's Stealth Tracker",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_created_at",
+          "descending": true
+        },
+        {
+          "sort_field": "company_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "STEALTH"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_list_and_more_initialized_date",
+            "arguments": {
+              "range_value": "custom_rolling",
+              "custom_range": [
+                "TODAY",
+                "3 MONTHS"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_list_and_more_location",
+            "arguments": {
+              "locations": [
+                {
+                  "entity_urn": "urn:harmonic:location_metro_area:2",
+                  "text": "New York Metropolitan Area",
+                  "location_type": "METRO_AREA",
+                  "city": null,
+                  "state": null,
+                  "country": "",
+                  "metro_area_id": 2
+                }
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_team_founding_experience",
+            "arguments": {
+              "past_companies": [
+                {
+                  "id": 41812506
+                },
+                {
+                  "id": 70426
+                },
+                {
+                  "id": 3639957
+                },
+                {
+                  "id": 142540
+                }
+              ],
+              "past_roles": [],
+              "past_role_titles": [],
+              "past_schools": [],
+              "past_company_list_ids": []
+            }
+          },
+          {
+            "generator_id": "search_v2_company_team_highlights",
+            "arguments": {
+              "highlights": [
+                "Prior Exit",
+                "Major Tech Company Experience",
+                "Top University",
+                "Top Company Alum",
+                "HBCU Alum",
+                "Prior VC Backed Founder",
+                "Prior VC Backed Executive",
+                "Deep Technical Background",
+                "Major Research Institution Experience",
+                "Elite Industry Experience",
+                "$5M Club",
+                "$10M Club",
+                "$50M+ Club",
+                "Seasoned Operator",
+                "Seasoned Founder",
+                "YC Backed Founder",
+                "Top AI Experience",
+                "Top Web3 Experience"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 169482,
+    "entity_urn": "urn:harmonic:saved_search:169482",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-30T22:20:00.230703",
+    "created_at": "2026-03-04T18:18:12.259194",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_team",
+        "column_width": 404
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_team_linkedin_profiles",
+        "column_width": 415
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_leadership_last_companies",
+        "column_width": 404
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_founders_and_ceos",
+        "column_width": 407
+      }
+    ]
+  },
+  {
+    "name": "NEA Port Co HR Leaders",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "role_department_any_of": [
+                "People"
+              ],
+              "current_or_past": "current",
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ],
+              "role_type_any_of": [
+                "EXECUTIVE",
+                "ADVISER",
+                "FOUNDER"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 162029,
+    "entity_urn": "urn:harmonic:saved_search:162029",
+    "creator": "urn:harmonic:user:10317",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2025-12-18T19:03:01.037946",
+    "created_at": "2025-12-16T20:18:42.392555",
+    "column_view_settings": []
+  },
+  {
+    "name": "Portco CFOs",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ],
+              "current_or_past": "current",
+              "role_department_any_of": [
+                "Finance"
+              ],
+              "role_type_any_of": [
+                "EXECUTIVE"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 165920,
+    "entity_urn": "urn:harmonic:saved_search:165920",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-01-28T19:14:51.202325",
+    "created_at": "2026-01-28T19:14:46.588364",
+    "column_view_settings": []
+  },
+  {
+    "name": "Portco Founders",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ],
+              "current_or_past": "current",
+              "role_type_any_of": [
+                "FOUNDER"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 165922,
+    "entity_urn": "urn:harmonic:saved_search:165922",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-01-28T19:17:14.342837",
+    "created_at": "2026-01-28T19:17:09.780341",
+    "column_view_settings": []
+  },
+  {
+    "name": "Exited Portco (LU Oct 2025)",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "featured",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_funding_investors_deal_search",
+            "arguments": {
+              "investor_ids": [
+                148812
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_list_and_more_exclude_from_watchlist",
+            "arguments": {
+              "watchlist_ids": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 163436,
+    "entity_urn": "urn:harmonic:saved_search:163436",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-01-07T22:21:28.216348",
+    "created_at": "2026-01-07T22:21:19.165775",
+    "column_view_settings": []
+  },
+  {
+    "name": "TOFU Trial",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_created_at",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_list_and_more_include_from_watchlist",
+            "arguments": {
+              "watchlist_ids": [
+                "d7dcf540-cbd9-4388-81b1-adaf176ef4be"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 165403,
+    "entity_urn": "urn:harmonic:saved_search:165403",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-01-23T20:19:28.575192",
+    "created_at": "2026-01-23T20:18:30.462315",
+    "column_view_settings": []
+  },
+  {
+    "name": "Weekly VC Liquidity",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_last_funding_type",
+            "field_urn": "urn:harmonic:company_field:company_last_funding_type",
+            "comparator": "anyOf",
+            "filter_value": [
+              "M_AND_A",
+              "IPO",
+              "BUYOUT_LBO"
+            ]
+          },
+          {
+            "field": "company_last_funding_date",
+            "field_urn": "urn:harmonic:company_field:company_last_funding_date",
+            "comparator": "inDaysAgoRange",
+            "filter_value": "0~7"
+          },
+          {
+            "field": "company_num_funding_rounds",
+            "field_urn": "urn:harmonic:company_field:company_num_funding_rounds",
+            "comparator": "greaterThanOrEquals",
+            "filter_value": 1
+          },
+          {
+            "field": "company_country",
+            "field_urn": "urn:harmonic:company_field:company_country",
+            "comparator": "notAnyOf",
+            "filter_value": [
+              "India",
+              "China"
+            ]
+          },
+          {
+            "field": "company_last_funding_total",
+            "field_urn": "urn:harmonic:company_field:company_last_funding_total",
+            "comparator": "greaterThanOrEquals",
+            "filter_value": 50000000
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "featured",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 165280,
+    "entity_urn": "urn:harmonic:saved_search:165280",
+    "creator": "urn:harmonic:user:19623",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-02-06T15:34:56.492600",
+    "created_at": "2026-01-23T01:48:09.446049",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_date",
+        "column_width": 121
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_type",
+        "column_width": 78
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_funding_total",
+        "column_width": 158
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_valuation",
+        "column_width": 139
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_total",
+        "column_width": 135
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_investor_names",
+        "column_width": 297
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_name",
+        "column_width": 298
+      }
+    ]
+  },
+  {
+    "name": "Outgoing NEA Leaders ",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_general_people_lists",
+            "arguments": {}
+          },
+          {
+            "generator_id": "search_v2_people_past_experience",
+            "arguments": {
+              "role_end_date_mode": "rollingRange",
+              "role_end_date_value": [
+                "TODAY",
+                "3 MONTHS"
+              ],
+              "current_or_past": "past",
+              "role_type_any_of": [
+                "EXECUTIVE",
+                "OPERATOR",
+                "FOUNDER"
+              ],
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "role_type_none_of": [
+                "ADVISER"
+              ],
+              "current_or_past": "current",
+              "role_type_any_of": [
+                "FOUNDER",
+                "EXECUTIVE",
+                "OPERATOR"
+              ],
+              "company_in_watchlist_ids_none_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_people_general_location",
+            "arguments": {
+              "region": [
+                "NORTH_AMERICA"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 160517,
+    "entity_urn": "urn:harmonic:saved_search:160517",
+    "creator": "urn:harmonic:user:21861",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-18T22:16:25.291919",
+    "created_at": "2025-11-19T18:02:40.963628",
+    "column_view_settings": []
+  },
+  {
+    "name": "NYC Sales Leaders",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_general_location",
+            "arguments": {
+              "locations": [
+                {
+                  "entity_urn": "urn:harmonic:location_metro_area:2",
+                  "text": "New York Metropolitan Area",
+                  "location_type": "METRO_AREA",
+                  "city": null,
+                  "state": null,
+                  "country": "",
+                  "metro_area_id": 2
+                }
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "role_title_contains_any_of": [
+                "Chief",
+                "Head of",
+                "Vice President"
+              ],
+              "current_or_past": "current",
+              "role_department_any_of": [
+                "Sales"
+              ],
+              "company_investor_names_any_of": [
+                "Sequoia Capital",
+                "Andreessen Horowitz",
+                "Accel",
+                "Lightspeed Venture Partners",
+                "General Catalyst",
+                "Alumni Ventures",
+                "Khosla Ventures"
+              ],
+              "company_headcount_range": [
+                0,
+                500
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 165425,
+    "entity_urn": "urn:harmonic:saved_search:165425",
+    "creator": "urn:harmonic:user:21861",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-01-27T16:40:07.083969",
+    "created_at": "2026-01-23T23:07:23.153505",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:person_field:person_customers_connections",
+        "column_width": 181
+      }
+    ]
+  },
+  {
+    "name": "Japan Company Interaction Tracker",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_founding_date",
+            "field_urn": "urn:harmonic:company_field:company_founding_date",
+            "comparator": "afterDate",
+            "filter_value": "2010-01-01"
+          },
+          {
+            "field": "company_num_funding_rounds",
+            "field_urn": "urn:harmonic:company_field:company_num_funding_rounds",
+            "comparator": "greaterThanOrEquals",
+            "filter_value": 1
+          }
+        ],
+        "filter_groups": [
+          {
+            "join_operator": "or",
+            "filters": [
+              {
+                "field": "company_customers_connections_last_meeting_at",
+                "field_urn": "urn:harmonic:company_field:company_customers_connections_last_meeting_at",
+                "comparator": "afterDate",
+                "filter_value": "2022-12-31"
+              },
+              {
+                "field": "company_customers_connections_last_email_at",
+                "field_urn": "urn:harmonic:company_field:company_customers_connections_last_email_at",
+                "comparator": "afterDate",
+                "filter_value": "2022-12-31"
+              }
+            ],
+            "filter_groups": [],
+            "filter_group_generators": []
+          }
+        ],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_customers_connections_last_email_at",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_list_and_more_location",
+            "arguments": {
+              "locations": [
+                {
+                  "entity_urn": "urn:harmonic:location:Japan",
+                  "text": "Japan",
+                  "location_type": "COUNTRY",
+                  "city": null,
+                  "state": null,
+                  "country": "Japan",
+                  "metro_area_id": null
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 163664,
+    "entity_urn": "urn:harmonic:saved_search:163664",
+    "creator": "urn:harmonic:user:19623",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-01-09T02:56:12.758670",
+    "created_at": "2026-01-09T02:21:01.815377",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_name",
+        "column_width": 257
+      }
+    ]
+  },
+  {
+    "name": "Stealth companies",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_created_at",
+          "descending": true
+        },
+        {
+          "sort_field": "company_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "STEALTH"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_list_and_more_initialized_date",
+            "arguments": {
+              "range_value": "past_thirty_days"
+            }
+          },
+          {
+            "generator_id": "search_v2_company_team_highlights",
+            "arguments": {
+              "highlights": [
+                "Prior Exit",
+                "Top University",
+                "Top Company Alum",
+                "Prior VC Backed Executive",
+                "Major Research Institution Experience",
+                "Elite Industry Experience",
+                "Angel Backed",
+                "Seasoned Operator",
+                "$50M+ Club",
+                "$10M Club",
+                "$5M Club",
+                "Deep Technical Background",
+                "Prior VC Backed Founder",
+                "HBCU Alum",
+                "Major Tech Company Experience",
+                "Top AI Experience",
+                "Seasoned Founder"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 118302,
+    "entity_urn": "urn:harmonic:saved_search:118302",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "TEMPLATE_FROM_PREFERENCES",
+    "updated_at": "2026-01-14T17:53:58.963630",
+    "created_at": "2024-08-14T15:37:14.182014",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_team",
+        "column_width": 404
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_team_linkedin_profiles",
+        "column_width": 415
+      }
+    ]
+  },
+  {
+    "name": "NEA Port Co HR Leaders (CB version)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_sortable_full_name",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "current_or_past": "current",
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ],
+              "role_department_any_of": [
+                "People"
+              ],
+              "role_type_any_of": [
+                "EXECUTIVE",
+                "OPERATOR"
+              ],
+              "role_title_contains_any_of": [
+                "Chief People Officer",
+                "Head of People",
+                "Chief Human Resource Officer",
+                "Vp of People",
+                "Vice president of people",
+                "VP People and Talent",
+                "Vice President of People and Talent",
+                "Vice president human resources",
+                "CHRO",
+                "Director of People",
+                "People Operations",
+                "VP",
+                "People"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 169527,
+    "entity_urn": "urn:harmonic:saved_search:169527",
+    "creator": "urn:harmonic:user:21861",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-12T22:22:55.811951",
+    "created_at": "2026-03-04T23:36:49.604550",
+    "column_view_settings": []
+  },
+  {
+    "name": "Japan Company Interaction Tracker Redux",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_customers_connections_last_meeting_at",
+            "field_urn": "urn:harmonic:company_field:company_customers_connections_last_meeting_at",
+            "comparator": "afterDate",
+            "filter_value": "2026-01-01"
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_customers_connections_last_meeting_at",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_list_and_more_location",
+            "arguments": {
+              "locations": [
+                {
+                  "entity_urn": "urn:harmonic:location:Japan",
+                  "text": "Japan",
+                  "location_type": "COUNTRY",
+                  "city": null,
+                  "state": null,
+                  "country": "Japan",
+                  "metro_area_id": null
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 173112,
+    "entity_urn": "urn:harmonic:saved_search:173112",
+    "creator": "urn:harmonic:user:19623",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-04-16T16:39:20.038692",
+    "created_at": "2026-04-16T16:33:42.394817",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_name",
+        "column_width": 441
+      }
+    ]
+  },
+  {
+    "name": "CRO Rev List",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_sortable_full_name",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "role_title_contains_any_of": [
+                "chief revenue officer",
+                "VP of sales",
+                "Vice president of sales",
+                "Vp of Revenue",
+                "Vice president of revenue",
+                "Director of sales",
+                "Head of sales",
+                "Sr director of sales",
+                "svp "
+              ],
+              "current_or_past": "current",
+              "role_type_any_of": [
+                "EXECUTIVE",
+                "OPERATOR"
+              ],
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ],
+              "role_department_any_of": [
+                "Sales"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 162079,
+    "entity_urn": "urn:harmonic:saved_search:162079",
+    "creator": "urn:harmonic:user:21861",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-05T16:59:09.531900",
+    "created_at": "2025-12-16T23:28:46.084199",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:person_field:person_customers_connections",
+        "column_width": 191
+      }
+    ]
+  },
+  {
+    "name": "CRO Rev List (Emily copy)",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_sortable_full_name",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "role_title_contains_any_of": [
+                "chief revenue officer",
+                "VP of sales",
+                "Vice president of sales",
+                "Vp of Revenue",
+                "Vice president of revenue",
+                "Head of sales",
+                "CRO",
+                "VP Sales"
+              ],
+              "current_or_past": "current",
+              "role_type_any_of": [
+                "EXECUTIVE",
+                "OPERATOR",
+                "EMPLOYEE"
+              ],
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ],
+              "role_department_any_of": [
+                "Sales"
+              ],
+              "role_title_contains_none_of": [
+                "sales engineering",
+                "sales operations",
+                "sales compensation",
+                "sales development",
+                "revenue operations",
+                "sales strategy",
+                "Sales enablement",
+                "regional"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 169572,
+    "entity_urn": "urn:harmonic:saved_search:169572",
+    "creator": "urn:harmonic:user:10174",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-05T18:45:17.522339",
+    "created_at": "2026-03-05T17:59:15.076439",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:person_field:person_customers_connections",
+        "column_width": 191
+      }
+    ]
+  },
+  {
+    "name": "Erica's Tech Portco Search",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_position_company_id",
+            "field_urn": "urn:harmonic:person_field:person_position_company_id",
+            "comparator": "isInList",
+            "filter_value": [
+              "6ce850ce-4514-4774-a887-b2dea4cd1d8b"
+            ]
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "current_or_past": "current",
+              "role_tenure_comparator": "greaterThan",
+              "role_type_any_of": [
+                "FOUNDER"
+              ],
+              "company_in_watchlist_ids_any_of": [
+                "6ce850ce-4514-4774-a887-b2dea4cd1d8b"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 168902,
+    "entity_urn": "urn:harmonic:saved_search:168902",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-02-25T20:42:50.656141",
+    "created_at": "2026-02-25T20:42:47.502643",
+    "column_view_settings": []
+  },
+  {
+    "name": "SaaS Seed Fund Seed",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_investor_names",
+            "comparator": "anyOfArray",
+            "filter_value": [
+              "Pear VC",
+              "BoxGroup",
+              "NFX",
+              "Susa Ventures",
+              "Amplify",
+              "Basis Set",
+              "boldstart ventures",
+              "Craft Ventures",
+              "Eniac Ventures",
+              "Emergence Capital",
+              "First Round Capital",
+              "Floodgate",
+              "Slow Ventures",
+              "Soma Ventures",
+              "Tuesday Capital",
+              "Work-Bench"
+            ]
+          },
+          {
+            "field": "typed_tag_values",
+            "comparator": "notAnyOfArray",
+            "filter_value": [
+              "Hardware"
+            ]
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_sector_exclude_keywords",
+            "arguments": {
+              "keywords": [
+                "web3",
+                "NFT",
+                "crypto"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "SEED",
+                "PRE_SEED",
+                "SERIES_A"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_foundation_date",
+            "arguments": {
+              "range_value": "past_year"
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 64883,
+    "entity_urn": "urn:harmonic:saved_search:64883",
+    "creator": "urn:harmonic:user:518",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-06-21T23:45:06.755229",
+    "created_at": "2023-02-03T18:10:34.971577",
+    "column_view_settings": []
+  },
+  {
+    "name": "People in Thrive",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_custom_field_checkbox",
+            "field_urn": "urn:harmonic:person_list_custom_field:3319",
+            "comparator": "is",
+            "filter_value": true
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 169370,
+    "entity_urn": "urn:harmonic:saved_search:169370",
+    "creator": "urn:harmonic:user:12362",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-03T19:31:16.453281",
+    "created_at": "2026-03-03T19:31:06.603550",
+    "column_view_settings": []
+  },
+  {
+    "name": "Weekly Key Seed Competitor Deals",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_last_funding_type",
+            "field_urn": "urn:harmonic:company_field:company_last_funding_type",
+            "comparator": "anyOf",
+            "filter_value": [
+              "ANGEL",
+              "PRE_SEED",
+              "SEED"
+            ]
+          },
+          {
+            "field": "company_last_funding_date",
+            "field_urn": "urn:harmonic:company_field:company_last_funding_date",
+            "comparator": "inDaysAgoRange",
+            "filter_value": "0~7"
+          },
+          {
+            "field": "company_country",
+            "field_urn": "urn:harmonic:company_field:company_country",
+            "comparator": "notAnyOf",
+            "filter_value": [
+              "India",
+              "China"
+            ]
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "company_last_funding_total",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_funding_investors_deal_search",
+            "arguments": {
+              "investor_ids": [
+                223821,
+                131890,
+                160174,
+                221038,
+                216633,
+                209296,
+                157125,
+                171992,
+                133132,
+                241298,
+                207014,
+                238117,
+                125275,
+                160973,
+                167308,
+                158671,
+                138956,
+                206238,
+                207809,
+                138710,
+                205896,
+                129336,
+                232049,
+                243663,
+                222546,
+                180039,
+                120668,
+                322441,
+                120076,
+                189770,
+                210738,
+                226397
+              ],
+              "is_lead": true
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "SEED",
+                "STEALTH",
+                "PRE_SEED"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 163644,
+    "entity_urn": "urn:harmonic:saved_search:163644",
+    "creator": "urn:harmonic:user:19623",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-27T15:07:50.963490",
+    "created_at": "2026-01-08T23:02:25.825110",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_valuation",
+        "column_width": 154
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_customers_affinity_lists",
+        "column_width": 144
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_investor_names",
+        "column_width": 307
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_name",
+        "column_width": 235
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_date",
+        "column_width": 135
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_type",
+        "column_width": 88
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_last_funding_total",
+        "column_width": 82
+      },
+      {
+        "entity_urn": "urn:harmonic:company_field:company_description",
+        "column_width": 392
+      }
+    ]
+  },
+  {
+    "name": "Incoming Leaders - NEA",
+    "is_private": false,
+    "type": "PERSONS",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "person_last_company_id",
+            "field_urn": "urn:harmonic:person_field:person_last_company_id",
+            "comparator": "isNotInList",
+            "filter_value": [
+              "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+            ]
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "person_id",
+          "descending": false
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_people_current_experience",
+            "arguments": {
+              "current_or_past": "current",
+              "role_type_any_of": [
+                "EXECUTIVE",
+                "OPERATOR"
+              ],
+              "role_start_date_mode": "rollingRange",
+              "role_start_date_value": [
+                "TODAY",
+                "3 MONTHS"
+              ],
+              "company_headcount_range": [
+                0,
+                90
+              ],
+              "company_in_watchlist_ids_any_of": [
+                "efb3eeeb-cd66-4316-87e2-8e391be0ae63"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 160518,
+    "entity_urn": "urn:harmonic:saved_search:160518",
+    "creator": "urn:harmonic:user:21861",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2026-03-18T22:18:27.648152",
+    "created_at": "2025-11-19T18:01:54.873634",
+    "column_view_settings": [
+      {
+        "entity_urn": "urn:harmonic:person_field:person_last_company_id",
+        "column_width": 202
+      },
+      {
+        "entity_urn": "urn:harmonic:person_field:person_position_company_id",
+        "column_width": 298
+      }
+    ]
+  },
+  {
+    "name": "High Growth European Start Ups",
+    "is_private": false,
+    "type": "COMPANIES_LIST",
+    "query": {
+      "filter_group": {
+        "join_operator": "and",
+        "filters": [
+          {
+            "field": "company_headcount_percent_change_90d_ago",
+            "field_urn": "urn:harmonic:company_field:company_headcount_percent_change_90d_ago",
+            "comparator": "greaterThanOrEquals",
+            "filter_value": 50
+          }
+        ],
+        "filter_groups": [],
+        "filter_group_generators": []
+      },
+      "pagination": {
+        "start": 0,
+        "page_size": 25
+      },
+      "sort": [
+        {
+          "sort_field": "featured",
+          "descending": true
+        }
+      ],
+      "controlled_filter_group": {
+        "join_operator": "and",
+        "filters": [],
+        "filter_groups": [],
+        "filter_group_generators": [
+          {
+            "generator_id": "search_v2_company_list_and_more_location",
+            "arguments": {
+              "region": [
+                "EUROPE"
+              ]
+            }
+          },
+          {
+            "generator_id": "search_v2_company_funding_stage",
+            "arguments": {
+              "stages": [
+                "SERIES_A",
+                "SERIES_B",
+                "SEED"
+              ]
+            }
+          }
+        ]
+      },
+      "merge_query_for_nested_fields": false
+    },
+    "id": 119820,
+    "entity_urn": "urn:harmonic:saved_search:119820",
+    "creator": "urn:harmonic:user:6224",
+    "user_saved_search_type": "USER_CREATED",
+    "updated_at": "2024-08-28T13:59:23.159740",
+    "created_at": "2024-08-28T13:54:16.812578",
+    "column_view_settings": []
+  }
+]

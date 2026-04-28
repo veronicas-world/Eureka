@@ -1,0 +1,7 @@
+{
+  "endpoint": "/companies/similar?urn=urn%3Aharmonic%3Acompany%3A3068389",
+  "status": 422,
+  "body": {
+    "detail": "Given id or urn similar has an invalid format for company resource"
+  }
+}

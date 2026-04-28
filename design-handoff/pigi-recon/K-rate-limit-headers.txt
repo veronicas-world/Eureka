@@ -1,0 +1,16 @@
+# Rate-limit headers captured across all recon calls
+# Test domain : anthropic.com
+# Captured at : 2026-04-27T19:42:07.885Z
+#
+# Relevant headers to check:
+#   x-ratelimit-limit     — requests allowed per window
+#   x-ratelimit-remaining — requests left in current window
+#   x-ratelimit-reset     — UTC epoch when window resets
+#   retry-after           — seconds to wait after a 429
+#
+# Pigi concurrency guide:
+#   limit ≥ 1000/min → concurrency 16
+#   limit 300–999/min → concurrency 8
+#   limit < 300/min  → concurrency 4 (conservative default)
+
+(no rate-limit headers observed — Harmonic may not expose them on this tier)
