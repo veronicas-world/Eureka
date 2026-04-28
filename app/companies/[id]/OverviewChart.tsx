@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import {
   LineChart,
   Line,
@@ -111,6 +111,8 @@ function FundingTimeline({
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(0)
+  const tooltipRef = useRef<HTMLDivElement>(null)
+  const [flipLeft, setFlipLeft] = useState(false)
 
   useEffect(() => {
     const el = containerRef.current
@@ -122,6 +124,18 @@ function FundingTimeline({
     ro.observe(el)
     return () => ro.disconnect()
   }, [])
+
+  // After the tooltip renders, check if it overflows the strip's right edge.
+  // If so, flip to translate(-100%) so it renders entirely to the left of the dot.
+  useLayoutEffect(() => {
+    if (hoveredIdx === null || !tooltipRef.current || !containerRef.current) {
+      setFlipLeft(false)
+      return
+    }
+    const tRect = tooltipRef.current.getBoundingClientRect()
+    const cRect = containerRef.current.getBoundingClientRect()
+    setFlipLeft(tRect.right > cRect.right - 12)
+  }, [hoveredIdx])
 
   if (plottable.length === 0) return null
 
@@ -223,14 +237,15 @@ function FundingTimeline({
                 {abbrevRound(ev.roundType)}
               </span>
 
-              {/* Hover tooltip — floats above the dot */}
+              {/* Hover tooltip — floats above the dot; flips left when near right edge */}
               {isHovered && (
                 <div
+                  ref={tooltipRef}
                   style={{
                     position: 'absolute',
                     bottom: '100%',
                     left: '50%',
-                    transform: 'translateX(-50%)',
+                    transform: flipLeft ? 'translateX(-100%)' : 'translateX(-50%)',
                     marginBottom: 8,
                     background: '#111827',
                     color: '#f9fafb',

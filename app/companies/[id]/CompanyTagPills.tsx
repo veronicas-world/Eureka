@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import type { CompanyRow } from '@/lib/queries'
 
 // ── Pill color palette per tag category ───────────────────────────────────────
@@ -14,6 +15,7 @@ const PILL_STYLES: Record<string, PillStyle> = {
   YC_BATCH:            { bg: '#fdf0dc', color: '#6a3a10' },
   AFFINITY:            { bg: '#d8eaf7', color: '#1a3a60' },
   HIGHLIGHT:           { bg: '#d8eaf7', color: '#1a3a60' },
+  BACKED_BY:           { bg: '#d8eaf7', color: '#1a3a60' },
 }
 
 const DEFAULT_PILL: PillStyle = { bg: '#f3f4f6', color: '#374151' }
@@ -27,10 +29,12 @@ const CATEGORY_LABELS: Record<string, string> = {
   YC_BATCH:            'YC Batch',
   AFFINITY:            'Affinity',
   HIGHLIGHT:           'Highlights',
+  BACKED_BY:           'Backed By',
 }
 
 // Canonical group ordering
 const GROUP_ORDER = [
+  'BACKED_BY',
   'MARKET_VERTICAL',
   'MARKET_SUB_VERTICAL',
   'CUSTOMER_TYPE',
@@ -65,16 +69,32 @@ function parseTags(raw: unknown): Tag[] {
     .filter((t) => t.display_value)
 }
 
-function parseHighlights(raw: unknown): string[] {
-  if (!Array.isArray(raw)) return []
-  return raw
-    .filter((h): h is Highlight => h !== null && typeof h === 'object')
-    .map((h) => h.text ?? h.category ?? '')
-    .filter(Boolean) as string[]
+// Returns regular highlight texts + investor names extracted from "Backed By ..." entries.
+function parseHighlights(raw: unknown): { regular: string[]; backedBy: string[] } {
+  if (!Array.isArray(raw)) return { regular: [], backedBy: [] }
+  const regular: string[] = []
+  const backedBy: string[] = []
+
+  for (const h of raw) {
+    if (!h || typeof h !== 'object') continue
+    const ho = h as Highlight
+    const text = ho.text ?? ho.category ?? ''
+    if (!text) continue
+
+    if (text.startsWith('Backed By ')) {
+      // Parse "Backed By Accel, Addition, ..." → individual investor names
+      const investorStr = text.replace(/^Backed By /, '')
+      const names = investorStr.split(', ').map((s) => s.trim()).filter(Boolean)
+      backedBy.push(...names)
+    } else {
+      regular.push(text)
+    }
+  }
+
+  return { regular, backedBy }
 }
 
-function buildGroups(tags: Tag[], highlights: string[]): TagGroup[] {
-  // Group tags by type
+function buildGroups(tags: Tag[], regular: string[], backedBy: string[]): TagGroup[] {
   const map = new Map<string, string[]>()
   for (const tag of tags) {
     const existing = map.get(tag.type) ?? []
@@ -82,11 +102,9 @@ function buildGroups(tags: Tag[], highlights: string[]): TagGroup[] {
     map.set(tag.type, existing)
   }
 
-  if (highlights.length > 0) {
-    map.set('HIGHLIGHT', highlights)
-  }
+  if (regular.length > 0) map.set('HIGHLIGHT', regular)
+  if (backedBy.length > 0) map.set('BACKED_BY', backedBy)
 
-  // Sort: canonical order first, then alphabetical for unknown types
   const types = [...map.keys()].sort((a, b) => {
     const ai = GROUP_ORDER.indexOf(a)
     const bi = GROUP_ORDER.indexOf(b)
@@ -149,12 +167,66 @@ function TagPill({ group }: { group: TagGroup }) {
   )
 }
 
+// ── Backed By pill with toggle ────────────────────────────────────────────────
+
+const MAX_BACKED_BY_VISIBLE = 6
+
+function BackedByPill({ group }: { group: TagGroup }) {
+  const [showAll, setShowAll] = useState(false)
+  const { bg, color } = group.style
+  const extra = group.values.length - MAX_BACKED_BY_VISIBLE
+  const visible = showAll ? group.values : group.values.slice(0, MAX_BACKED_BY_VISIBLE)
+
+  return (
+    <div className="inline-flex flex-wrap items-center gap-0.5">
+      {/* "Backed By" prefix label */}
+      <span
+        className="inline-flex items-center h-5 px-2 rounded-full text-[11px] font-medium whitespace-nowrap select-none"
+        style={{ background: bg, color, opacity: 0.65 }}
+      >
+        Backed By
+      </span>
+      {/* Individual investor pills */}
+      {visible.map((inv) => (
+        <span
+          key={inv}
+          className="inline-flex items-center h-5 px-2 rounded-full text-[11px] font-medium whitespace-nowrap select-none"
+          style={{ background: bg, color }}
+        >
+          {inv}
+        </span>
+      ))}
+      {/* +N more toggle */}
+      {!showAll && extra > 0 && (
+        <button
+          type="button"
+          onClick={() => setShowAll(true)}
+          className="inline-flex items-center h-5 px-1.5 rounded-full text-[10px] font-medium select-none hover:opacity-80 transition-opacity"
+          style={{ background: bg, color, opacity: 0.75 }}
+        >
+          +{extra} more
+        </button>
+      )}
+      {showAll && extra > 0 && (
+        <button
+          type="button"
+          onClick={() => setShowAll(false)}
+          className="inline-flex items-center h-5 px-1.5 rounded-full text-[10px] font-medium select-none hover:opacity-80 transition-opacity"
+          style={{ background: bg, color, opacity: 0.75 }}
+        >
+          Show less
+        </button>
+      )}
+    </div>
+  )
+}
+
 // ── Main component ─────────────────────────────────────────────────────────────
 
 export default function CompanyTagPills({ company }: { company: CompanyRow }) {
-  const tags       = parseTags(company.tags_v2)
-  const highlights = parseHighlights(company.highlights)
-  const groups     = buildGroups(tags, highlights)
+  const tags = parseTags(company.tags_v2)
+  const { regular, backedBy } = parseHighlights(company.highlights)
+  const groups = buildGroups(tags, regular, backedBy)
 
   if (groups.length === 0) return null
 
@@ -163,9 +235,11 @@ export default function CompanyTagPills({ company }: { company: CompanyRow }) {
       className="bg-white border-x border-b border-gray-200 px-6 py-3 flex flex-wrap gap-1.5"
       style={{ borderTop: '1px solid #f3f4f6' }}
     >
-      {groups.map((group) => (
-        <TagPill key={group.type} group={group} />
-      ))}
+      {groups.map((group) =>
+        group.type === 'BACKED_BY'
+          ? <BackedByPill key={group.type} group={group} />
+          : <TagPill key={group.type} group={group} />
+      )}
     </div>
   )
 }
