@@ -337,3 +337,57 @@ export type ListCompanyRow = {
   added_at:   string
   position:   number | null
 }
+
+// ── Pigi Home ────────────────────────────────────────────────────────────────
+
+export type PigiHomeData = {
+  lastRunAt:         string | null   // most recent company_snapshots.captured_at
+  recentDiffSignals: SignalRow[]     // signals from pigi_diff in the last 7 days
+  totalCompanies:    number
+  totalSnapshots:    number
+}
+
+/**
+ * Fetches everything Pigi's home page needs in three small queries.
+ * "Last run" is approximated by the most recent company_snapshots.captured_at —
+ * since the deriver only writes new snapshots when pigi runs, this is a reliable
+ * proxy without needing filesystem access to the log files.
+ */
+export async function getPigiHomeData(): Promise<PigiHomeData> {
+  const supabase = await createServerSupabaseClient()
+
+  // 1) Most recent snapshot — Pigi's last visit
+  const { data: lastSnap } = await supabase
+    .from('company_snapshots')
+    .select('captured_at')
+    .order('captured_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  // 2) Recent diff signals — what Pigi noticed
+  // Window: last 7 days. Includes harmonic-sourced signals too so the page
+  // isn't empty before pigi has had a chance to diff anything (since most
+  // companies only have 1 snapshot right now). Once pigi has been running
+  // for a few days this naturally fills with pigi_diff signals.
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  const { data: signals } = await supabase
+    .from('signals')
+    .select(`*, companies ( name )`)
+    .gte('signal_date', sevenDaysAgo)
+    .not('headline', 'ilike', ENRICHED_NOISE_PATTERN)
+    .order('signal_date', { ascending: false })
+    .limit(40)
+
+  // 3) Counts — for the "quiet stats" footer
+  const [{ count: totalCompanies }, { count: totalSnapshots }] = await Promise.all([
+    supabase.from('companies').select('id', { count: 'exact', head: true }),
+    supabase.from('company_snapshots').select('id', { count: 'exact', head: true }),
+  ])
+
+  return {
+    lastRunAt:         lastSnap?.captured_at ?? null,
+    recentDiffSignals: signals ?? [],
+    totalCompanies:    totalCompanies ?? 0,
+    totalSnapshots:    totalSnapshots ?? 0,
+  }
+}
