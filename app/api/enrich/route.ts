@@ -110,13 +110,32 @@ export async function POST(req: NextRequest) {
     let peopleUpdated = 0
 
     if (roleMap.size > 0) {
-      const urnParams  = [...roleMap.keys()].map((u) => `urns=${encodeURIComponent(u)}`).join('&')
-      const personsUrl = `https://api.harmonic.ai/persons?${urnParams}`
-      console.log('[enrich] fetching', roleMap.size, 'persons')
+      // Harmonic /persons accepts urns=... query params, but a single URL with
+      // hundreds of URNs blows past URL-length limits (~2k–8k chars depending
+      // on the server) and Harmonic returns 414 / empty. Batch at 50, matching
+      // the pigi CLI script. This is the difference between 0 people on big
+      // companies (Anthropic, OpenAI) and full enrichment.
+      const PERSONS_BATCH_SIZE = 50
+      const allUrns = [...roleMap.keys()]
+      console.log('[enrich] fetching', allUrns.length, 'persons in', Math.ceil(allUrns.length / PERSONS_BATCH_SIZE), 'batches')
 
-      const personsRes  = await fetch(personsUrl, { headers: { apikey: HARMONIC_API_KEY } })
-      const personsRaw  = await personsRes.json().catch(() => [])
-      const personsList = Array.isArray(personsRaw) ? personsRaw as Record<string, unknown>[] : []
+      const personsList: Record<string, unknown>[] = []
+      for (let i = 0; i < allUrns.length; i += PERSONS_BATCH_SIZE) {
+        const batch      = allUrns.slice(i, i + PERSONS_BATCH_SIZE)
+        const urnParams  = batch.map((u) => `urns=${encodeURIComponent(u)}`).join('&')
+        const personsUrl = `https://api.harmonic.ai/persons?${urnParams}`
+
+        const personsRes = await fetch(personsUrl, { headers: { apikey: HARMONIC_API_KEY } })
+        if (!personsRes.ok) {
+          console.error(`[enrich] persons batch ${i / PERSONS_BATCH_SIZE + 1} failed:`, personsRes.status)
+          continue
+        }
+        const personsRaw = await personsRes.json().catch(() => [])
+        if (Array.isArray(personsRaw)) {
+          personsList.push(...(personsRaw as Record<string, unknown>[]))
+        }
+      }
+      console.log('[enrich] persons batches returned', personsList.length, 'records')
 
       for (const personRaw of personsList) {
         const urn  = ((personRaw.entity_urn as string | undefined) ?? '').trim()

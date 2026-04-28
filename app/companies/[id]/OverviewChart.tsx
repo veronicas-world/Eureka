@@ -139,7 +139,6 @@ function FundingTimeline({
 
   if (plottable.length === 0) return null
 
-  const isScrollable = plottable.length > 15
   const timeSpan = lastMs - firstMs
 
   const pcts = plottable.map((ev) =>
@@ -175,11 +174,13 @@ function FundingTimeline({
 
   return (
     // margin-left matches YAxis width (40px); margin-right matches chart right margin (20px)
+    // overflow:visible is required so the tooltip can extend above the strip
+    // without being clipped (overflow-x:auto would force overflow-y to clip too)
     <div
       style={{
         marginLeft: 40,
         marginRight: 20,
-        overflowX: isScrollable ? 'auto' : 'visible',
+        overflow: 'visible',
       }}
     >
       <div
@@ -187,7 +188,6 @@ function FundingTimeline({
         style={{
           position: 'relative',
           height: stripHeight,
-          minWidth: isScrollable ? `${plottable.length * 44}px` : undefined,
         }}
       >
         {plottable.map((ev, i) => {
