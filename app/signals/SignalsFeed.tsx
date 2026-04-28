@@ -61,7 +61,7 @@ export default function SignalsFeed({ signals }: Props) {
   }, [signals, query, typeFilter, strength])
 
   return (
-    <div style={{ padding: '36px 44px 80px', maxWidth: 880 }}>
+    <div style={{ padding: '36px 44px 80px', maxWidth: 1180 }}>
       {/* Header */}
       <header className="mb-7">
         <h1 className="flex items-baseline gap-2.5 m-0" style={{ fontSize: 22, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.005em' }}>
