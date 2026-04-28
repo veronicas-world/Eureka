@@ -10,11 +10,22 @@ import {
 const HARMONIC_API_KEY = process.env.HARMONIC_API_KEY!
 
 function extractDomain(website: string): string {
+  // Strip common wrappers that sneak in via copy/paste:
+  //   - Markdown links: [github.com](http://github.com)  → http://github.com
+  //   - Angle brackets: <https://github.com>             → https://github.com
+  //   - Surrounding whitespace
+  let cleaned = website.trim()
+  const mdMatch = cleaned.match(/\]\((https?:\/\/[^)]+)\)/) ?? cleaned.match(/\((https?:\/\/[^)]+)\)/)
+  if (mdMatch) cleaned = mdMatch[1]
+  cleaned = cleaned.replace(/^[<\[]+|[>\]]+$/g, '').trim()
+
   try {
-    const url = website.startsWith('http') ? website : `https://${website}`
+    const url = cleaned.startsWith('http') ? cleaned : `https://${cleaned}`
     return new URL(url).hostname.replace(/^www\./, '')
   } catch {
-    return website.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]
+    // Last-resort regex: grab the first thing that looks like a hostname
+    const m = cleaned.match(/([a-z0-9][-a-z0-9.]*\.[a-z]{2,})/i)
+    return (m ? m[1] : cleaned).replace(/^www\./, '').split('/')[0]
   }
 }
 

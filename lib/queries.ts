@@ -123,11 +123,30 @@ export type CompanyWithRelations = CompanyRow & {
 
 // ── Queries ──────────────────────────────────────────────────────────────────
 
+// Columns needed for the /database list view.
+// EXCLUDES the heavy JSONB blobs (harmonic_raw, similar_urns, highlights,
+// traction_metrics, funding_rounds_data) — those can be 5MB+ per row for
+// big companies like Anthropic and would blow past Supabase's 8s statement
+// timeout once you have a handful of enriched companies. The detail page
+// (getCompanyById) still loads them when you actually open a company.
+const LIST_COLUMNS = `
+  id, name, website, linkedin_url, description, short_description,
+  sector, subsector, stage, country, city, founded_year,
+  employee_count, employee_count_source,
+  headcount_30d_growth, headcount_90d_growth, headcount_6m_growth,
+  total_funding_usd, last_funding_date, last_funding_round,
+  last_funding_amount_usd, latest_valuation_usd, funding_rounds_count,
+  investors, status, signal_score, tags, logo_url, customer_type,
+  enrichment_status, harmonic_id, harmonic_urn, last_enriched_at,
+  display_order, web_traffic, tags_v2,
+  created_at, updated_at
+`.replace(/\s+/g, ' ').trim()
+
 export async function getCompanies(): Promise<CompanyRow[]> {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from('companies')
-    .select('*')
+    .select(LIST_COLUMNS)
     // User-curated order first (drag-and-drop on /database). Rows that
     // haven't been placed yet (display_order is null) fall to the bottom,
     // sorted by recency.
@@ -138,7 +157,9 @@ export async function getCompanies(): Promise<CompanyRow[]> {
     console.error('[getCompanies]', error.message)
     return []
   }
-  return data ?? []
+  // Cast through unknown — the heavy JSONB fields will be undefined on these
+  // rows but the CompanyRow type marks them as `unknown`, which accepts that.
+  return (data ?? []) as unknown as CompanyRow[]
 }
 
 export async function getCompanyById(id: string): Promise<CompanyWithRelations | null> {
